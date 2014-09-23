@@ -17,10 +17,10 @@ Utilities::verify_login();
 <?php Utilities::create_nav_bar(); ?>
 
 <?php
-$echoResources = array('localhost', 'trestles.sdsc.edu', 'lonestar.tacc.utexas.edu');
-$wrfResources = array('trestles.sdsc.edu');
+//$echoResources = array('localhost', 'trestles.sdsc.edu', 'lonestar.tacc.utexas.edu');
+//$wrfResources = array('trestles.sdsc.edu');
 
-$appResources = array('Echo' => $echoResources, 'WRF' => $wrfResources);
+//$appResources = array('Echo' => $echoResources, 'WRF' => $wrfResources);
 
 
 ?>
@@ -29,49 +29,13 @@ $appResources = array('Echo' => $echoResources, 'WRF' => $wrfResources);
     
 <h1>Create a new experiment</h1>
 
-
-
-
-<?php
-
-if (isset($_POST['save']) || isset($_POST['launch']))
-{
-    $expId = create_experiment();
-
-    if (isset($_POST['launch']) && $expId)
-    {
-        launch_experiment($expId);
-    }
-    else
-    {
-        print_success_message("<p>Experiment {$_POST['experiment-name']} created!</p>" .
-            '<p>You will be redirected to the summary page shortly, or you can
-            <a href="experiment_summary.php?expId=' . $expId . '">go directly</a> to experiment summary page.</p>');
-        redirect('experiment_summary.php?expId=' . $expId);
-    }
-}
-
-//$transport->close();
-
-?>
-
-
-
 <form action="create" method="post" role="form" enctype="multipart/form-data">
 
     <?php
 
-    if (isset($_POST['continue']))
+    if (Session::has( 'exp_create_continue'))
     {
-        $disabled = ' disabled';
-        $experimentName = $_POST['experiment-name'];
-        $experimentDescription = $_POST['experiment-description'] . ' ';
-        $project = $_POST['project'];
-        $application = $_POST['application'];
-
-        // ugly hack until app catalog is in place
-        $echo = ($application == 'Echo')? ' selected' : '';
-        $wrf = ($application == 'WRF')? ' selected' : '';
+        
 
         echo '<input type="hidden" name="experiment-name" value="' . $experimentName . '">';
         echo '<input type="hidden" name="experiment-description" value="' . $experimentDescription . '">';
@@ -91,34 +55,31 @@ if (isset($_POST['save']) || isset($_POST['launch']))
     }
     ?>
 
+    <div class="form-group">
+        <label for="experiment-name">Experiment Name</label>
+        <input type="text" class="form-control" name="experiment-name" id="experiment-name" placeholder="Enter experiment name" autofocus required {{ $disabled }} value="{{ $experimentName }}">
+    </div>
+    <div class="form-group">
+        <label for="experiment-description">Experiment Description</label>
+        <textarea class="form-control" name="experiment-description" id="experiment-description" placeholder="Optional: Enter a short description of the experiment" {{ $disabled }}>{{ $experimentDescription }}</textarea>
+    </div>
+    <div class="form-group">
+        <label for="project">Project</label>
+
+
+    {{ Utilities::create_project_select($project, !$disabled) }}
+
+    </div>
         <div class="form-group">
-            <label for="experiment-name">Experiment Name</label>
-            <input type="text" class="form-control" name="experiment-name" id="experiment-name" placeholder="Enter experiment name" autofocus required' . $disabled . ' value="' . $experimentName . '">
-        </div>
-        <div class="form-group">
-            <label for="experiment-description">Experiment Description</label>
-            <textarea class="form-control" name="experiment-description" id="experiment-description" placeholder="Optional: Enter a short description of the experiment"' . $disabled . '>' . $experimentDescription . '</textarea>
-        </div>
-        <div class="form-group">
-            <label for="project">Project</label>
+        <label for="application">Application</label>
 
-        <?
+        {{ Utilities::create_application_select($application, !$disabled) }}
+
+    </div>
 
 
-    create_project_select($project, !$disabled);
-
-    echo '
-        </div>
-        <div class="form-group">
-            <label for="application">Application</label>';
-
-    create_application_select($application, !$disabled);
-
-    echo '</div>';
-
-
-
-    if (!isset($_POST['continue']))
+    <?php
+    if (! Session::has( 'exp_create_continue'))
     {
         echo '<div class="btn-toolbar">
         <input name="continue" type="submit" class="btn btn-primary" value="Continue">
@@ -137,14 +98,14 @@ if (isset($_POST['save']) || isset($_POST['launch']))
 
 
 
-        create_inputs($application, true);
+        Utilities::create_inputs($application, true);
 
 
         echo '</div>
             <div class="form-group">
                 <label for="compute-resource">Compute Resource</label>';
 
-        create_compute_resources_select($application, null);
+        Utilities::create_compute_resources_select($application, null);
 
         echo '
             </div>
@@ -191,7 +152,7 @@ if (isset($_POST['save']) || isset($_POST['launch']))
                 </div>
             <div class="btn-group">
                 <button name="clear" type="reset" class="btn btn-default" value="Reset values">Reset application configuration</button>
-                <a href="' . $_SERVER['PHP_SELF'] . '" class="btn btn-default" role="button">Start over</a>
+                <a href="' . URL::to('/') . '/experiment/create" class="btn btn-default" role="button">Start over</a>
             </div>
         </div>';
     }

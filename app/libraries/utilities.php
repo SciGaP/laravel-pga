@@ -22,6 +22,7 @@ use Airavata\Model\Workspace\Experiment\Experiment;
 use Airavata\Model\AppCatalog\AppInterface\DataType;
 use Airavata\Model\Workspace\Project;
 use Airavata\Model\Workspace\Experiment\ExperimentState;
+use Airavata\Model\Workspace\Experiment\JobState;
 
 class Utilities{
 /**
@@ -39,7 +40,7 @@ const AIRAVATA_SERVER = 'gw111.iu.xsede.org';
 //const AIRAVATA_PORT = 8930; //development
 const AIRAVATA_PORT = 9930; //production
 const AIRAVATA_TIMEOUT = 100000;
-const EXPERIMENT_DATA_ROOT = '../experimentData/';
+const EXPERIMENT_DATA_ROOT = '../../../experimentData/';
 
 const SSH_USER = 'root';
 const DATA_PATH = 'file://var/www/experimentData/';
@@ -290,7 +291,7 @@ public static function get_airavata_client()
  */
 public static function launch_experiment($expId)
 {
-    global $airavataclient;
+    $airavataclient = Utilities::get_airavata_client();
     //global $tokenFilePath;
     global $tokenFile;
 
@@ -308,14 +309,14 @@ public static function launch_experiment($expId)
 
         $tokenString = isset($_SESSION['tokenId'])? 'personal' : 'community';
 
-        print_success_message('Experiment launched using ' . $tokenString . ' allocation!');
+        Utilities::print_success_message('Experiment launched using ' . $tokenString . ' allocation!');
         */
 
         $hardCodedToken = '2c308fa9-99f8-4baa-92e4-d062e311483c';
         $airavataclient->launchExperiment($expId, $hardCodedToken);
 
-        //print_success_message('Experiment launched!');
-        print_success_message("<p>Experiment launched!</p>" .
+        //Utilities::print_success_message('Experiment launched!');
+        Utilities::print_success_message("<p>Experiment launched!</p>" .
             '<p>You will be redirected to the summary page shortly, or you can
             <a href="experiment_summary.php?expId=' . $expId . '">go directly</a> to the experiment summary page.</p>');
         redirect('experiment_summary.php?expId=' . $expId);
@@ -359,7 +360,7 @@ public static function launch_experiment($expId)
  */
 public static function get_all_user_projects($username)
 {
-    global $airavataclient;
+    $airavataclient = Utilities::get_airavata_client();
     $userProjects = null;
 
     try
@@ -403,7 +404,7 @@ public static function get_all_user_projects($username)
  */
 public static function get_all_applications()
 {
-    global $airavataclient;
+    $airavataclient = Utilities::get_airavata_client();
     $applications = null;
 
     try
@@ -440,7 +441,7 @@ public static function get_all_applications()
  */
 public static function get_application_interface($id)
 {
-    global $airavataclient;
+    $airavataclient = Utilities::get_airavata_client();
     $applicationInterface = null;
 
     try
@@ -477,7 +478,7 @@ public static function get_application_interface($id)
  */
 public static function get_available_app_interface_compute_resources($id)
 {
-    global $airavataclient;
+    $airavataclient = Utilities::get_airavata_client();
     $computeResources = null;
 
     try
@@ -514,7 +515,7 @@ public static function get_available_app_interface_compute_resources($id)
  */
 public static function get_compute_resource($id)
 {
-    global $airavataclient;
+    $airavataclient = Utilities::get_airavata_client();
     $computeResource = null;
 
     try
@@ -550,7 +551,7 @@ public static function get_compute_resource($id)
  */
 public static function list_input_files($experiment)
 {
-    $applicationInputs = get_application_inputs($experiment->applicationId);
+    $applicationInputs = Utilities::get_application_inputs($experiment->applicationId);
 
     $experimentInputs = $experiment->experimentInputs;
 
@@ -573,17 +574,17 @@ public static function list_input_files($experiment)
             $explode = explode('/', $input->value);
             //echo '<p><a href="' . $input->value . '">' . $input->key . '</a></p>';
             echo '<p><a target="_blank"
-                        href="' . EXPERIMENT_DATA_ROOT . $explode[sizeof($explode)-2] . '/' . $explode[sizeof($explode)-1] . '">' .
+                        href="' . Utilities::EXPERIMENT_DATA_ROOT . $explode[sizeof($explode)-2] . '/' . $explode[sizeof($explode)-1] . '">' .
                 $input->key . '
                 <span class="glyphicon glyphicon-new-window"></span></a></p>';
             //echo $input->value . '<br>';
-            //echo str_replace(EXPERIMENT_DATA_ROOT_ABSOLUTE, EXPERIMENT_DATA_ROOT, $input->value) . '<br>';
+            //echo str_replace(Utilities::EXPERIMENT_DATA_ROOT_ABSOLUTE, Utilities::EXPERIMENT_DATA_ROOT, $input->value) . '<br>';
             //echo dirname($input->value) . '<br>';
 
 
             //var_dump($explode);
             //echo sizeof($explode) . '<br>';
-            //echo EXPERIMENT_DATA_ROOT . $explode[sizeof($explode)-2] . '/' . $explode[sizeof($explode)-1] . '<br>';
+            //echo Utilities::EXPERIMENT_DATA_ROOT . $explode[sizeof($explode)-2] . '/' . $explode[sizeof($explode)-1] . '<br>';
         }
         elseif ($matchingAppInput->type == DataType::STRING)
         {
@@ -601,7 +602,7 @@ public static function list_input_files($experiment)
  */
 public static function get_application_inputs($id)
 {
-    global $airavataclient;
+    $airavataclient = Utilities::get_airavata_client();
     $inputs = null;
 
     try
@@ -638,7 +639,7 @@ public static function get_application_inputs($id)
  */
 public static function get_application_outputs($id)
 {
-    global $airavataclient;
+    $airavataclient = Utilities::get_airavata_client();
     $outputs = null;
 
     try
@@ -675,7 +676,7 @@ public static function get_application_outputs($id)
  */
 public static function get_experiment($expId)
 {
-    global $airavataclient;
+    $airavataclient = Utilities::get_airavata_client();
 
     try
     {
@@ -762,7 +763,7 @@ public static function get_project($projectId)
 public static function assemble_experiment()
 {
     //$experimentAssemblySuccessful = true; // errors will set this to false
-    //$experimentPath = EXPERIMENT_DATA_ROOT;
+    //$experimentPath = Utilities::EXPERIMENT_DATA_ROOT;
     $experimentInputs = array();
     //$experimentOutputs = array();
 
@@ -782,14 +783,14 @@ public static function assemble_experiment()
 
 
 
-    $applicationInputs = get_application_inputs($_POST['application']);
-    $experimentInputs = process_inputs($applicationInputs, $experimentInputs);
+    $applicationInputs = Utilities::get_application_inputs($_POST['application']);
+    $experimentInputs = Utilities::process_inputs($applicationInputs, $experimentInputs);
     //var_dump($experimentInputs);
 
-    if(self::GLOBAL_PATH != null){
+    if( Utilities::EXPERIMENT_PATH != null){
         $advHandling = new AdvancedOutputDataHandling();
         //echo($experimentPath);
-        $advHandling->outputDataDir = str_replace(EXPERIMENT_DATA_ROOT, $pathConstant , $experimentPath);
+        $advHandling->outputDataDir = str_replace(Utilities::EXPERIMENT_DATA_ROOT, $pathConstant , $experimentPath);
         $userConfigData->advanceOutputDataHandling = $advHandling;
     }
 
@@ -825,7 +826,7 @@ public static function assemble_experiment()
 
     // required
     $experiment->projectID = $_POST['project'];
-    $experiment->userName = $_SESSION['username'];
+    $experiment->userName = Session::get( 'username');
     $experiment->name = $_POST['experiment-name'];
 
     // optional
@@ -859,19 +860,19 @@ public static function process_inputs($applicationInputs, $experimentInputs)
 
     if (sizeof($_FILES) > 0)
     {
-        if (file_upload_successful())
+        if (Utilities::file_upload_successful())
         {
             // construct unique path
             do
             {
-                $experimentPath = EXPERIMENT_DATA_ROOT . str_replace(' ', '', $_SESSION['username']) . md5(rand() * time()) . '/';
+                $experimentPath = Utilities::EXPERIMENT_DATA_ROOT . str_replace(' ', '', Session::get('username') ) . md5(rand() * time()) . '/';
             }
             while (is_dir($experimentPath)); // if dir already exists, try again
 
             // create upload directory
             if (!mkdir($experimentPath))
             {
-                self::print_error_message('<p>Error creating upload directory!
+                Utilities::print_error_message('<p>Error creating upload directory!
                     Please try again later or report a bug using the link in the Help menu.</p>');
                 $experimentAssemblySuccessful = false;
             }
@@ -943,7 +944,7 @@ public static function process_inputs($applicationInputs, $experimentInputs)
 
                 if ($moveFile)
                 {
-                    print_success_message('Upload: ' . $file['name'] . '<br>' .
+                    Utilities::print_success_message('Upload: ' . $file['name'] . '<br>' .
                         'Type: ' . $file['type'] . '<br>' .
                         'Size: ' . ($file['size']/1024) . ' kB');//<br>' .
                         //'Stored in: ' . $experimentPath . $file['name']);
@@ -957,7 +958,7 @@ public static function process_inputs($applicationInputs, $experimentInputs)
 
                 global $pathConstant;
 
-                $experimentInput->value = str_replace(EXPERIMENT_DATA_ROOT, $pathConstant , $filePath);
+                $experimentInput->value = str_replace(Utilities::EXPERIMENT_DATA_ROOT, $pathConstant , $filePath);
             }
             else
             {
@@ -1071,13 +1072,13 @@ public static function file_upload_successful()
  */
 public static function update_experiment($expId, $updatedExperiment)
 {
-    global $airavataclient;
+    $airavataclient = Utilities::get_airavata_client();
 
     try
     {
         $airavataclient->updateExperiment($expId, $updatedExperiment);
 
-        print_success_message("<p>Experiment updated!</p>" .
+        Utilities::print_success_message("<p>Experiment updated!</p>" .
             '<p>Click
             <a href="experiment_summary.php?expId=' . $expId . '">here</a> to visit the experiment summary page.</p>');
     }
@@ -1115,7 +1116,7 @@ public static function update_experiment($expId, $updatedExperiment)
  */
 public static function clone_experiment($expId)
 {
-    global $airavataclient;
+    $airavataclient = Utilities::get_airavata_client();
 
     try
     {
@@ -1124,7 +1125,7 @@ public static function clone_experiment($expId)
 
         $cloneId = $airavataclient->cloneExperiment($expId, 'Clone of ' . $experiment->name);
 
-        print_success_message("<p>Experiment cloned!</p>" .
+        Utilities::print_success_message("<p>Experiment cloned!</p>" .
             '<p>You will be redirected to the edit page shortly, or you can
             <a href="edit_experiment.php?expId=' . $cloneId . '">go directly</a> to the edit experiment page.</p>');
         redirect('edit_experiment.php?expId=' . $cloneId);
@@ -1167,13 +1168,13 @@ public static function clone_experiment($expId)
  */
 public static function cancel_experiment($expId)
 {
-    global $airavataclient;
+    $airavataclient = Utilities::get_airavata_client();
 
     try
     {
         $airavataclient->terminateExperiment($expId);
 
-        print_success_message("Experiment canceled!");
+        Utilities::print_success_message("Experiment canceled!");
     }
     catch (InvalidRequestException $ire)
     {
@@ -1220,7 +1221,7 @@ public static function cancel_experiment($expId)
 public static function create_project_select($projectId = null, $editable = true)
 {
     $editable? $disabled = '' : $disabled = 'disabled';
-    $userProjects = get_all_user_projects($_SESSION['username']);
+    $userProjects = Utilities::get_all_user_projects( Session::get('username') );
 
     if (sizeof($userProjects) > 0)
     {
@@ -1254,7 +1255,7 @@ public static function create_application_select($id = null, $editable = true)
 {
     $disabled = $editable? '' : 'disabled';
 
-    $applicationIds = get_all_applications();
+    $applicationIds = Utilities::get_all_applications();
 
     echo '<select class="form-control" name="application" id="application" required ' . $disabled . '>';
 
@@ -1277,7 +1278,7 @@ public static function create_application_select($id = null, $editable = true)
  */
 public static function create_compute_resources_select($applicationId, $resourceHostId)
 {
-    $computeResources = get_available_app_interface_compute_resources($applicationId);
+    $computeResources = Utilities::get_available_app_interface_compute_resources($applicationId);
 
     echo '<select class="form-control" name="compute-resource" id="compute-resource">';
 
@@ -1302,7 +1303,7 @@ public static function create_compute_resources_select($applicationId, $resource
  */
 public static function create_inputs($id, $isRequired)
 {
-    $inputs = get_application_inputs($id);
+    $inputs = Utilities::get_application_inputs($id);
 
     $required = $isRequired? ' required' : '';
 
@@ -1714,7 +1715,7 @@ public static function create_experiment()
         if ($expId)
         {
             /*
-            print_success_message("Experiment {$_POST['experiment-name']} created!" .
+            Utilities::print_success_message("Experiment {$_POST['experiment-name']} created!" .
                 ' <a href="experiment_summary.php?expId=' . $expId . '">Go to experiment summary page</a>');
             */
         }
@@ -1737,6 +1738,98 @@ public static function create_experiment()
     }
 
     return $expId;
+}
+
+/*
+ * Required in Experiment Sumamry page.
+ *
+*/
+
+public static function list_output_files($experiment)
+{
+    $experimentOutputs = $experiment->experimentOutputs;
+    //var_dump($experimentOutputs);
+
+    foreach ($experimentOutputs as $output)
+    {
+        if ($output->type == DataType::URI)
+        {
+            //echo '<p>' . $output->key .  ': <a href="' . $output->value . '">' . $output->value . '</a></p>';
+            echo '<p><a target="_blank"
+                        href="' . str_replace(EXPERIMENT_DATA_ROOT_ABSOLUTE, EXPERIMENT_DATA_ROOT, $output->value) . '">' .
+                        $output->key . ' <span class="glyphicon glyphicon-new-window"></span></a></p>';
+        }
+        elseif ($output->type == DataType::STRING)
+        {
+            echo '<p>' . $output->value . '</p>';
+        }
+    }
+}
+
+public static function get_experiment_values( $experiment, $project)
+{
+    $airavataclient = Utilities::get_airavata_client();
+
+    $expVal = array();
+
+    $experimentStatus = $experiment->experimentStatus;
+    $experimentState = $experimentStatus->experimentState;
+    $experimentStatusString = ExperimentState::$__names[$experimentState];
+    $expVal["experimentStatusString"] = $experimentStatusString;
+    $expVal["experimentTimeOfStateChange"] = date('Y-m-d H:i:s', $experimentStatus->timeOfStateChange/1000); // divide by 1000 since timeOfStateChange is in ms
+    $expVal["experimentCreationTime"] = date('Y-m-d H:i:s', $experiment->creationTime/1000); // divide by 1000 since creationTime is in ms
+
+    $jobStatus = $airavataclient->getJobStatuses($experiment->experimentID);
+
+    if ($jobStatus)
+    {
+        $jobName = array_keys($jobStatus);
+        $jobState = JobState::$__names[$jobStatus[$jobName[0]]->jobState];
+    }
+    else
+    {
+        $jobState = null;
+    }
+
+    $expVal["jobState"] = $jobState;
+    $userConfigData = $experiment->userConfigurationData;
+    $scheduling = $userConfigData->computationalResourceScheduling;
+
+    $expVal["applicationInterface"] = Utilities::get_application_interface($experiment->applicationId);
+    $expVal["computeResource"] = Utilities::get_compute_resource($scheduling->resourceHostId);
+
+
+    switch ($experimentStatusString)
+    {
+        case 'CREATED':
+        case 'VALIDATED':
+        case 'SCHEDULED':
+        case 'CANCELED':
+        case 'FAILED':
+            $expVal["editable"] = true;
+            break;
+        default:
+            $expVal["editable"] = false;
+            break;
+    }
+
+    switch ($experimentStatusString)
+    {
+        case 'CREATED':
+        case 'VALIDATED':
+        case 'SCHEDULED':
+        case 'LAUNCHED':
+        case 'EXECUTING':
+            $expVal["cancelable"] = true;
+            break;
+        default:
+            $expVal["cancelable"] = false;
+            break;
+    }
+
+    return $expVal;
+
+
 }
 
 

@@ -1,0 +1,113 @@
+<?php
+
+Utilities::create_http_header();
+
+Utilities::connect_to_id_store();
+Utilities::verify_login();
+
+
+?>
+
+<html>
+
+<?php Utilities::create_html_head(); ?>
+
+<body>
+
+<?php Utilities::create_nav_bar(); ?>
+
+<?php
+//$echoResources = array('localhost', 'trestles.sdsc.edu', 'lonestar.tacc.utexas.edu');
+//$wrfResources = array('trestles.sdsc.edu');
+
+//$appResources = array('Echo' => $echoResources, 'WRF' => $wrfResources);
+
+
+?>
+<div class="container" style="max-width: 750px;">
+
+<h1>
+    Experiment Summary
+    <small><a href="{{ URL::to('/') }}/experiment/summary?expId= {{ $experiment->experimentID }}"
+              title="Refresh"><span class="glyphicon glyphicon-refresh"></span></a></small>
+</h1>
+
+
+    <table class="table">
+        <tr>
+            <td><strong>Name</strong></td>
+            <td><?php echo $experiment->name; ?></td>
+        </tr>
+        <tr>
+            <td><strong>Description</strong></td>
+            <td><?php echo $experiment->description; ?></td>
+        </tr>
+        <tr>
+            <td><strong>Project</strong></td>
+            <td><?php echo $project->name; ?></td>
+        </tr>
+        <tr>
+            <td><strong>Application</strong></td>
+            <td><?php echo $expVal["applicationInterface"]->applicationName; ?></td>
+        </tr>
+        <tr>
+            <td><strong>Compute resource</strong></td>
+            <td><?php $expVal["computeResource"]->hostName; ?></td>
+        </tr>
+        <tr>
+            <td><strong>Experiment Status</strong></td>
+            <td><?php echo $expVal["experimentStatusString"]; ?></td>
+        </tr>
+        <?php
+        if ($expVal["jobState"]) echo '
+        <tr>
+            <td><strong>Job Status</strong></td>
+            <td>' . $expVal["jobState"] . '</td>
+        </tr>
+        ';
+        ?>
+        <tr>
+            <td><strong>Creation time</strong></td>
+            <td><?php echo $expVal["experimentCreationTime"]; ?></td>
+        </tr>
+        <tr>
+            <td><strong>Update time</strong></td>
+            <td><?php echo $expVal["experimentTimeOfStateChange"]; ?></td>
+        </tr>
+        <tr>
+            <td><strong>Inputs</strong></td>
+            <td><?php Utilities::list_input_files($experiment); ?></td>
+        </tr>
+        <tr>
+            <td><strong>Outputs</strong></td>
+            <td><?php if ($expVal["experimentStatusString"] == 'COMPLETED') Utilities::list_output_files($experiment); ?></td>
+        </tr>
+    </table>
+
+    <form action="<?php echo $_SERVER['PHP_SELF'] . '?expId=' . $_GET['expId']?>" method="post" role="form">
+        <div class="btn-toolbar">
+            <input name="launch"
+                   type="submit"
+                   class="btn btn-success"
+                   value="Launch"
+                   title="Launch the experiment" <?php if(!$expVal["editable"] ) echo 'disabled'  ?>>
+            <!--<input name="cancel" type="submit" class="btn btn-warning" value="Cancel" <?php //if(!$cancelable) echo 'disabled';  ?>>-->
+            <input name="clone"
+                   type="submit"
+                   class="btn btn-primary"
+                   value="Clone"
+                   title="Create a clone of the experiment. Cloning is the only way to change an experiment's settings
+                    after it has been launched.">
+            <a href="edit_experiment.php?expId=<?php echo $experiment->experimentID; ?>"
+               class="btn btn-default"
+               role="button"
+               title="Edit the experiment's settings" <?php if(!$expVal["editable"] ) echo 'disabled'  ?>>
+                <span class="glyphicon glyphicon-pencil"></span>
+                Edit
+            </a>
+        </div>
+    </form>
+
+</div>
+</body>
+</html>

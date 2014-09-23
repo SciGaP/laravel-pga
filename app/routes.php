@@ -31,6 +31,10 @@ Route::post("project/edit", "ProjectController@editSubmit");
 
 Route::get("experiment/create", "ExperimentController@createView");
 
+Route::post("experiment/create", "ExperimentController@createSubmit");
+
+Route::get("experiment/summary", "ExperimentController@summary");
+
 Route::controller("home", "HomeController");
 
 Route::controller("/", "HomeController");
