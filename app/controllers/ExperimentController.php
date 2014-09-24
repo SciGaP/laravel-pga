@@ -46,7 +46,8 @@ class ExperimentController extends BaseController {
 
 		    if (isset($_POST['launch']) && $expId)
 		    {
-		        launch_experiment($expId);
+		        Utilities::launch_experiment($expId);
+            	return Redirect::to('experiment/summary?expId=' . $expId);
 		    }
 		    else
 		    {
@@ -71,21 +72,21 @@ class ExperimentController extends BaseController {
 
 		if (isset($_POST['save']))
 		{
-		    $updatedExperiment = apply_changes_to_experiment($experiment);
+		    $updatedExperiment = Utilities::apply_changes_to_experiment($experiment);
 
-		    update_experiment($experiment->experimentID, $updatedExperiment);
+		    Utilities::update_experiment($experiment->experimentID, $updatedExperiment);
 		}
 		elseif (isset($_POST['launch']))
 		{
-		    launch_experiment($experiment->experimentID);
+		    Utilities::launch_experiment($experiment->experimentID);
 		}
 		elseif (isset($_POST['clone']))
 		{
-		    clone_experiment($experiment->experimentID);
+		    Utilities::clone_experiment($experiment->experimentID);
 		}
 		elseif (isset($_POST['cancel']))
 		{
-		    cancel_experiment($experiment->experimentID);
+		    Utilities::cancel_experiment($experiment->experimentID);
 		}
 
 		return View::make( "experiment/summary", 
@@ -97,6 +98,75 @@ class ExperimentController extends BaseController {
 
 								)
 							);
+	}
+
+	public function editView()
+	{
+		$experiment = Utilities::get_experiment($_GET['expId']);
+		$project = Utilities::get_project($experiment->projectID);
+
+		$expVal = Utilities::get_experiment_values( $experiment, $project);
+
+
+		return View::make("experiment/edit", array(
+
+							'experiment' => $experiment,
+							'project' => $project,
+							'expVal' => $expVal
+							
+							)
+						);
+	}
+
+	public function editSubmit()
+	{
+
+		if (isset($_POST['save']) || isset($_POST['launch']))
+		{
+	        $experiment = Utilities::get_experiment(Input::get('expId') ); // update local experiment variable
+		    $updatedExperiment = Utilities::apply_changes_to_experiment($experiment, Input::all() );
+
+		    Utilities::update_experiment($experiment->experimentID, $updatedExperiment);
+
+
+
+		    if (isset($_POST['save']))
+		    {
+		        $experiment = Utilities::get_experiment(Input::get('expId') ); // update local experiment variable
+		    }
+		    elseif (isset($_POST['launch']))
+		    {
+		        Utilities::launch_experiment($experiment->experimentID);
+		    }
+
+		    $project = Utilities::get_project($experiment->projectID);
+
+			$expVal = Utilities::get_experiment_values( $experiment, $project);
+
+
+			return View::make("experiment/edit", array(
+
+								'experiment' => $experiment,
+								'project' => $project,
+								'expVal' => $expVal
+								
+								)
+							);
+		}
+		else
+			return View::make("home");
+	}
+
+	public function searchView()
+	{
+		return View::make("experiment/search");
+	}
+
+	public function searchSubmit()
+	{
+		$expContainer = Utilities::get_expsearch_results( Input::get('search-key'), Input::get('search-value'));
+		
+		return View::make('experiment/search', array('expContainer' => $expContainer ));
 	}
 
 }

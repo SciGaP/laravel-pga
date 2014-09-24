@@ -40,12 +40,12 @@ const AIRAVATA_SERVER = 'gw111.iu.xsede.org';
 //const AIRAVATA_PORT = 8930; //development
 const AIRAVATA_PORT = 9930; //production
 const AIRAVATA_TIMEOUT = 100000;
-const EXPERIMENT_DATA_ROOT = '../../../experimentData/';
+const EXPERIMENT_DATA_ROOT = '../../experimentData/';
 
 const SSH_USER = 'root';
-const DATA_PATH = 'file://var/www/experimentData/';
+const DATA_PATH = 'file://var/www/htm/experimentData/';
 
-const EXPERIMENT_DATA_ROOT_ABSOLUTE = '/var/www/experimentData/';
+const EXPERIMENT_DATA_ROOT_ABSOLUTE = '/var/www/html/experimentData/';
 
 //const EXPERIMENT_DATA_ROOT_ABSOLUTE = 'C:/wamp/www/experimentData/';
 
@@ -56,8 +56,8 @@ const USER_STORE = 'WSO2';
 const REQ_URL = 'https://gw111.iu.xsede.org:8443/credential-store/acs-start-servlet';
 const GATEWAY_NAME = 'PHP-Reference-Gateway';
 const EMAIL = 'admin@gw120.iu.xsede.org';
-const TOKEN_FILE_PATH = 'tokens.xml';
-const TOKEN_FILE = null;
+private $tokenFilePath = 'tokens.xml';
+private $tokenFile = null;
 const EXPERIMENT_PATH = null;
 
 //already set inside app/config.php
@@ -293,8 +293,6 @@ public static function launch_experiment($expId)
 {
     $airavataclient = Utilities::get_airavata_client();
     //global $tokenFilePath;
-    global $tokenFile;
-
     try
     {
         /* temporarily using hard-coded token
@@ -319,7 +317,7 @@ public static function launch_experiment($expId)
         Utilities::print_success_message("<p>Experiment launched!</p>" .
             '<p>You will be redirected to the summary page shortly, or you can
             <a href="experiment_summary.php?expId=' . $expId . '">go directly</a> to the experiment summary page.</p>');
-        redirect('experiment_summary.php?expId=' . $expId);
+        //redirect('experiment_summary.php?expId=' . $expId);
     }
     catch (InvalidRequestException $ire)
     {
@@ -1080,7 +1078,7 @@ public static function update_experiment($expId, $updatedExperiment)
 
         Utilities::print_success_message("<p>Experiment updated!</p>" .
             '<p>Click
-            <a href="experiment_summary.php?expId=' . $expId . '">here</a> to visit the experiment summary page.</p>');
+            <a href="' . URL::to('/') . '/experiment/summary?expId=' . $expId . '">here</a> to visit the experiment summary page.</p>');
     }
     catch (InvalidRequestException $ire)
     {
@@ -1364,13 +1362,13 @@ public static function create_nav_bar()
     (
         'Project' => array
         (
-            array('label' => 'Create Project', 'url' => 'project/create'),
-            array('label' => 'Search Projects', 'url' => 'search_projects.php')
+            array('label' => 'Create Project', 'url' => URL::to('/') . '/project/create'),
+            array('label' => 'Search Projects', 'url' => URL::to('/') . '/project/search')
         ),
         'Experiment' => array
         (
             array('label' => 'Create Experiment', 'url' => URL::to('/') . '/experiment/create'),
-            array('label' => 'Search Experiments', 'url' => 'search_experiments.php')
+            array('label' => 'Search Experiments', 'url' => URL::to('/') . '/experiment/search')
         ),
         'Help' => array
         (
@@ -1405,7 +1403,7 @@ public static function create_nav_bar()
 
     foreach ($menus as $label => $options)
     {
-        isset($_SESSION['loggedin']) && $_SESSION['loggedin']? $disabled = '' : $disabled = ' class="disabled"';
+        Session::has('loggedin') ? $disabled = '' : $disabled = ' class="disabled"';
 
         echo '<li class="dropdown">
                 <a href="#" class="dropdown-toggle" data-toggle="dropdown">' . $label . '<span class="caret"></span></a>
@@ -1435,13 +1433,13 @@ public static function create_nav_bar()
 
     // right-aligned content
 
-    if (isset($_SESSION['username']))
+    if ( Session::has('username') )
     {
-        (USER_STORE === "USER_API" && !isset($_SESSION['excede_login'])) ? $link = "user_profile.php" : $link = "index.php";
-        echo '<li><a href="' . $link . '"><span class="glyphicon glyphicon-user"></span> ' . $_SESSION['username'] . '</a></li>';
+        (Utilities::USER_STORE === "USER_API" && !Session::has('excede_login')) ? $link = "user_profile.php" : $link = "index.php";
+        echo '<li><a href="' . $link . '"><span class="glyphicon glyphicon-user"></span> ' . Session::get('username') . '</a></li>';
     }
 
-    if (isset($_SESSION['loggedin']) && $_SESSION['loggedin'])
+    if ( Session::has( 'loggedin') )
     {
         echo '<li><a href="logout.php"><span class="glyphicon glyphicon-log-out"></span> Log out</a></li>';
     }
@@ -1538,11 +1536,9 @@ public static function create_html_head()
  */
 public static function open_tokens_file($tokenFilePath)
 {
-    global $tokenFile;
-
-    if (file_exists($tokenFilePath))
+    if (file_exists( $tokenFilePath ))
     {
-        $tokenFile = simplexml_load_file($tokenFilePath);
+        $tokenFile = simplexml_load_file( $tokenFilePath );
     }
     else
     {
@@ -1562,19 +1558,15 @@ public static function open_tokens_file($tokenFilePath)
  * @param $tokenId
  */
 public static function write_new_token($tokenId)
-{
-    global $tokenFile;
-    global $tokenFilePath;
-
-    // write new tokenId to tokens file
+{    // write new tokenId to tokens file
     $tokenFile->tokenId = $tokenId;
 
     //Format XML to save indented tree rather than one line
     $dom = new DOMDocument('1.0');
     $dom->preserveWhiteSpace = false;
     $dom->formatOutput = true;
-    $dom->loadXML($tokenFile->asXML());
-    $dom->save($tokenFilePath);
+    $dom->loadXML( $tokenFile->asXML());
+    $dom->save( $tokenFilePath );
 }
 
 
@@ -1766,7 +1758,7 @@ public static function list_output_files($experiment)
     }
 }
 
-public static function get_experiment_values( $experiment, $project)
+public static function get_experiment_values( $experiment, $project, $forSearch = false)
 {
     $airavataclient = Utilities::get_airavata_client();
 
@@ -1792,11 +1784,16 @@ public static function get_experiment_values( $experiment, $project)
     }
 
     $expVal["jobState"] = $jobState;
-    $userConfigData = $experiment->userConfigurationData;
-    $scheduling = $userConfigData->computationalResourceScheduling;
+    
+    if(! $forSearch)
+    {
+        $userConfigData = $experiment->userConfigurationData;
+        $scheduling = $userConfigData->computationalResourceScheduling;
+        $expVal['scheduling'] = $scheduling;
+        $expVal["computeResource"] = Utilities::get_compute_resource($scheduling->resourceHostId);
+    }
 
     $expVal["applicationInterface"] = Utilities::get_application_interface($experiment->applicationId);
-    $expVal["computeResource"] = Utilities::get_compute_resource($scheduling->resourceHostId);
 
 
     switch ($experimentStatusString)
@@ -1829,8 +1826,210 @@ public static function get_experiment_values( $experiment, $project)
 
     return $expVal;
 
-
 }
+
+public static function get_projsearch_results( $searchKey, $searchValue)
+{
+    $airavataclient = Utilities::get_airavata_client();;
+
+    $projects = array();
+
+    try
+    {
+        switch ( $searchKey)
+        {
+            case 'project-name':
+                $projects = $airavataclient->searchProjectsByProjectName( Session::get("username"), $searchValue);
+                break;
+            case 'project-description':
+                $projects = $airavataclient->searchProjectsByProjectDesc(Session::get("username"), $searchValue);
+                break;
+        }
+    }
+    catch (InvalidRequestException $ire)
+    {
+        Utilities::print_error_message('InvalidRequestException!<br><br>' . $ire->getMessage());
+    }
+    catch (AiravataClientException $ace)
+    {
+        Utilities::print_error_message('AiravataClientException!<br><br>' . $ace->getMessage());
+    }
+    catch (AiravataSystemException $ase)
+    {
+        if ($ase->airavataErrorType == 2) // 2 = INTERNAL_ERROR
+        {
+            Utilities::print_info_message('<p>You have not created any projects yet, so no results will be returned!</p>
+                                <p>Click <a href="create_project.php">here</a> to create a new project.</p>');
+        }
+        else
+        {
+            Utilities::print_error_message('There was a problem with Airavata. Please try again later, or report a bug using the link in the Help menu.');
+            //print_error_message('AiravataSystemException!<br><br>' . $ase->airavataErrorType . ': ' . $ase->getMessage());
+        }
+    }
+    catch (TTransportException $tte)
+    {
+        Utilities::print_error_message('TTransportException!<br><br>' . $tte->getMessage());
+    }
+
+    return $projects;
+}
+
+
+/**
+ * Create options for the search key select input
+ * @param $values
+ * @param $labels
+ * @param $disabled
+ */
+public static function create_options($values, $labels, $disabled)
+{
+    for ($i = 0; $i < sizeof($values); $i++)
+    {
+        $selected = '';
+
+        // if option was previously selected, mark it as selected
+        if (isset($_POST['search-key']))
+        {
+            if ($values[$i] == $_POST['search-key'])
+            {
+                $selected = 'selected';
+            }
+        }
+
+        echo '<option value="' . $values[$i] . '" ' . $disabled[$i] . ' ' . $selected . '>' . $labels[$i] . '</option>';
+    }
+}
+
+/**
+ * Get results of the user's search of experiments
+ * @return array|null
+ */
+public static function get_expsearch_results( $searchKey, $searchValue)
+{
+    $airavataclient = Utilities::get_airavata_client();
+
+    $experiments = array();
+
+    try
+    {
+        switch ( $searchKey)
+        {
+            case 'experiment-name':
+                $experiments = $airavataclient->searchExperimentsByName(Session::get('username'), $searchValue);
+                break;
+            case 'experiment-description':
+                $experiments = $airavataclient->searchExperimentsByDesc(Session::get('username'), $searchValue);
+                break;
+            case 'application':
+                $experiments = $airavataclient->searchExperimentsByApplication(Session::get('username'), $searchValue);
+                break;
+        }
+    }
+    catch (InvalidRequestException $ire)
+    {
+        Utilities::print_error_message('InvalidRequestException!<br><br>' . $ire->getMessage());
+    }
+    catch (AiravataClientException $ace)
+    {
+        Utilities::print_error_message('AiravataClientException!<br><br>' . $ace->getMessage());
+    }
+    catch (AiravataSystemException $ase)
+    {
+        if ($ase->airavataErrorType == 2) // 2 = INTERNAL_ERROR
+        {
+            Utilities::print_info_message('<p>You have not created any experiments yet, so no results will be returned!</p>
+                                <p>Click <a href="create_experiment.php">here</a> to create an experiment, or
+                                <a href="create_project.php">here</a> to create a new project.</p>');
+        }
+        else
+        {
+            Utilities::print_error_message('There was a problem with Airavata. Please try again later or report a bug using the link in the Help menu.');
+            //print_error_message('AiravataSystemException!<br><br>' . $ase->airavataErrorType . ': ' . $ase->getMessage());
+        }
+    }
+    catch (TTransportException $tte)
+    {
+        Utilities::print_error_message('TTransportException!<br><br>' . $tte->getMessage());
+    }
+
+    //get values of all experiments
+    $expContainer = array();
+    $expNum = 0;
+    foreach( $experiments as $experiment)
+    {
+        $expValue = Utilities::get_experiment_values( $experiment, Utilities::get_project($experiment->projectID), true );
+        $expContainer[$expNum]['experiment'] = $experiment;
+        $expContainer[$expNum]['expValue'] = $expValue;
+        $expNum++;
+    }
+
+    return $expContainer;
+}
+
+
+public static function apply_changes_to_experiment($experiment, $input)
+{
+    $experiment->name = $input['experiment-name'];
+    $experiment->description = rtrim($input['experiment-description']);
+    $experiment->projectID = $input['project'];
+    //$experiment->applicationId = $_POST['application'];
+
+    $userConfigDataUpdated = $experiment->userConfigurationData;
+    $schedulingUpdated = $userConfigDataUpdated->computationalResourceScheduling;
+
+    $schedulingUpdated->resourceHostId = $input['compute-resource'];
+    $schedulingUpdated->nodeCount = $input['node-count'];
+    $schedulingUpdated->totalCPUCount = $input['cpu-count'];
+    //$schedulingUpdated->numberOfThreads = $input['threads'];
+    $schedulingUpdated->wallTimeLimit = $input['wall-time'];
+    //$schedulingUpdated->totalPhysicalMemory = $input['memory'];
+
+    /*
+    switch ($_POST['compute-resource'])
+    {
+        case 'trestles.sdsc.edu':
+            $schedulingUpdated->ComputationalProjectAccount = 'sds128';
+            break;
+        case 'stampede.tacc.xsede.org':
+        case 'lonestar.tacc.utexas.edu':
+            $schedulingUpdated->ComputationalProjectAccount = 'TG-STA110014S';
+            break;
+        default:
+            $schedulingUpdated->ComputationalProjectAccount = 'admin';
+    }
+    */
+
+    $userConfigDataUpdated->computationalResourceScheduling = $schedulingUpdated;
+    $experiment->userConfigurationData = $userConfigDataUpdated;
+
+
+
+
+    $applicationInputs = Utilities::get_application_inputs($experiment->applicationId);
+
+    $experimentInputs = $experiment->experimentInputs; // get current inputs
+    //var_dump($experimentInputs);
+    $experimentInputs = Utilities::process_inputs($applicationInputs, $experimentInputs); // get new inputs
+    //var_dump($experimentInputs);
+
+
+
+
+
+
+
+
+
+
+    if ($experimentInputs)
+    {
+        $experiment->experimentInputs = $experimentInputs;
+        //var_dump($experiment);
+        return $experiment;
+    }
+}
+
 
 
 	

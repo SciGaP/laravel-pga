@@ -72,6 +72,17 @@ class ProjectController extends BaseController {
 	    }
 	}
 
+	public function searchView()
+	{
+		return View::make('project/search');
+	}
+
+	public function searchSubmit()
+	{
+        $projects = Utilities::get_projsearch_results( Input::get("search-key"), Input::get("search-value"));
+		return View::make( 'project/search', array('projects' => $projects));
+	}
+
 }
 
 ?>
