@@ -212,13 +212,13 @@ public static function id_in_session()
  */
 public static function verify_login()
 {
-    if (self::id_in_session())
+    if (Utilities::id_in_session())
     {
         return;
     }
     else
     {
-        self::print_error_message('User is not logged in!');
+        Utilities::print_error_message('User is not logged in!');
         return Redirect::to("home");
     }
 }
@@ -230,7 +230,7 @@ public static function connect_to_id_store()
 {
     global $idStore;
 
-    switch (self::USER_STORE)
+    switch (Utilities::USER_STORE)
     {
         case 'WSO2':
             $idStore = new WSISUtilities(); // WS02 Identity Server
@@ -249,7 +249,7 @@ public static function connect_to_id_store()
     }
     catch (Exception $e)
     {
-        self::print_error_message('<p>Error connecting to ID store.
+        Utilities::print_error_message('<p>Error connecting to ID store.
             Please try again later or report a bug using the link in the Help menu</p>' .
             '<p>' . $e->getMessage() . '</p>');
     }
@@ -263,9 +263,9 @@ public static function get_airavata_client()
 {
     try
     {
-        $transport = new TSocket(self::AIRAVATA_SERVER, self::AIRAVATA_PORT);
-        $transport->setRecvTimeout(self::AIRAVATA_TIMEOUT);
-        $transport->setSendTimeout(self::AIRAVATA_TIMEOUT);
+        $transport = new TSocket(Utilities::AIRAVATA_SERVER, Utilities::AIRAVATA_PORT);
+        $transport->setRecvTimeout(Utilities::AIRAVATA_TIMEOUT);
+        $transport->setSendTimeout(Utilities::AIRAVATA_TIMEOUT);
 
         $protocol = new TBinaryProtocol($transport);
         $transport->open();
@@ -321,31 +321,31 @@ public static function launch_experiment($expId)
     }
     catch (InvalidRequestException $ire)
     {
-        self::print_error_message('<p>There was a problem launching the experiment.
+        Utilities::print_error_message('<p>There was a problem launching the experiment.
             Please try again later or submit a bug report using the link in the Help menu.</p>' .
             '<p>InvalidRequestException: ' . $ire->getMessage() . '</p>');
     }
     catch (ExperimentNotFoundException $enf)
     {
-        self::print_error_message('<p>There was a problem launching the experiment.
+        Utilities::print_error_message('<p>There was a problem launching the experiment.
             Please try again later or submit a bug report using the link in the Help menu.</p>' .
             '<p>ExperimentNotFoundException: ' . $enf->getMessage() . '</p>');
     }
     catch (AiravataClientException $ace)
     {
-        self::print_error_message('<p>There was a problem launching the experiment.
+        Utilities::print_error_message('<p>There was a problem launching the experiment.
             Please try again later or submit a bug report using the link in the Help menu.</p>' .
             '<p>AiravataClientException: ' . $ace->getMessage() . '</p>');
     }
     catch (AiravataSystemException $ase)
     {
-        self::print_error_message('<p>There was a problem launching the experiment.
+        Utilities::print_error_message('<p>There was a problem launching the experiment.
             Please try again later or submit a bug report using the link in the Help menu.</p>' .
             '<p>AiravataSystemException: ' . $ase->getMessage() . '</p>');
     }
     catch (Exception $e)
     {
-        self::print_error_message('<p>There was a problem launching the experiment.
+        Utilities::print_error_message('<p>There was a problem launching the experiment.
             Please try again later or submit a bug report using the link in the Help menu.</p>' .
             '<p>Exception: ' . $e->getMessage() . '</p>');
     }
@@ -367,13 +367,13 @@ public static function get_all_user_projects($username)
     }
     catch (InvalidRequestException $ire)
     {
-        self::print_error_message('<p>There was a problem getting the user\'s projects.
+        Utilities::print_error_message('<p>There was a problem getting the user\'s projects.
             Please try again later or submit a bug report using the link in the Help menu.</p>' .
             '<p>InvalidRequestException: ' . $ire->getMessage(). '</p>');
     }
     catch (AiravataClientException $ace)
     {
-        self::print_error_message('<p>There was a problem getting the user\'s projects.
+        Utilities::print_error_message('<p>There was a problem getting the user\'s projects.
             Please try again later or submit a bug report using the link in the Help menu.</p>' .
             '<p>Airavata Client Exception: ' . $ace->getMessage(). '</p>');
     }
@@ -386,7 +386,7 @@ public static function get_all_user_projects($username)
         }
         else
         {
-            self::print_error_message('<p>There was a problem getting the user\'s projects.
+            Utilities::print_error_message('<p>There was a problem getting the user\'s projects.
             Please try again later or submit a bug report using the link in the Help menu.</p>' .
             '<p>AiravataSystemException: ' . $ase->getMessage() . '</p>');
         }
@@ -411,19 +411,19 @@ public static function get_all_applications()
     }
     catch (InvalidRequestException $ire)
     {
-        self::print_error_message('<p>There was a problem getting all applications.
+        Utilities::print_error_message('<p>There was a problem getting all applications.
             Please try again later or submit a bug report using the link in the Help menu.</p>' .
             '<p>InvalidRequestException: ' . $ire->getMessage() . '</p>');
     }
     catch (AiravataClientException $ace)
     {
-        self::print_error_message('<p>There was a problem getting all applications.
+        Utilities::print_error_message('<p>There was a problem getting all applications.
             Please try again later or submit a bug report using the link in the Help menu.</p>' .
             '<p>Airavata Client Exception: ' . $ace->getMessage() . '</p>');
     }
     catch (AiravataSystemException $ase)
     {
-        self::print_error_message('<p>There was a problem getting all applications.
+        Utilities::print_error_message('<p>There was a problem getting all applications.
             Please try again later or submit a bug report using the link in the Help menu.</p>' .
             '<p>Airavata System Exception: ' . $ase->getMessage() . '</p>');
     }
@@ -448,19 +448,19 @@ public static function get_application_interface($id)
     }
     catch (InvalidRequestException $ire)
     {
-        self::print_error_message('<p>There was a problem getting the application interface.
+        Utilities::print_error_message('<p>There was a problem getting the application interface.
             Please try again later or submit a bug report using the link in the Help menu.</p>' .
             '<p>InvalidRequestException: ' . $ire->getMessage(). '</p>');
     }
     catch (AiravataClientException $ace)
     {
-        self::print_error_message('<p>There was a problem getting the application interface.
+        Utilities::print_error_message('<p>There was a problem getting the application interface.
             Please try again later or submit a bug report using the link in the Help menu.</p>' .
             '<p>Airavata Client Exception: ' . $ace->getMessage() . '</p>');
     }
     catch (AiravataSystemException $ase)
     {
-        self::print_error_message('<p>There was a problem getting the application interface.
+        Utilities::print_error_message('<p>There was a problem getting the application interface.
             Please try again later or submit a bug report using the link in the Help menu.</p>' .
             '<p>Airavata System Exception: ' . $ase->getMessage() . '</p>');
     }
@@ -485,19 +485,19 @@ public static function get_available_app_interface_compute_resources($id)
     }
     catch (InvalidRequestException $ire)
     {
-        self::print_error_message('<p>There was a problem getting compute resources.
+        Utilities::print_error_message('<p>There was a problem getting compute resources.
             Please try again later or submit a bug report using the link in the Help menu.</p>' .
             '<p>InvalidRequestException: ' . $ire->getMessage() . '</p>');
     }
     catch (AiravataClientException $ace)
     {
-        self::print_error_message('<p>There was a problem getting compute resources.
+        Utilities::print_error_message('<p>There was a problem getting compute resources.
             Please try again later or submit a bug report using the link in the Help menu.</p>' .
             '<p>Airavata Client Exception: ' . $ace->getMessage() . '</p>');
     }
     catch (AiravataSystemException $ase)
     {
-        self::print_error_message('<p>There was a problem getting compute resources.
+        Utilities::print_error_message('<p>There was a problem getting compute resources.
             Please try again later or submit a bug report using the link in the Help menu.</p>' .
             '<p>Airavata System Exception: ' . $ase->getMessage() . '</p>');
     }
@@ -522,19 +522,19 @@ public static function get_compute_resource($id)
     }
     catch (InvalidRequestException $ire)
     {
-        self::print_error_message('<p>There was a problem getting the compute resource.
+        Utilities::print_error_message('<p>There was a problem getting the compute resource.
             Please try again later or submit a bug report using the link in the Help menu.</p>' .
             '<p>InvalidRequestException: ' . $ire->getMessage() . '</p>');
     }
     catch (AiravataClientException $ace)
     {
-        self::print_error_message('<p>There was a problem getting the compute resource.
+        Utilities::print_error_message('<p>There was a problem getting the compute resource.
             Please try again later or submit a bug report using the link in the Help menu.</p>' .
             '<p>Airavata Client Exception: ' . $ace->getMessage() . '</p>');
     }
     catch (AiravataSystemException $ase)
     {
-        self::print_error_message('<p>There was a problem getting the compute resource.
+        Utilities::print_error_message('<p>There was a problem getting the compute resource.
             Please try again later or submit a bug report using the link in the Help menu.</p>' .
             '<p>Airavata System Exception: ' . $ase->getMessage() . '</p>');
     }
@@ -609,19 +609,19 @@ public static function get_application_inputs($id)
     }
     catch (InvalidRequestException $ire)
     {
-        self::print_error_message('<p>There was a problem getting application inputs.
+        Utilities::print_error_message('<p>There was a problem getting application inputs.
             Please try again later or submit a bug report using the link in the Help menu.</p>' .
             '<p>InvalidRequestException: ' . $ire->getMessage() . '</p>');
     }
     catch (AiravataClientException $ace)
     {
-        self::print_error_message('<p>There was a problem getting application inputs.
+        Utilities::print_error_message('<p>There was a problem getting application inputs.
             Please try again later or submit a bug report using the link in the Help menu.</p>' .
             '<p>Airavata Client Exception: ' . $ace->getMessage() . '</p>');
     }
     catch (AiravataSystemException $ase)
     {
-        self::print_error_message('<p>There was a problem getting application inputs.
+        Utilities::print_error_message('<p>There was a problem getting application inputs.
             Please try again later or submit a bug report using the link in the Help menu.</p>' .
             '<p>Airavata System Exception: ' . $ase->getMessage() . '</p>');
     }
@@ -646,19 +646,19 @@ public static function get_application_outputs($id)
     }
     catch (InvalidRequestException $ire)
     {
-        self::print_error_message('<p>There was a problem getting application outputs.
+        Utilities::print_error_message('<p>There was a problem getting application outputs.
             Please try again later or submit a bug report using the link in the Help menu.</p>' .
             '<p>InvalidRequestException: ' . $ire->getMessage() . '</p>');
     }
     catch (AiravataClientException $ace)
     {
-        self::print_error_message('<p>There was a problem getting application outputs.
+        Utilities::print_error_message('<p>There was a problem getting application outputs.
             Please try again later or submit a bug report using the link in the Help menu.</p>' .
             '<p>Airavata Client Exception: ' . $ace->getMessage() . '</p>');
     }
     catch (AiravataSystemException $ase)
     {
-        self::print_error_message('<p>There was a problem getting application outputs.
+        Utilities::print_error_message('<p>There was a problem getting application outputs.
             Please try again later or submit a bug report using the link in the Help menu.</p>' .
             '<p>Airavata System Exception: ' . $ase->getMessage() . '</p>');
     }
@@ -682,37 +682,37 @@ public static function get_experiment($expId)
     }
     catch (InvalidRequestException $ire)
     {
-        self::print_error_message('<p>There was a problem getting the experiment.
+        Utilities::print_error_message('<p>There was a problem getting the experiment.
             Please try again later or submit a bug report using the link in the Help menu.</p>' .
             '<p>InvalidRequestException: ' . $ire->getMessage() . '</p>');
     }
     catch (ExperimentNotFoundException $enf)
     {
-        self::print_error_message('<p>There was a problem getting the experiment.
+        Utilities::print_error_message('<p>There was a problem getting the experiment.
             Please try again later or submit a bug report using the link in the Help menu.</p>' .
             '<p>ExperimentNotFoundException: ' . $enf->getMessage() . '</p>');
     }
     catch (AiravataClientException $ace)
     {
-        self::print_error_message('<p>There was a problem getting the experiment.
+        Utilities::print_error_message('<p>There was a problem getting the experiment.
             Please try again later or submit a bug report using the link in the Help menu.</p>' .
             '<p>AiravataClientException: ' . $ace->getMessage() . '</p>');
     }
     catch (AiravataSystemException $ase)
     {
-        self::print_error_message('<p>There was a problem getting the experiment.
+        Utilities::print_error_message('<p>There was a problem getting the experiment.
             Please try again later or submit a bug report using the link in the Help menu.</p>' .
             '<p>AiravataSystemException: ' . $ase->getMessage() . '</p>');
     }
     catch (TTransportException $tte)
     {
-        self::print_error_message('<p>There was a problem getting the experiment.
+        Utilities::print_error_message('<p>There was a problem getting the experiment.
             Please try again later or submit a bug report using the link in the Help menu.</p>' .
             '<p>TTransportException: ' . $tte->getMessage() . '</p>');
     }
     catch (Exception $e)
     {
-        self::print_error_message('<p>There was a problem getting the experiment.
+        Utilities::print_error_message('<p>There was a problem getting the experiment.
             Please try again later or submit a bug report using the link in the Help menu.</p>' .
             '<p>Exception: ' . $e->getMessage() . '</p>');
     }
@@ -734,19 +734,19 @@ public static function get_project($projectId)
     }
     catch (InvalidRequestException $ire)
     {
-        self::print_error_message('<p>There was a problem getting the project.
+        Utilities::print_error_message('<p>There was a problem getting the project.
             Please try again later or submit a bug report using the link in the Help menu.</p>' .
             '<p>InvalidRequestException: ' . $ire->getMessage() . '</p>');
     }
     catch (AiravataClientException $ace)
     {
-        self::print_error_message('<p>There was a problem getting the project.
+        Utilities::print_error_message('<p>There was a problem getting the project.
             Please try again later or submit a bug report using the link in the Help menu.</p>' .
             '<p>AiravataClientException: ' . $ace->getMessage() . '</p>');
     }
     catch (AiravataSystemException $ase)
     {
-        self::print_error_message('<p>There was a problem getting the project.
+        Utilities::print_error_message('<p>There was a problem getting the project.
             Please try again later or submit a bug report using the link in the Help menu.</p>' .
             '<p>AiravataSystemException!<br><br>' . $ase->getMessage() . '</p>');
     }
@@ -949,7 +949,7 @@ public static function process_inputs($applicationInputs, $experimentInputs)
                 }
                 else
                 {
-                    self::print_error_message('<p>Error moving uploaded file ' . $file['name'] . '!
+                    Utilities::print_error_message('<p>Error moving uploaded file ' . $file['name'] . '!
                     Please try again later or report a bug using the link in the Help menu.</p>');
                     $experimentAssemblySuccessful = false;
                 }
@@ -978,7 +978,7 @@ public static function process_inputs($applicationInputs, $experimentInputs)
         }
         else
         {
-            self::print_error_message('I cannot accept this input type yet!');
+            Utilities::print_error_message('I cannot accept this input type yet!');
         }
 
 
@@ -1041,18 +1041,18 @@ public static function file_upload_successful()
             if ($file['error'] > 0)
             {
                 $uploadSuccessful = false;
-                self::print_error_message('<p>Error uploading file ' . $file['name'] . ' !
+                Utilities::print_error_message('<p>Error uploading file ' . $file['name'] . ' !
                     Please try again later or report a bug using the link in the Help menu.');
             }/*
             elseif ($file['type'] != 'text/plain')
             {
                 $uploadSuccessful = false;
-                self::print_error_message('Uploaded file ' . $file['name'] . ' type not supported!');
+                Utilities::print_error_message('Uploaded file ' . $file['name'] . ' type not supported!');
             }
             elseif (($file['size'] / 1024) > 20)
             {
                 $uploadSuccessful = false;
-                self::print_error_message('Uploaded file ' . $file['name'] . ' must be smaller than 10 MB!');
+                Utilities::print_error_message('Uploaded file ' . $file['name'] . ' must be smaller than 10 MB!');
             }*/
         }
 
@@ -1082,25 +1082,25 @@ public static function update_experiment($expId, $updatedExperiment)
     }
     catch (InvalidRequestException $ire)
     {
-        self::print_error_message('<p>There was a problem updating the experiment.
+        Utilities::print_error_message('<p>There was a problem updating the experiment.
             Please try again later or submit a bug report using the link in the Help menu.</p>' .
             '<p>InvalidRequestException: ' . $ire->getMessage() . '</p>');
     }
     catch (ExperimentNotFoundException $enf)
     {
-        self::print_error_message('<p>There was a problem updating the experiment.
+        Utilities::print_error_message('<p>There was a problem updating the experiment.
             Please try again later or submit a bug report using the link in the Help menu.</p>' .
             '<p>ExperimentNotFoundException: ' . $enf->getMessage() . '</p>');
     }
     catch (AiravataClientException $ace)
     {
-        self::print_error_message('<p>There was a problem updating the experiment.
+        Utilities::print_error_message('<p>There was a problem updating the experiment.
             Please try again later or submit a bug report using the link in the Help menu.</p>' .
             '<p>AiravataClientException: ' . $ace->getMessage() . '</p>');
     }
     catch (AiravataSystemException $ase)
     {
-        self::print_error_message('<p>There was a problem updating the experiment.
+        Utilities::print_error_message('<p>There was a problem updating the experiment.
             Please try again later or submit a bug report using the link in the Help menu.</p>' .
             '<p>AiravataSystemException: ' . $ase->getMessage() . '</p>');
     }
@@ -1126,35 +1126,36 @@ public static function clone_experiment($expId)
         Utilities::print_success_message("<p>Experiment cloned!</p>" .
             '<p>You will be redirected to the edit page shortly, or you can
             <a href="edit_experiment.php?expId=' . $cloneId . '">go directly</a> to the edit experiment page.</p>');
-        redirect('edit_experiment.php?expId=' . $cloneId);
+        //redirect('edit_experiment.php?expId=' . $cloneId);
+        return $cloneId;
     }
     catch (InvalidRequestException $ire)
     {
-        self::print_error_message('<p>There was a problem cloning the experiment.
+        Utilities::print_error_message('<p>There was a problem cloning the experiment.
             Please try again later or submit a bug report using the link in the Help menu.</p>' .
             '<p>InvalidRequestException: ' . $ire->getMessage() . '</p>');
     }
     catch (ExperimentNotFoundException $enf)
     {
-        self::print_error_message('<p>There was a problem cloning the experiment.
+        Utilities::print_error_message('<p>There was a problem cloning the experiment.
             Please try again later or submit a bug report using the link in the Help menu.</p>' .
             '<p>ExperimentNotFoundException: ' . $enf->getMessage() . '</p>');
     }
     catch (AiravataClientException $ace)
     {
-        self::print_error_message('<p>There was a problem cloning the experiment.
+        Utilities::print_error_message('<p>There was a problem cloning the experiment.
             Please try again later or submit a bug report using the link in the Help menu.</p>' .
             '<p>AiravataClientException: ' . $ace->getMessage() . '</p>');
     }
     catch (AiravataSystemException $ase)
     {
-        self::print_error_message('<p>There was a problem cloning the experiment.
+        Utilities::print_error_message('<p>There was a problem cloning the experiment.
             Please try again later or submit a bug report using the link in the Help menu.</p>' .
             '<p>AiravataSystemException: ' . $ase->getMessage() . '</p>');
     }
     catch (TTransportException $tte)
     {
-        self::print_error_message('<p>There was a problem cloning the experiment.
+        Utilities::print_error_message('<p>There was a problem cloning the experiment.
             Please try again later or submit a bug report using the link in the Help menu.</p>' .
             '<p>TTransportException: ' . $tte->getMessage() . '</p>');
     }
@@ -1176,37 +1177,37 @@ public static function cancel_experiment($expId)
     }
     catch (InvalidRequestException $ire)
     {
-        self::print_error_message('<p>There was a problem canceling the experiment.
+        Utilities::print_error_message('<p>There was a problem canceling the experiment.
             Please try again later or submit a bug report using the link in the Help menu.</p>' .
             '<p>InvalidRequestException: ' . $ire->getMessage() . '</p>');
     }
     catch (ExperimentNotFoundException $enf)
     {
-        self::print_error_message('<p>There was a problem canceling the experiment.
+        Utilities::print_error_message('<p>There was a problem canceling the experiment.
             Please try again later or submit a bug report using the link in the Help menu.</p>' .
             '<p>ExperimentNotFoundException: ' . $enf->getMessage() . '</p>');
     }
     catch (AiravataClientException $ace)
     {
-        self::print_error_message('<p>There was a problem canceling the experiment.
+        Utilities::print_error_message('<p>There was a problem canceling the experiment.
             Please try again later or submit a bug report using the link in the Help menu.</p>' .
             '<p>AiravataClientException: ' . $ace->getMessage() . '</p>');
     }
     catch (AiravataSystemException $ase)
     {
-        self::print_error_message('<p>There was a problem canceling the experiment.
+        Utilities::print_error_message('<p>There was a problem canceling the experiment.
             Please try again later or submit a bug report using the link in the Help menu.</p>' .
             '<p>AiravataSystemException: ' . $ase->getMessage() . '</p>');
     }
     catch (TTransportException $tte)
     {
-        self::print_error_message('<p>There was a problem canceling the experiment.
+        Utilities::print_error_message('<p>There was a problem canceling the experiment.
             Please try again later or submit a bug report using the link in the Help menu.</p>' .
             '<p>TTransportException: ' . $tte->getMessage() . '</p>');
     }
     catch (Exception $e)
     {
-        self::print_error_message('<p>There was a problem canceling the experiment.
+        Utilities::print_error_message('<p>There was a problem canceling the experiment.
             Please try again later or submit a bug report using the link in the Help menu.</p>' .
             '<p>Exception: ' . $e->getMessage() . '</p>');
     }
@@ -1344,7 +1345,7 @@ public static function create_inputs($id, $isRequired)
                     </div>';
                 break;
             default:
-                self::print_error_message('Input data type not supported!
+                Utilities::print_error_message('Input data type not supported!
                     Please file a bug report using the link in the Help menu.');
                 break;
         }

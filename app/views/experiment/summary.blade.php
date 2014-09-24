@@ -84,7 +84,7 @@ Utilities::verify_login();
         </tr>
     </table>
 
-    <form action="<?php echo $_SERVER['PHP_SELF'] . '?expId=' . $_GET['expId']?>" method="post" role="form">
+    <form action="{{URL::to('/') }}/experiment/summary" method="post" role="form">
         <div class="btn-toolbar">
             <input name="launch"
                    type="submit"
@@ -98,7 +98,8 @@ Utilities::verify_login();
                    value="Clone"
                    title="Create a clone of the experiment. Cloning is the only way to change an experiment's settings
                     after it has been launched.">
-            <a href="edit_experiment.php?expId=<?php echo $experiment->experimentID; ?>"
+            <input type="hidden" name="expId" value="{{ Input::get('expId') }}"/>
+            <a href="{{URL::to('/') }}/experiment/edit?expId=<?php echo $experiment->experimentID; ?>"
                class="btn btn-default"
                role="button"
                title="Edit the experiment's settings" <?php if(!$expVal["editable"] ) echo 'disabled'  ?>>

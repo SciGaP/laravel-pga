@@ -39,6 +39,8 @@ Route::post("experiment/create", "ExperimentController@createSubmit");
 
 Route::get("experiment/summary", "ExperimentController@summary");
 
+Route::post("experiment/summary", "ExperimentController@expChange");
+
 Route::get("experiment/search", "ExperimentController@searchView");
 
 Route::post("experiment/search", "ExperimentController@searchSubmit");

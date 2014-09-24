@@ -17,7 +17,7 @@ class ExperimentController extends BaseController {
 
 	public function createView()
 	{
-		Session::forget( 'exp_create_Fcontinue');
+		Session::forget( 'exp_create_continue');
 		return View::make('experiment/create');
 	}
 
@@ -70,25 +70,6 @@ class ExperimentController extends BaseController {
 
 		$expVal = Utilities::get_experiment_values( $experiment, $project);
 
-		if (isset($_POST['save']))
-		{
-		    $updatedExperiment = Utilities::apply_changes_to_experiment($experiment);
-
-		    Utilities::update_experiment($experiment->experimentID, $updatedExperiment);
-		}
-		elseif (isset($_POST['launch']))
-		{
-		    Utilities::launch_experiment($experiment->experimentID);
-		}
-		elseif (isset($_POST['clone']))
-		{
-		    Utilities::clone_experiment($experiment->experimentID);
-		}
-		elseif (isset($_POST['cancel']))
-		{
-		    Utilities::cancel_experiment($experiment->experimentID);
-		}
-
 		return View::make( "experiment/summary", 
 								array(
 									"expId" => Input::get("expId"),
@@ -98,6 +79,45 @@ class ExperimentController extends BaseController {
 
 								)
 							);
+	}
+
+	public function expChange()
+	{
+		$experiment = Utilities::get_experiment( Input::get('expId') );
+		$project = Utilities::get_project($experiment->projectID);
+
+		$expVal = Utilities::get_experiment_values( $experiment, $project);
+		/*if (isset($_POST['save']))
+		{
+		    $updatedExperiment = Utilities::apply_changes_to_experiment($experiment);
+
+		    Utilities::update_experiment($experiment->experimentID, $updatedExperiment);
+		}*/
+		if (isset($_POST['launch']))
+		{
+		    Utilities::launch_experiment($experiment->experimentID);
+		}
+		elseif (isset($_POST['clone']))
+		{
+		    $cloneId = Utilities::clone_experiment($experiment->experimentID);
+		    $experiment = Utilities::get_experiment( $cloneId );
+			$project = Utilities::get_project($experiment->projectID);
+
+			$expVal = Utilities::get_experiment_values( $experiment, $project);
+		    return View::make("experiment/edit", array(
+
+							'experiment' => $experiment,
+							'project' => $project,
+							'expVal' => $expVal
+							
+							)
+						);
+		}
+		
+		elseif (isset($_POST['cancel']))
+		{
+		    Utilities::cancel_experiment($experiment->experimentID);
+		}
 	}
 
 	public function editView()
