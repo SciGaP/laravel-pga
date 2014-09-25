@@ -98,4 +98,9 @@ class AccountController extends BaseController {
         }
 
 	}
+
+	public function logout(){
+		Session::flush();
+		return Redirect::to('home');
+	}
 }

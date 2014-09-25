@@ -1,20 +1,10 @@
-<?php
-/**
- * A user's homepage
- */
+@extends('layout.basic')
 
-Utilities::create_http_header();
+@section('page-header')
+    @parent
+@stop
 
-Utilities::connect_to_id_store();
-
-?>
-
-
-<html>
-<?php Utilities::create_html_head(); ?>
-<body>
-
-<?php Utilities::create_nav_bar(); ?>
+@section('content')
 
 <div class="jumbotron">
     <div class="container">
@@ -188,5 +178,6 @@ Utilities::connect_to_id_store();
     </div>
 
 </div>
-</body>
-</html>
+
+@stop
+

@@ -1,20 +1,11 @@
-<?php
 
-Utilities::create_http_header();
+@extends('layout.basic')
 
-Utilities::connect_to_id_store();
-Utilities::verify_login();
+@section('page-header')
+    @parent
+@stop
 
-
-?>
-
-<html>
-
-<?php Utilities::create_html_head(); ?>
-
-<body>
-
-<?php Utilities::create_nav_bar(); ?>
+@section('content')
 
     <div class="container" style="max-width: 750px;">
 
@@ -103,109 +94,10 @@ Utilities::verify_login();
             }
 
         }
-
-
-        //$transport->close();
-
+        
         ?>
 
 
     </div>
 
-</body>
-</html>
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-<?php
-/**
- * Utility Functions
- */
-
-
-/**
- * Create options for the search key select input
- * @param $values
- * @param $labels
- * @param $disabled
- */
-function create_options($values, $labels, $disabled)
-{
-    for ($i = 0; $i < sizeof($values); $i++)
-    {
-        $selected = '';
-
-        // if option was previously selected, mark it as selected
-        if (isset($_POST['search-key']))
-        {
-            if ($values[$i] == $_POST['search-key'])
-            {
-                $selected = 'selected';
-            }
-        }
-
-        echo '<option value="' . $values[$i] . '" ' . $disabled[$i] . ' ' . $selected . '>' . $labels[$i] . '</option>';
-    }
-}
-
-/**
- * Get results of the user's search
- * @return array|null
- */
-
-
-
-
-
-/**
- * Get experiments in project
- * @param $projectId
- * @return array|null
- */
-function get_experiments_in_project($projectId)
-{
-    global $airavataclient;
-
-    $experiments = array();
-
-    try
-    {
-        $experiments = $airavataclient->getAllExperimentsInProject($projectId);
-    }
-    catch (InvalidRequestException $ire)
-    {
-        print_error_message('InvalidRequestException!<br><br>' . $ire->getMessage());
-    }
-    catch (AiravataClientException $ace)
-    {
-        print_error_message('AiravataClientException!<br><br>' . $ace->getMessage());
-    }
-    catch (AiravataSystemException $ase)
-    {
-        print_error_message('AiravataSystemException!<br><br>' . $ase->getMessage());
-    }
-    catch (TTransportException $tte)
-    {
-        print_error_message('TTransportException!<br><br>' . $tte->getMessage());
-    }
-
-    return $experiments;
-}
-
-unset($_POST);
+@stop

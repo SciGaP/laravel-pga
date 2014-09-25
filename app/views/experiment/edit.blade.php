@@ -1,20 +1,10 @@
-<?php
+@extends('layout.basic')
 
-Utilities::create_http_header();
+@section('page-header')
+    @parent
+@stop
 
-Utilities::connect_to_id_store();
-Utilities::verify_login();
-
-
-?>
-
-<html>
-
-<?php Utilities::create_html_head(); ?>
-
-<body>
-
-<?php Utilities::create_nav_bar(); ?>
+@section('content')
 
 <?php
 //$echoResources = array('localhost', 'trestles.sdsc.edu', 'lonestar.tacc.utexas.edu');
@@ -172,10 +162,5 @@ Utilities::verify_login();
 
 
 </div>
-</body>
-</html>
 
-
-<?php
-
-?>
+@stop

@@ -1,19 +1,10 @@
-<?php
-/**
- * Allow users to create a new user account
- */
-Utilities::create_http_header();
+@extends('layout.basic')
 
-Utilities::connect_to_id_store();
-?>
+@section('page-header')
+    @parent
+@stop
 
-<html>
-
-<?php Utilities::create_html_head(); ?>
-
-<body>
-
-<?php Utilities::create_nav_bar(); ?>
+@section('content')
 
 <div class="container" style="width: 500px">
     <div class="page-header">
@@ -111,7 +102,6 @@ Utilities::connect_to_id_store();
     <br/><br/><br/>
 </div>
 </body>
-</html>
 
-<?php
-unset($_POST);
+@stop
+

@@ -1,34 +1,16 @@
-<?php
+@extends('layout.basic')
 
-Utilities::create_http_header();
+@section('page-header')
+    @parent
+@stop
 
-Utilities::connect_to_id_store();
-Utilities::verify_login();
+@section('content')
 
-
-?>
-
-<html>
-
-<?php Utilities::create_html_head(); ?>
-
-<body>
-
-<?php Utilities::create_nav_bar(); ?>
-
-<?php
-//$echoResources = array('localhost', 'trestles.sdsc.edu', 'lonestar.tacc.utexas.edu');
-//$wrfResources = array('trestles.sdsc.edu');
-
-//$appResources = array('Echo' => $echoResources, 'WRF' => $wrfResources);
-
-
-?>
 <div class="container" style="max-width: 750px;">
 
 <h1>
     Experiment Summary
-    <small><a href="{{ URL::to('/') }}/experiment/summary?expId= {{ $experiment->experimentID }}"
+    <small><a href="{{ URL::to('/') }}/experiment/summary?expId={{ $experiment->experimentID }}"
               title="Refresh"><span class="glyphicon glyphicon-refresh"></span></a></small>
 </h1>
 
@@ -99,7 +81,7 @@ Utilities::verify_login();
                    title="Create a clone of the experiment. Cloning is the only way to change an experiment's settings
                     after it has been launched.">
             <input type="hidden" name="expId" value="{{ Input::get('expId') }}"/>
-            <a href="{{URL::to('/') }}/experiment/edit?expId=<?php echo $experiment->experimentID; ?>"
+            <a href="{{URL::to('/') }}/experiment/edit?expId={{ $experiment->experimentID }}"
                class="btn btn-default"
                role="button"
                title="Edit the experiment's settings" <?php if(!$expVal["editable"] ) echo 'disabled'  ?>>
@@ -110,5 +92,5 @@ Utilities::verify_login();
     </form>
 
 </div>
-</body>
-</html>
+
+@stop

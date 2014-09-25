@@ -1,19 +1,10 @@
-<?php
-/**
- * Allow users to create a new user account
- */
-Utilities::create_http_header();
+@extends('layout.basic')
 
-Utilities::connect_to_id_store();
-?>
+@section('page-header')
+    @parent
+@stop
 
-<html>
-
-<?php Utilities::create_html_head(); ?>
-
-<body>
-
-<?php Utilities::create_nav_bar(); ?>
+@section('content')
 
     <div class="container" style="max-width: 330px;">
 
@@ -38,12 +29,5 @@ Utilities::connect_to_id_store();
             <input name="Submit" type="submit" class="btn btn-primary btn-block" value="Sign in">
         </form>
     </div>
-    </body>
-    </html>
 
-<?php
-
-unset($_POST);
-
-
-?>
+@stop

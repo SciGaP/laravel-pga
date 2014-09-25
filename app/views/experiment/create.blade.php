@@ -1,30 +1,10 @@
-<?php
+@extends('layout.basic')
 
-Utilities::create_http_header();
+@section('page-header')
+    @parent
+@stop
 
-Utilities::connect_to_id_store();
-Utilities::verify_login();
-
-
-?>
-
-<html>
-
-<?php Utilities::create_html_head(); ?>
-
-<body>
-
-<?php Utilities::create_nav_bar(); ?>
-
-<?php
-//$echoResources = array('localhost', 'trestles.sdsc.edu', 'lonestar.tacc.utexas.edu');
-//$wrfResources = array('trestles.sdsc.edu');
-
-//$appResources = array('Echo' => $echoResources, 'WRF' => $wrfResources);
-
-
-?>
-
+@section('content')
 <div class="container" style="max-width: 750px;">
     
 <h1>Create a new experiment</h1>
@@ -158,15 +138,9 @@ Utilities::verify_login();
     }
 
     ?>
-
-
-
-
-
-
-
+    
 </form>
 
 </div>
-</body>
-</html>
+
+@stop

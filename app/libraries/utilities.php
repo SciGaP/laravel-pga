@@ -208,18 +208,18 @@ public static function id_in_session()
 }
 
 /**
- * Verify user is already logged in. If not, redirect to login.
+ * Verify if the user is already logged in. If not, redirect to the home page.
  */
 public static function verify_login()
 {
     if (Utilities::id_in_session())
     {
-        return;
+        return true;
     }
     else
     {
         Utilities::print_error_message('User is not logged in!');
-        return Redirect::to("home");
+        return false;
     }
 }
 
@@ -1442,20 +1442,12 @@ public static function create_nav_bar()
 
     if ( Session::has( 'loggedin') )
     {
-        echo '<li><a href="logout.php"><span class="glyphicon glyphicon-log-out"></span> Log out</a></li>';
+        echo '<li><a href="' . URL::to('/') . '/logout"><span class="glyphicon glyphicon-log-out"></span> Log out</a></li>';
     }
-    elseif ($selfExplode[2] == 'login.php')
+    else
     {
-        echo '<li><a href="create_account.php"><span class="glyphicon glyphicon-user"></span> Create account</a></li>';
-    }
-    elseif ($selfExplode[2] == 'create_account.php')
-    {
-        echo '<li><a href="login.php"><span class="glyphicon glyphicon-log-in"></span> Log in</a></li>';
-    }
-    elseif ($selfExplode[2] == 'index.php')
-    {
-        echo '<li><a href="create_account.php"><span class="glyphicon glyphicon-user"></span> Create account</a></li>';
-        echo '<li><a href="login.php"><span class="glyphicon glyphicon-log-in"></span> Log in</a></li>';
+        echo '<li><a href="' . URL::to('/') . '/create"><span class="glyphicon glyphicon-user"></span> Create account</a></li>';
+        echo '<li><a href="' . URL::to('/') . '/login"><span class="glyphicon glyphicon-log-in"></span> Log in</a></li>';
     }
 
 
@@ -1479,9 +1471,16 @@ public static function create_http_header()
  * Create head tag
  * Used for all pages
  */
+/*
+ *
+ * NOW USED DIRECTLY IN BASIC BLADE
+ *
+ *
 public static function create_html_head() 
 {
     echo'
+        <!DOCTYPE html>
+        <html lang="en">
         <head>
             <title>PHP Reference Gateway</title>
             <meta charset="utf-8">
@@ -1528,7 +1527,7 @@ public static function create_html_head()
         </head>
     ';
 }
-
+*/
 
 /**
  * Open the XML file containing the community token

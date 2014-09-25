@@ -19,36 +19,65 @@ Route::get("login", "AccountController@loginView");
 
 Route::post("login", "AccountController@loginSubmit");
 
-Route::get("project/create", "ProjectController@createView");
+Route::get("logout", "AccountController@logout");
 
-Route::post("project/create", "ProjectController@createSubmit");
+/*
+ * The following routes will not work without logging in.
+ *
+*/
 
-Route::get("project/summary", "ProjectController@summary");
+Route::get("project/create", 
+	array("before"=>"verifylogin","uses"=>"ProjectController@createView") );
 
-Route::get("project/search", "ProjectController@searchView");
+Route::post("project/create", 
+	array("before"=>"verifylogin","uses"=>"ProjectController@createSubmit") );
 
-Route::post("project/search", "ProjectController@searchSubmit");
+Route::get("project/summary", 
+	array("before"=>"verifylogin","uses"=>"ProjectController@summary") );
 
-Route::get("project/edit", "ProjectController@editView");
+Route::get("project/search", 
+	array("before"=>"verifylogin","uses"=>"ProjectController@searchView") );
 
-Route::post("project/edit", "ProjectController@editSubmit");
+Route::post("project/search", 
+	array("before"=>"verifylogin","uses"=>"ProjectController@searchSubmit") );
 
-Route::get("experiment/create", "ExperimentController@createView");
+Route::get("project/edit", 
+	array("before"=>"verifylogin","uses"=>"ProjectController@editView") );
 
-Route::post("experiment/create", "ExperimentController@createSubmit");
+Route::post("project/edit", 
+	array("before"=>"verifylogin","uses"=>"ProjectController@editSubmit") );
 
-Route::get("experiment/summary", "ExperimentController@summary");
+Route::get("experiment/create", 
+	array("before"=>"verifylogin","uses"=>"ExperimentController@createView") );
 
-Route::post("experiment/summary", "ExperimentController@expChange");
+Route::post("experiment/create", 
+	array("before"=>"verifylogin","uses"=>"ExperimentController@createSubmit") );
 
-Route::get("experiment/search", "ExperimentController@searchView");
+Route::get("experiment/summary", 
+	array("before"=>"verifylogin","uses"=>"ExperimentController@summary") );
 
-Route::post("experiment/search", "ExperimentController@searchSubmit");
+Route::post("experiment/summary", 
+	array("before"=>"verifylogin","uses"=>"ExperimentController@expChange") );
 
-Route::get("experiment/edit", "ExperimentController@editView");
+Route::get("experiment/search", 
+	array("before"=>"verifylogin","uses"=>"ExperimentController@searchView") );
 
-Route::post("experiment/edit", "ExperimentController@editSubmit");
+Route::post("experiment/search", 
+	array("before"=>"verifylogin","uses"=>"ExperimentController@searchSubmit") );
 
+Route::get("experiment/edit", 
+	array("before"=>"verifylogin","uses"=>"ExperimentController@editView") );
+
+Route::post("experiment/edit", 
+	array("before"=>"verifylogin","uses"=>"ExperimentController@editSubmit") );
+Route::get("testjob", function(){
+	print_r( Session::all());
+});
+
+
+/*
+ * Following base Routes need to be at the last.
+*/
 Route::controller("home", "HomeController");
 
 Route::controller("/", "HomeController");

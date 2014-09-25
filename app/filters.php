@@ -88,3 +88,10 @@ Route::filter('csrf', function()
 		throw new Illuminate\Session\TokenMismatchException;
 	}
 });
+
+
+Route::filter('verifylogin',function()
+{
+	if( ! Utilities::verify_login() )
+		return Redirect::to("home")->with("login-alert", true);
+});

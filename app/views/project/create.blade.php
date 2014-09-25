@@ -1,20 +1,10 @@
-<?php
+@extends('layout.basic')
 
-Utilities::create_http_header();
+@section('page-header')
+    @parent
+@stop
 
-Utilities::connect_to_id_store();
-Utilities::verify_login();
-
-
-?>
-
-<html>
-
-<?php Utilities::create_html_head(); ?>
-
-<body>
-
-<?php Utilities::create_nav_bar(); ?>
+@section('content')
 
 <div class="container" style="max-width: 750px">
     
@@ -38,11 +28,5 @@ Utilities::verify_login();
 </form>
 
 </div>
-</body>
-</html>
 
-<?php
-
-
-
-?>
+@stop

@@ -1,22 +1,11 @@
-<?php
+@extends('layout.basic')
 
-Utilities::create_http_header();
-Utilities::connect_to_id_store();
-Utilities::verify_login();
+@section('page-header')
+    @parent
+@stop
 
-$airavataclient = Utilities::get_airavata_client();
+@section('content')
 
-
-
-?>
-
-<html>
-
-<?php Utilities::create_html_head(); ?>
-
-<body>
-
-<?php Utilities::create_nav_bar(); ?>
 <div class="container" style="max-width: 750px;">
 
 	<?php if( Session::has("project_edited")) { ?>
@@ -59,5 +48,5 @@ $airavataclient = Utilities::get_airavata_client();
 
 
 </div>
-</body>
-</html>
+
+@stop
