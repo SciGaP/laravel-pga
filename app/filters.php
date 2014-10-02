@@ -95,3 +95,8 @@ Route::filter('verifylogin',function()
 	if( ! Utilities::verify_login() )
 		return Redirect::to("home")->with("login-alert", true);
 });
+
+Route::filter('verifyadmin', function()
+{
+	// separate function just to check if logged in user is an admin.
+});
