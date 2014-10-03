@@ -66,6 +66,7 @@ foreach( $resourceIdArray as $resourceId)
 	$canceledJobsCount = 0;
 	$failedJobsCount = 0;
 	$completedJobsCount = 0;
+	$createdJobsCount = 0;
 
 	$jobStatus = mysqli_query( $con, "SELECT DISTINCT s.EXPERIMENT_ID, s.STATE,s.STATUS_UPDATE_TIME, c.RESOURCE_HOST_ID FROM STATUS s, COMPUTATIONAL_RESOURCE_SCHEDULING c  WHERE s.EXPERIMENT_ID=c.EXPERIMENT_ID AND STATUS_TYPE='EXPERIMENT' AND ( STATUS_UPDATE_TIME BETWEEN '" . $startDate . "' AND '" . $endDate . "') AND c.RESOURCE_HOST_ID='" . $resourceId . "'");
 
@@ -81,6 +82,8 @@ foreach( $resourceIdArray as $resourceId)
 	  		$failedJobsCount++;
 	  	else if( $row["STATE"] == "COMPLETED")
 	  		$completedJobsCount++;
+	  	else if( $row["STATE"] == "CREATED")
+	  		$createdJobsCount++;
 	}
 
 	$canJobs .= $canceledJobsCount . ",";
@@ -97,6 +100,8 @@ foreach( $resourceIdArray as $resourceId)
 	while($row = mysqli_fetch_array($totalJobs)) {
 	  $totalJobsCount++;
 	}
+	//total jobs - jobs that are only created and not running.
+	$totalJobsCount = $totalJobsCount - $createdJobsCount;
 	$tJobs .= $totalJobsCount . ",";
 
 }
