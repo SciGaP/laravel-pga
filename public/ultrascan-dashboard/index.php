@@ -19,10 +19,46 @@
     <body>	
 
     <div class="container">
+    	<nav class="navbar navbar-inverse" role="navigation">
+    		<div class="container-fluid">
+    			<div class="navbar-header">
+    				<a class="navbar-brand" href="#" style="color:#fff;">
+    					Science Gateways Group Dashboard
+    				</a>
+    			</div>
+    		</div>
+    	</nav>
 
-    	<div class="col-md-12">
-    		<p class="text-center" style="margin-top:5%; font-weight:bold; font-size:1.5em;">This page shows job status count between selected dates.</p>
-    	</div>
+		<h2 class="text-center" style="margin-top:5%; font-weight:bold; font-size:1.5em;">Job status count Interface</h2>
+		<hr/>
+
+
+		<?php
+		$serverType="gf5";
+		if( isset( $_GET["server_type"]))
+			$serverType = $_GET["server_type"];
+		?>
+
+		<ul class="nav nav-tabs nav-justified" role="tablist">
+			  <li<?php if( $serverType=="gf5"){ ?> class="active" <?php } ?> ><a href="#gf5" role="tab" class="server_type" data-server="gf5" data-toggle="tab">Ultrascan GF5</a></li>
+			  <li<?php if( $serverType=="gw111"){ ?> class="active" <?php } ?> ><a href="#gw111"  role="tab" data-toggle="tab" class="server_type" data-server="gw111">Test Drive GW111</a></li>
+			  <li<?php if( $serverType=="gw127"){ ?> class="active" <?php } ?> ><a href="#gw127"  role="tab" data-toggle="tab" class="server_type" gw-server="gw127">Test Drive GW127</a></li>
+		</ul>
+
+		<div class="tab-content">
+
+			<div class="tab-pane fade in active" id="gf5">
+
+			</div> 
+
+			<div class="tab-pane fade" id="gw111">
+
+			</div> 
+
+			<div class="tab-pane fade" id="gw127">
+
+			</div> 
+		</div>
     	
     	<div class="well">
 	    	<form action="getdata.php" method="POST" role="form">
@@ -51,23 +87,27 @@
 	    		}
 
 	    		?>
-	    		<div class="form-group">
-	    			<label for="sdate"> Please enter Start Date in MM/DD/YY format</label>
-	    			<div id="datepicker1" class="input-append">
-	    				<input data-format="mm-dd-yy" type="text" required="required" id="sdate" name="start_date" class="form-contol" placeholder="Start Date" value="<?php echo $eDate; ?>"/>
-    				</div>
-	    		</div>
+	    		<div class="row">
+		    		<div class="form-group col-md-offset-1 col-md-4">
+		    			<label for="sdate"> Please enter Start Date in MM/DD/YY format</label>
+		    			<div id="datepicker1" class="input-append">
+		    				<input data-format="mm-dd-yy" type="text" required="required" id="sdate" name="start_date" class="form-contol" placeholder="Start Date" value="<?php echo $eDate; ?>"/>
+	    				</div>
+		    		</div>
 
-	    		<div class="form-group">
-	    			<label for="edate"> Please enter End Date in MM/DD/YY format</label>
-	    			<div id="datepicker2" class="input-append">
-	    				<input data-format="mm-dd-yy" type="text" required="required" id="edate" name="end_date" class="form-contol" placeholder="End Date" value="<?php echo $eDate; ?>">
-    				</div>
-	    		</div>
+		    		<div class="form-group col-md-4 col-md-offset-1">
+		    			<label for="edate"> Please enter End Date in MM/DD/YY format</label>
+		    			<div id="datepicker2" class="input-append">
+		    				<input data-format="mm-dd-yy" type="text" required="required" id="edate" name="end_date" class="form-contol" placeholder="End Date" value="<?php echo $eDate; ?>">
+	    				</div>
+		    		</div>
 
-	    		<div class="form-group">
-	    			<button type="submit" class="btn btn-default">Submit</button>
-	    		</div>
+		    		<div class="form-group col-md-1" style="margin-top:4%;">
+		    			<button type="submit" class="btn btn-default">Submit</button>
+		    		</div>
+
+		    		<input type="hidden" name="server_type" id="server_type" value="<?php echo $serverType; ?>"/>
+		    	</div> 
 
 	    	</form>
 	    </div>
@@ -102,7 +142,7 @@
 		    	{
 
 	    		?>
-			    	<tr>
+			    	<tr class="job_count_data">
 			    		<td><?php echo $resource; ?></td>
 			    		<td><?php echo $fJobs[$i]; ?></td>
 			    		<td><?php echo $canJobs[$i]; ?></td>
@@ -135,6 +175,10 @@
 	      pickTime: false
 	    });
 
+	    $(".server_type").click( function(){
+	    	$("#server_type").val( $(this).data("server") );
+	    	$(".job_count_data").remove();
+	    });
     });
     </script>
 	</body>

@@ -1,7 +1,31 @@
 <?php
 
+$serverType = $_POST["server_type"];
+//settings for GF5 -
+$host = "gridfarm005.ucs.indiana.edu";
+$un = "jobstatus";
+$pw = "jobstatus345";
+$schema = "ultrascan_airavata";
+$port = 5123;
+if( $serverType == "gw111")
+{
+	$host = "gw85.iu.xsede.org";
+	$un = "jobstatus";
+	$pw = "jobstatus345";
+	$schema = "airavata_gta_prod";
+	$port = 3306;
+}
+if( $serverType == "gw127")
+{
+	$host = "gw85.iu.xsede.org";
+	$un = "jobstatus";
+	$pw = "jobstatus345";
+	$schema = "airavata_gta_dev";
+	$port = 3306;
+}
+
 // Create connection
-$con=mysqli_connect("gridfarm005.ucs.indiana.edu","jobstatus","jobstatus345","ultrascan_airavata", 5123);
+$con=mysqli_connect($host,$un,$pw,$schema, $port);
 
 // Check connection
 if (mysqli_connect_errno()) {
@@ -72,7 +96,8 @@ foreach( $resourceIdArray as $resourceId)
 
 }
 
-header("Location:index.php?start_date=" . $_POST["start_date"] . 
+header("Location:index.php?server_type=" . $_POST["server_type"] .
+							"&start_date=" . $_POST["start_date"] . 
 							"&end_date=" . $_POST["end_date"] .
 							"&cJobs=" . $cJobs . 
 							"&fJobs=" . $fJobs .
