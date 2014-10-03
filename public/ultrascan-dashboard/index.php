@@ -42,7 +42,7 @@
 		<ul class="nav nav-tabs nav-justified" role="tablist">
 			  <li<?php if( $serverType=="gf5"){ ?> class="active" <?php } ?> ><a href="#gf5" role="tab" class="server_type" data-server="gf5" data-toggle="tab">Ultrascan GF5</a></li>
 			  <li<?php if( $serverType=="gw111"){ ?> class="active" <?php } ?> ><a href="#gw111"  role="tab" data-toggle="tab" class="server_type" data-server="gw111">Test Drive GW111</a></li>
-			  <li<?php if( $serverType=="gw127"){ ?> class="active" <?php } ?> ><a href="#gw127"  role="tab" data-toggle="tab" class="server_type" gw-server="gw127">Test Drive GW127</a></li>
+			  <li<?php if( $serverType=="gw127"){ ?> class="active" <?php } ?> ><a href="#gw127"  role="tab" data-toggle="tab" class="server_type" data-server="gw127">Test Drive GW127</a></li>
 		</ul>
 
 		<div class="tab-content">
@@ -91,7 +91,7 @@
 		    		<div class="form-group col-md-offset-1 col-md-4">
 		    			<label for="sdate"> Please enter Start Date in MM/DD/YY format</label>
 		    			<div id="datepicker1" class="input-append">
-		    				<input data-format="mm-dd-yy" type="text" required="required" id="sdate" name="start_date" class="form-contol" placeholder="Start Date" value="<?php echo $eDate; ?>"/>
+		    				<input data-format="mm-dd-yy" type="text" required="required" id="sdate" name="start_date" class="form-contol" placeholder="Start Date" value="<?php echo $sDate; ?>"/>
 	    				</div>
 		    		</div>
 
