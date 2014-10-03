@@ -1,7 +1,7 @@
 <?php
 
 // Create connection
-$con=mysqli_connect("gridfarm005.ucs.indiana.edu","jobstatus","jobstatus345","ultrascan_airavata", 5123);
+$con=mysqli_connect("gw85.iu.xsede.org","jobstatus","jobstatus345","airavata_gta_dev", 3306);
 
 // Check connection
 if (mysqli_connect_errno()) {
