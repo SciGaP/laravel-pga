@@ -125,7 +125,7 @@
 	    		<th>Executing Count</th>
 	    		<th>Failed Count</th>
 	    		<th>Completed Count</th>
-	    		<th>Total Created</th>
+	    		<th>Total Launched</th>
 	    		<th>Success percent</th>
 	    	</tr>
 
