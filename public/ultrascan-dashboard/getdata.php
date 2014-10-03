@@ -50,40 +50,45 @@ while($row = mysqli_fetch_array($completedJobs)) {
 
 //var_dump( $resourceIdArray); exit;
 
+$canJobs = "";
+$lJobs = "";
+$eJobs = "";
 $fJobs = "";
 $cJobs = "";
 $tJobs = "";
-$canJobs = "";
 
 foreach( $resourceIdArray as $resourceId)
 {
-	//all completed jobs
-	$query = "SELECT DISTINCT s.EXPERIMENT_ID, s.STATE,s.STATUS_UPDATE_TIME, c.RESOURCE_HOST_ID FROM STATUS s, COMPUTATIONAL_RESOURCE_SCHEDULING c  WHERE s.EXPERIMENT_ID=c.EXPERIMENT_ID AND STATUS_TYPE='EXPERIMENT' AND ( STATUS_UPDATE_TIME BETWEEN '" . $startDate . "' AND '" . $endDate . "') AND STATE='COMPLETED' AND c.RESOURCE_HOST_ID='" . $resourceId . "'";
-	$completedJobs = mysqli_query( $con, $query);
+	//getting status of all jobs
+	$canceledJobsCount = 0;
+	$launchedJobsCount = 0;
+	$executingJobsCount = 0;
+	$canceledJobsCount = 0;
+	$failedJobsCount = 0;
 	$completedJobsCount = 0;
-	while($row = mysqli_fetch_array($completedJobs)) {
-	  $completedJobsCount++;
+
+	$jobStatus = mysqli_query( $con, "SELECT DISTINCT s.EXPERIMENT_ID, s.STATE,s.STATUS_UPDATE_TIME, c.RESOURCE_HOST_ID FROM STATUS s, COMPUTATIONAL_RESOURCE_SCHEDULING c  WHERE s.EXPERIMENT_ID=c.EXPERIMENT_ID AND STATUS_TYPE='EXPERIMENT' AND ( STATUS_UPDATE_TIME BETWEEN '" . $startDate . "' AND '" . $endDate . "') AND c.RESOURCE_HOST_ID='" . $resourceId . "'");
+
+	while($row = mysqli_fetch_array($jobStatus)) {
+
+		if( $row["STATE"] == "CANCELED")
+	  		$canceledJobsCount++;
+	  	else if( $row["STATE"] == "LAUNCHED")
+	  		$launchedJobsCount++;
+	  	else if ($row["STATE"] == "EXECUTING")
+	  		$executingJobsCount++;
+	  	else if( $row["STATE"] == "FAILED")
+	  		$failedJobsCount++;
+	  	else if( $row["STATE"] == "COMPLETED")
+	  		$completedJobsCount++;
 	}
 
+	$canJobs .= $canceledJobsCount . ",";
+	$lJobs .= $launchedJobsCount . ",";
+	$eJobs .= $executingJobsCount . ",";
+	$fJobs .= $failedJobsCount . ",";
 	$cJobs .= $completedJobsCount . ",";
 
-	//all canceled jobs
-	$canceledJobs = mysqli_query( $con, "SELECT DISTINCT s.EXPERIMENT_ID, s.STATE,s.STATUS_UPDATE_TIME, c.RESOURCE_HOST_ID FROM STATUS s, COMPUTATIONAL_RESOURCE_SCHEDULING c  WHERE s.EXPERIMENT_ID=c.EXPERIMENT_ID AND STATUS_TYPE='EXPERIMENT' AND ( STATUS_UPDATE_TIME BETWEEN '" . $startDate . "' AND '" . $endDate . "') AND STATE='CANCELED' AND c.RESOURCE_HOST_ID='" . $resourceId . "'");
-	$canceledJobsCount = 0;
-	while($row = mysqli_fetch_array($canceledJobs)) {
-	  $canceledJobsCount++;
-	}
-	$canJobs .= $canceledJobsCount . ",";
-
-
-
-	//all failed jobs
-	$failedJobs = mysqli_query( $con, "SELECT DISTINCT s.EXPERIMENT_ID, s.STATE,s.STATUS_UPDATE_TIME, c.RESOURCE_HOST_ID FROM STATUS s, COMPUTATIONAL_RESOURCE_SCHEDULING c  WHERE s.EXPERIMENT_ID=c.EXPERIMENT_ID AND STATUS_TYPE='EXPERIMENT' AND ( STATUS_UPDATE_TIME BETWEEN '" . $startDate . "' AND '" . $endDate . "') AND STATE='FAILED' AND c.RESOURCE_HOST_ID='" . $resourceId . "'");
-	$failedJobsCount = 0;
-	while($row = mysqli_fetch_array($failedJobs)) {
-	  $failedJobsCount++;
-	}
-	$fJobs .= $failedJobsCount . ",";
 
 
 	//total jobs
@@ -99,10 +104,12 @@ foreach( $resourceIdArray as $resourceId)
 header("Location:index.php?server_type=" . $_POST["server_type"] .
 							"&start_date=" . $_POST["start_date"] . 
 							"&end_date=" . $_POST["end_date"] .
-							"&cJobs=" . $cJobs . 
+							"&canJobs=" . $canJobs . 
+							"&lJobs=" . $lJobs .
+							"&eJobs=" . $eJobs .
 							"&fJobs=" . $fJobs .
+							"&cJobs=" . $cJobs .
 							"&tJobs=" . $tJobs .
-							"&canJobs=" . $canJobs .
 							"&resource_ids=" . implode(",", $resourceIdArray)
 		);
 

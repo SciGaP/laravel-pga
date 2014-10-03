@@ -120,8 +120,10 @@
 	    <table class="table table-striped">
 	    	<tr>
 	    		<th>Resource Id</th>
-	    		<th>Failed Count</th>
 	    		<th>Cancelled count</th>
+	    		<th>Launched count</th>
+	    		<th>Executing Count</th>
+	    		<th>Failed Count</th>
 	    		<th>Completed Count</th>
 	    		<th>Total Created</th>
 	    		<th>Success percent</th>
@@ -130,11 +132,13 @@
 	    	<?php
 	    	if( isset( $_GET["start_date"]))
 	    	{
+	    		$canJobs = explode(",", $_GET["canJobs"]);
+	    		$lJobs = explode(",", $_GET["lJobs"]);
+	    		$eJobs = explode(",", $_GET["eJobs"]);
+	    		$resourceIds = explode(",", $_GET["resource_ids"]);
 	    		$fJobs = explode(",", $_GET["fJobs"]);
 	    		$cJobs = explode(",", $_GET["cJobs"]);
 	    		$tJobs = explode(",", $_GET["tJobs"]);
-	    		$canJobs = explode(",", $_GET["canJobs"]);
-	    		$resourceIds = explode(",", $_GET["resource_ids"]);
 	    	?>
 		    	<?php
 		    	$i=0;
@@ -144,8 +148,10 @@
 	    		?>
 			    	<tr class="job_count_data">
 			    		<td><?php echo $resource; ?></td>
-			    		<td><?php echo $fJobs[$i]; ?></td>
 			    		<td><?php echo $canJobs[$i]; ?></td>
+			    		<td><?php echo $lJobs[$i]; ?></td>
+			    		<td><?php echo $eJobs[$i]; ?></td>
+			    		<td><?php echo $fJobs[$i]; ?></td>
 			    		<td><?php echo $cJobs[$i]; ?></td>
 		    			<td><?php echo $tJobs[$i]; ?></td>
 		    			<td><?php echo number_format( (float)( ( ( $canJobs[$i] + $cJobs[$i] ) /$tJobs[$i] )*100 ), 2, '.', '' ); ?>%</td>
