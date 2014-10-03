@@ -12,7 +12,7 @@ if( $serverType == "gw111")
 	$host = "gw85.iu.xsede.org";
 	$un = "jobstatus";
 	$pw = "jobstatus345";
-	$schema = "airavata_gta_prod";
+	$schema = "airavata_gta_dev";
 	$port = 3306;
 }
 if( $serverType == "gw127")
@@ -20,7 +20,7 @@ if( $serverType == "gw127")
 	$host = "gw85.iu.xsede.org";
 	$un = "jobstatus";
 	$pw = "jobstatus345";
-	$schema = "airavata_gta_dev";
+	$schema = "airavata_gta_prod";
 	$port = 3306;
 }
 
