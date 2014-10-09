@@ -56,7 +56,13 @@ Route::get("experiment/edit", "ExperimentController@editView");
 
 Route::post("experiment/edit", "ExperimentController@editSubmit");
 
-Route::get("cr/create", "ComputeResource@createView");
+Route::get("cr/create", function(){
+	return Redirect::to("cr/create/step1");
+});
+
+Route::get("cr/create/{stepnum}", "ComputeResource@createView");
+
+Route::post("cr/create", "ComputeResource@createSubmit");
 
 /*
  * Test Routes.
