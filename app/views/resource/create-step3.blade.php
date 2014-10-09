@@ -2,6 +2,7 @@
 
 @section('page-header')
     @parent
+    {{ HTML::style('css/style.css') }}
 @stop
 
 @section('content')
@@ -10,32 +11,39 @@
 	<div class="col-md-offset-2 col-md-8">
 		<h3>Add Resource Data</h3>
 		<form role="form" method="POST" action="{{ URL::to('/') }}/cr/create">
-			<div class="form-group required">
-				<button type="button" class="btn btn-sm btn-default add-queue">Add a Queue</button>
+
+			<div class="select-job-protocol hide">
+				<h4>Select the job submission protocol</h4>
+				<select class="form-control selected-job-protocol">
+				  <option></option>
+				  <option value="local">Local</option>
+				  <option value="ssh">SSH</option>
+				  <option value="globus">Globus</option>
+				  <option value="unicore">Unicore</option>
+				  <option value="cloud">Cloud</option>
+				</select>
+			</div>
+
+			<div class="resource-manager-block hide">
+				<div class="select-resource-manager-type">
+				<h4>Select resource manager type</h4>
+				<select class="form-control selected-resource-manager">
+				  <option></option>
+				  <option value="local">FORK</option>
+				  <option value="ssh">PBS</option>
+				  <option value="globus">UGE</option>
+				  <option value="unicore">SLURM</option>
+				</select>
+			</div>
+
+			</div>
+			<div class="form-group">
+				<div class="job-submission-data row hide"></div>
+				<button type="button" class="btn btn-sm btn-default add-job-submission">Add a Job Submission Interface</button>
 			</div>
 			<hr/>
-			<div class="form-group required">
-				<label class="control-label">FileSystem</label>
-				<div class="form-group required">
-					<label class="control-label">Home</label>
-					<input class="form-control" maxlength="255" name="filesystem-home"/>
-				</div>
-				<div class="form-group required">
-					<label class="control-label">Work</label>
-					<input class="form-control" maxlength="255" name="filesystem-work"/>
-				</div>
-				<div class="form-group required">
-					<label class="control-label">Localtmp</label>
-					<input class="form-control" maxlength="255" name="filesystem-localtmp"/>
-				</div>
-				<div class="form-group required">
-					<label class="control-label">Scratch</label>
-					<input class="form-control" maxlength="255" name="filesystem-scratch"/>
-				</div>
-				<div class="form-group required">
-					<label class="control-label">Archive</label>
-					<input class="form-control" maxlength="255" name="filesystem-archive"/>
-				</div>
+			<div class="form-group">
+				<button type="button" class="btn btn-sm btn-default add-job-submission">Add a Data Movement Interface</button>
 			</div>
 			<hr/>
 		</form>
@@ -46,25 +54,29 @@
 
 @section('scripts')
 	@parent
+    {{ HTML::script('js/script.js') }}
+
 	<script>
 		$(document).ready( function(){
-			$(".add-queue").click( function(){
-				$(this).before( '\
-						Queue - \
-  						<input class="form-control" maxlength="30" name="qname[]" placeholder="Queue Name"/>\
-  						<input class="form-control" maxlength="30" name="qdesc[]" placeholder="Queue Description"/>\
-  						<input class="form-control" maxlength="30" name="qmaxruntime[]" placeholder="Queue Max Run Time"/>\
-  						<input class="form-control" maxlength="30" name="qmaxnodes[]" placeholder="Queue Max Nodes"/>\
-  						<input class="form-control" maxlength="30" name="qmaxprocessors[]" placeholder="Queue Max Processors"/>\
-  						<input class="form-control" maxlength="30" name="qmaxjobsinqueue[]" placeholder="Max JObs In Queue"/>\
-  						<hr/> \
-  						');
+
+			$(".add-job-submission").click( function(){
+				$(".job-submission-data").removeClass("hide").append( "<div class='job-protocol-block col-md-12'>" + $(".select-job-protocol").html() + "</div></div><hr/>");
 			});
 
+			$("body").on("change", ".selected-job-protocol", function(){
+				$("div[class*='resourcemanager-']").remove();
 
-			$(".add-ip").click( function(){
-				$(this).before( '<input class="form-control" maxlength="30" name="ips[]"/>');
-			})
+				var parentResDiv = "<div class='resourcemanager-'" + $(this).val().toLowerCase() + "><hr/>Resource Manager: <h4>" + $(this).val() + "</h4><hr/>";
+				if( $(this).val().toLowerCase() == "local")
+				{
+					$(".job-protocol-block").append(  parentResDiv + $(".resource-manager-block").html() + "</div>" );
+				}
+				elseif( $(this).val().toLowerCase() == "ssh")
+				{
+					$(".job-protocol-block").append(  parentResDiv + $(".ssh-block").html() + "</div>" );
+
+				}
+			});
 		});
 	</script>
 @stop

@@ -11,7 +11,7 @@
 		<h3>Add Resource Data</h3>
 		<form role="form" method="POST" action="{{ URL::to('/') }}/cr/create">
 			<div class="form-group required">
-				<button type="button" class="btn btn-sm btn-default add-job-submission-protocol">Add a Queue</button>
+				<button type="button" class="btn btn-sm btn-default add-queue">Add a Queue</button>
 			</div>
 			<hr/>
 			<div class="form-group required">
@@ -38,6 +38,15 @@
 				</div>
 			</div>
 			<hr/>
+			<div class="form-group required">
+				<label class="control-label">IP Addresses</label>
+				<input class="form-control" maxlength="30" name="ips[]" required="required"/>
+				<button type="button" class="btn btn-sm btn-default add-ip">Add More IP Addresses</button>
+			</div>
+			<div class="form-group required">
+				<label class="control-label">Resource Description</label>
+				<textarea class="form-control" maxlength="255" name="description" required="required"></textarea>
+			</div>
 			<div class="form-group">
 				<input type="submit" class="btn btn-lg btn-primary" name="step2" value="Continue"/>
 				<input type="reset" class="btn btn-lg btn-success" value="Reset"/>
