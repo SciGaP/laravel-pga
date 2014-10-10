@@ -62,7 +62,7 @@ Route::get("cr/create", function(){
 
 Route::get("cr/create/{stepnum}", "ComputeResource@createView");
 
-Route::post("cr/create", "ComputeResource@createSubmit");
+Route::post("cr/create", "ComputeResource@createView");
 
 /*
  * Test Routes.

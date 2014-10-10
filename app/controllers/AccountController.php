@@ -41,7 +41,7 @@ class AccountController extends BaseController {
 		    }
 		    catch (Exception $e)
 		    {
-		        print_error_message('<p>Error connecting to ID store.
+		        Utilities::print_error_message('<p>Error connecting to ID store.
 		            Please try again later or report a bug using the link in the Help menu</p>' .
 		            '<p>' . $e->getMessage() . '</p>');
 		    }
