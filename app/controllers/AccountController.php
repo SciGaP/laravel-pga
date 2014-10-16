@@ -89,7 +89,7 @@ class AccountController extends BaseController {
                 	return Redirect::to( "home");
 
                 } else {
-                    print_error_message('Invalid username or password. Please try again.');
+                    Utilities::print_error_message('Invalid username or password. Please try again.');
                 }
             } catch (Exception $ex) {
             	print_r( $ex); exit;
