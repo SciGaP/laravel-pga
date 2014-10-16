@@ -49,17 +49,17 @@ class AccountController extends BaseController {
 
 
 	        if ($idStore->username_exists($username)) {
-	            print_error_message('The username you entered is already in use. Please select another.');
+	            Utilities::print_error_message('The username you entered is already in use. Please select another.');
 	        } else if (strlen($username) < 3) {
-	            print_error_message('Username should be more than three characters long!');
+	            Utilities::print_error_message('Username should be more than three characters long!');
 	        } else if ($password != $confirm_password) {
-	            print_error_message('The passwords that you entered do not match!');
+	            Utilities::print_error_message('The passwords that you entered do not match!');
 	        }elseif(!isset($first_name)){
-	            print_error_message('First name is required.');
+	            Utilities::print_error_message('First name is required.');
 	        }elseif(!isset($last_name)){
-	            print_error_message('Last name is required.');
+	            Utilities::print_error_message('Last name is required.');
 	        }elseif(!isset($email)){
-	            print_error_message('Email address is required.');
+	            Utilities::print_error_message('Email address is required.');
 	        }else{
 	            $idStore->add_user($username, $password, $first_name, $last_name, $email, $organization,
 	            $address, $country,$telephone, $mobile, $im, $url);
@@ -92,8 +92,7 @@ class AccountController extends BaseController {
                     Utilities::print_error_message('Invalid username or password. Please try again.');
                 }
             } catch (Exception $ex) {
-            	print_r( $ex); exit;
-                print_error_message('Invalid username or password. Please try again.');
+                Utilities::print_error_message('Invalid username or password. Please try again.');
             }
         }
 

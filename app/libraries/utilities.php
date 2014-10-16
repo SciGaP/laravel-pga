@@ -175,7 +175,7 @@ public static function id_matches_db($username, $password)
     }
     catch (Exception $e)
     {
-        print_error_message('<p>Error connecting to ID store.
+        Utilities::print_error_message('<p>Error connecting to ID store.
             Please try again later or report a bug using the link in the Help menu</p>' .
             '<p>' . $e->getMessage() . '</p>');
     }
@@ -385,7 +385,7 @@ public static function get_all_user_projects($username)
     {
         if ($ase->airavataErrorType == 2) // 2 = INTERNAL_ERROR
         {
-            print_warning_message('<p>You must create a project before you can create an experiment.
+            Utilities::print_warning_message('<p>You must create a project before you can create an experiment.
                 Click <a href="project/create">here</a> to create a project.</p>');
         }
         else
@@ -939,7 +939,7 @@ public static function process_inputs($applicationInputs, $experimentInputs)
                 {
                     unlink($filePath);
 
-                    print_warning_message('Uploaded file already exists! Overwriting...');
+                    Utilities::print_warning_message('Uploaded file already exists! Overwriting...');
                 }
 
                 $moveFile = move_uploaded_file($file['tmp_name'], $filePath);
