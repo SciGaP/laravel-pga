@@ -267,6 +267,10 @@ public static function createDMIObject( $inputs){
             print_r( "The GridFTP Data Movement has been added. Edit UI for the Grid Data Movement Interface is yet to be made.
                 Please click <a href='" . URL::to('/') . "/cr/edit'>here</a> to go back to edit page for compute resource.");
     }
+    else /* other data movement protocols */
+    {
+        print_r( "Whoops! We haven't coded for this Data Movement Protocol yet. Still working on it. Please click <a href='" . URL::to('/') . "/cr/edit'>here</a> to go back to edit page for compute resource.");
+    }
 }
 
 }
