@@ -23,6 +23,18 @@ use Airavata\Model\AppCatalog\AppInterface\DataType;
 use Airavata\Model\Workspace\Project;
 use Airavata\Model\Workspace\Experiment\ExperimentState;
 use Airavata\Model\Workspace\Experiment\JobState;
+use Airavata\Model\AppCatalog\ComputeResource\FileSystems;
+use Airavata\Model\AppCatalog\ComputeResource\JobSubmissionInterface;
+use Airavata\Model\AppCatalog\ComputeResource\JobSubmissionProtocol;
+use Airavata\Model\AppCatalog\ComputeResource\SecurityProtocol;
+use Airavata\Model\AppCatalog\ComputeResource\ResourceJobManager;
+use Airavata\Model\AppCatalog\ComputeResource\ResourceJobManagerType;
+use Airavata\Model\AppCatalog\ComputeResource\DataMovementProtocol;
+use Airavata\Model\AppCatalog\ComputeResource\ComputeResourceDescription;
+use Airavata\Model\AppCatalog\ComputeResource\SSHJobSubmission;
+use Airavata\Model\AppCatalog\ComputeResource\BatchQueue;
+
+
 
 class Utilities{
 /**
@@ -2028,6 +2040,83 @@ public static function apply_changes_to_experiment($experiment, $input)
         //var_dump($experiment);
         return $experiment;
     }
+}
+
+/*
+ * Register or update a compute resource
+*/
+
+public static function register_or_update_compute_resource( $computeDescription, $update = false)
+{
+    $airavataclient = Utilities::get_airavata_client();
+    if( $update)
+    {
+        $computeResourceId = $computeDescription->computeResourceId;
+        if( $airavataclient->updateComputeResource( $computeResourceId, $computeDescription) )
+        {
+            // do something when update returns true.
+        }
+    }
+    else
+    {
+        /*
+        $fileSystems = new FileSystems();
+        foreach( $fileSystems as $fileSystem)
+            $computeDescription["fileSystems"][$fileSystem] = "";
+        */
+        $cd = new ComputeResourceDescription( $computeDescription);
+        $computeResourceId = $airavataclient->registerComputeResource( $cd);
+    }
+    $computeResource = $airavataclient->getComputeResource( $computeResourceId);
+    return $computeResource;
+
+}
+
+public static function createQueueObject( $queue){
+    $queueObject = new BatchQueue( $queue); 
+    return $queueObject;
+}
+
+public static function createJSIObject( $inputs){
+
+    $airavataclient = Utilities::get_airavata_client();
+    $computeResource = Session::get("computeResource");
+
+    if( $inputs["jobSubmissionProtocol"] == 1) /* SSH */
+    {
+        $resourceManager = new ResourceJobManager(array( "resourceJobManagerType"=> $inputs["resourceJobManagerType"]));
+        $sshJobSubmission = new SSHJobSubmission( array
+                                                    (
+                                                        "securityProtocol" => intval( $inputs["securityProtocol"]),
+                                                        "resourceJobManager" => $resourceManager,
+                                                        "alternativeSSHHostName" => $inputs["alternativeSSHHostName"],
+                                                        "sshPort" => $inputs["sshPort"]
+                                                    )
+                                                );
+
+        $sshSub = $airavataclient->addSSHJobSubmissionDetails( $computeResource->computeResourceId, 0, $sshJobSubmission);
+        print_r( $sshSub); exit;
+
+        
+    }
+}
+/*
+ * Getting data for Compute resource inputs 
+*/
+
+public static function getEditCRData(){
+    $files = new FileSystems();
+    $jsp = new JobSubmissionProtocol();
+    $rjmt = new ResourceJobManagerType();
+    $sp = new SecurityProtocol();
+    $dmp = new DataMovementProtocol();
+    return array(
+                    "fileSystems" => $files::$__names,
+                    "jobSubmissionProtocols" => $jsp::$__names,
+                    "resourceJobManagerTypes" => $rjmt::$__names,
+                    "securityProtocols" => $sp::$__names,
+                    "dataMovementProtocols" => $dmp::$__names
+                );
 }
 	
 }

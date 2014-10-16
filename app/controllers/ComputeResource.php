@@ -11,43 +11,59 @@ class ComputeResource extends BaseController{
 		$this->beforeFilter('verifyadmin');
 	}
 
-	public function createView( $stepNum){
-
-		if( $stepNum == "step1")
-		{
-			return View::make("resource/create-step1");
-		}
-
-		if( $stepNum == "step2" && Session::has("step2") )
-		{
-			return View::make("resource/create-step2");
-		}
-
-		if( $stepNum == "step3")
-		{
-			return View::make("resource/create-step3");
-		}
+	public function createView(){
+			return View::make("resource/create");
 	}
 
 	public function createSubmit(){
 
-		if( Input::has("step1")){
+		$computeDescription = array( 
+									"hostName"=>Input::get("hostname"),
+									"hostAliases"=>Input::get("hostaliases"),
+									"ipAddresses"=>Input::get("ips"),
+									"resourceDescription"=>Input::get("description") 
+									);
+		$computeResource = Utilities::register_or_update_compute_resource( $computeDescription);
+		Session::put( "computeResource", $computeResource);
+		return Redirect::to( "cr/edit");
+	}
 
-			Session::put( "hostname", Input::get("hostname"));
-			Session::put( "hostaliases", Input::get("hostaliases"));
-			Session::put( "ips", Input::get("ips"));
-			Session::put( "description", Input::get("description"));
-			Session::put("step2", true);
+	public function editView(){
+		
+		$data = Utilities::getEditCRData();
+		$computeResource = Session::get("computeResource");
+		$data["computeResource"] = Utilities::get_compute_resource(  $computeResource->computeResourceId);
+		//print_r( $data["computeResource"]); exit;
+		return View::make("resource/edit", $data);
 
-			return Redirect::to("cr/create/step2");
+	}
+		
+	public function editSubmit(){
+
+		if( Input::get("cr-edit") == "queue")
+		{
+			$queue = array( "queueName"=>Input::get("qname"),
+							"queueDescription"=>Input::get("qdesc"),
+							"maxRunTime"=>Input::get( "qmaxruntime"),
+							"maxNodes"=>Input::get("qmaxnodes"),
+							"maxProcessors"=>Input::get("qmaxprocessors"),
+							"maxJobsInQueue"=>Input::get("qmaxjobsinqueue")
+						);
+
+			$computeDescription = Session::get("computeResource");
+			$computeDescription->batchQueues[] = Utilities::createQueueObject( $queue);
+			$computeResource = Utilities::register_or_update_compute_resource( $computeDescription, true);
+			Session::put("computeResource", $computeResource);
+
+			return Redirect::to("cr/edit");
 		}
-		elseif ( Input::has("step2")) {
-
-			return Redirect::to("cr/create/step3");
-			
-		}
-		elseif( Input::has("step3")){
-
+		else if( Input::get("cr-edit") == "jsp")
+		{
+			$computeDescription = Session::get("computeResource");
+			//print_r( $computeDescription); exit;
+			//var_dump( Input::all()); exit;
+			$jobSubmissionInterface = Utilities::createJSIObject( Input::all() );
+			//print_r( $jobSubmissionInterface); exit;
 		}
 		else
 			return Redirect::to("cr/create");

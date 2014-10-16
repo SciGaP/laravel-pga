@@ -16,3 +16,146 @@ function getAccodrionCode()
     </div>\
   </div>';
 }
+
+$(document).ready( function(){
+  $(".add-queue").click( function(){
+    $(this).before( $(".queue-block").html() );
+    /* '\
+        Queue - \
+          <input class="form-control" maxlength="30" name="qname[]" placeholder="Queue Name"/>\
+          <input class="form-control" maxlength="30" name="qdesc[]" placeholder="Queue Description"/>\
+          <input class="form-control" maxlength="30" name="qmaxruntime[]" placeholder="Queue Max Run Time"/>\
+          <input class="form-control" maxlength="30" name="qmaxnodes[]" placeholder="Queue Max Nodes"/>\
+          <input class="form-control" maxlength="30" name="qmaxprocessors[]" placeholder="Queue Max Processors"/>\
+          <input class="form-control" maxlength="30" name="qmaxjobsinqueue[]" placeholder="Max JObs In Queue"/>\
+          <hr/> \
+          ');
+    */
+  });
+
+
+  $(".add-ip").click( function(){
+    $(this).before( '<input class="form-control" maxlength="30" name="ips[]"/>');
+  })
+
+  /* 
+   * code that relates to Job Submission Protocol Interface starts here.
+  */
+
+  $(".add-job-submission").click( function(){
+    $(".job-submission-info").removeClass("hide").append( "<div class='job-protocol-block col-md-12'>" + $(".select-job-protocol").html() + "</div><hr/>");
+  });
+
+  $("body").on("change", ".selected-job-protocol", function(){
+
+    var selectedVal = $(this).children("option:selected").html().toLowerCase();
+
+    $(this).parent().find("div[class*='resourcemanager-']").remove();
+
+    var parentResDiv = "<div class='resourcemanager-" + selectedVal + "'>"
+                + "<hr/>" 
+                + "Resource Manager: <h4>" + selectedVal + "</h4>"
+                + "<hr/>";
+
+    if( selectedVal == "local")
+    {
+      $(this).after(  parentResDiv + $(".resource-manager-block").html() + "</div>" );
+    }
+    else if( selectedVal == "ssh")
+    {
+      $(this).after(  parentResDiv 
+                      + $(".ssh-block").html()
+                      + $(".resource-manager-block").html() 
+                      + "</div>" );
+      $(this).parent().find(".addedScpValue").removeClass("hide");
+
+    }
+    else if( selectedVal == "globus")
+    {
+      $(this).parent().append(  parentResDiv 
+                      + $(".ssh-block").html()
+                      + "<h5>Globus Gate Keeper End Point</h5>" 
+                      + "<input class='form-control' name='globusGateKeeperEndPoint'/>"
+                      + "</div>" );
+    }
+    else if( selectedVal == "unicore")
+    {
+      $(this).parent().append(  parentResDiv 
+                      + $(".ssh-block").html()
+                      + "<h5>Unicore End Point Url</h5>" 
+                      + "<input class='form-control' name='unicoreEndPointURL'/>"
+                      + "</div>" );
+    }
+    else if( selectedVal == "cloud")
+    {
+      $(this).parent().append(  parentResDiv 
+                      + $(".ssh-block").html()
+                      + $(".cloud-block").html()
+                      );
+    }
+    else{
+      alert("Something went wrong. Please try again");
+      $(".jspSubmit").addClass("hide");
+    }
+    $(".jspSubmit").removeClass("hide");
+  });
+  
+  /* 
+   * code that relates to Job Submission Protocol Interface ends here.
+  */
+
+
+  /* 
+   * code that relates to Data Movement Interface starts here.
+  */
+
+  $(".add-data-movement").click( function(){
+    $(".data-movement-info").removeClass("hide").append( "<div class='data-movement-block col-md-12'>" + $(".select-data-movement").html() + "</div><hr/>");
+  });
+
+
+  $("body").on("change", ".selected-data-movement-protocol", function(){
+
+    var selectedVal = $(this).val().toLowerCase();
+
+    $(this).parent().find("div[class*='dataprotocol-']").remove();
+    var parentDataDiv = "<div class='dataprotocol-" + selectedVal + "'>"
+                + "<hr/>" 
+                + "Data Management Protocol: <h4>" + $(this).val() + "</h4>"
+                + "<hr/>";
+    if( selectedVal == "local")
+    {
+      // to find out what goes here.
+    }
+    else if( selectedVal == "scp" )
+    {
+      $(this).parent().append(  parentDataDiv 
+                      + $(".ssh-block").html()
+                      + "</div>" );
+      $(this).parent().find("addedScpValue").removeClass("hide");
+    }
+    else if( selectedVal == "sftp")
+    {
+      // to find out what oes here.
+    }
+    else if( selectedVal == "gridftp")
+    {
+      $(this).parent().append(  parentDataDiv 
+                      + $(".ssh-block").html()
+                      + $(".dm-gridftp").html()
+                      + "</div>" );
+    }
+    else if( selectedVal == "unicore_storage_service")
+    {
+      $(this).parent().append(  parentDataDiv 
+                      + $(".ssh-block").html()
+                      + "<h5>Unicore End Point Url</h5>" 
+                      + "<input class='form-control' name='unicoreEndPointURL'/>"
+                      + "</div>" );
+    }
+  });
+
+  $("body").on("click", ".add-gridFTPEndPoint", function(){
+        $(this).before( '<input class="form-control" maxlength="30" name="gridFTPEndPoints[]"/>');
+  });
+});

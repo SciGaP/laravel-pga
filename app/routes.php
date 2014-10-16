@@ -60,9 +60,13 @@ Route::get("cr/create", function(){
 	return Redirect::to("cr/create/step1");
 });
 
-Route::get("cr/create/{stepnum}", "ComputeResource@createView");
+Route::get("cr/create", "ComputeResource@createView"); 
 
-Route::post("cr/create", "ComputeResource@createView");
+Route::post("cr/create", "ComputeResource@createSubmit");
+
+Route::get("cr/edit", "ComputeResource@editView"); 
+
+Route::post("cr/edit", "ComputeResource@editSubmit"); 
 
 /*
  * Test Routes.

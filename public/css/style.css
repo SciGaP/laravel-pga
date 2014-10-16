@@ -1,10 +1,11 @@
-.job-submission-data{
+.job-submission-info, .data-movement-info{
 	border: 1px solid #000;
 	padding: 5%;
 }
 
-.job-protocol-block{
-	border: 2px dashed #dedede;
-	margin-bottom:2%;
+.job-protocol-block, .data-movement-block{
+	border: 3.5px dashed #666;
+	border-radius: 15px;
+	margin-bottom:5%;
 	padding-bottom: 5%;
 }
