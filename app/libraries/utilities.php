@@ -1375,6 +1375,10 @@ public static function create_nav_bar()
             array('label' => 'Create Experiment', 'url' => URL::to('/') . '/experiment/create'),
             array('label' => 'Search Experiments', 'url' => URL::to('/') . '/experiment/search')
         ),
+        'Compute Resource' => array
+        (
+            array('label' => 'Register a Compute Resource', 'url' => URL::to('/') . '/cr/create')
+        ),
         'Help' => array
         (
             array('label' => 'Report Issue', 'url' => '#'),
