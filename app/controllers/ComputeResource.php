@@ -23,14 +23,14 @@ class ComputeResource extends BaseController{
 									"ipAddresses"=>Input::get("ips"),
 									"resourceDescription"=>Input::get("description") 
 									);
-		$computeResource = Utilities::register_or_update_compute_resource( $computeDescription);
+		$computeResource = CRUtilities::register_or_update_compute_resource( $computeDescription);
 		Session::put( "computeResource", $computeResource);
 		return Redirect::to( "cr/edit");
 	}
 
 	public function editView(){
 		
-		$data = Utilities::getEditCRData();
+		$data = CRUtilities::getEditCRData();
 		$computeResource = Session::get("computeResource");
 		$data["computeResource"] = Utilities::get_compute_resource(  $computeResource->computeResourceId);
 		//print_r( $data["computeResource"]); exit;
@@ -40,7 +40,7 @@ class ComputeResource extends BaseController{
 		
 	public function editSubmit(){
 
-		if( Input::get("cr-edit") == "queue")
+		if( Input::get("cr-edit") == "queue") /* Add / Modify a Queue */
 		{
 			$queue = array( "queueName"=>Input::get("qname"),
 							"queueDescription"=>Input::get("qdesc"),
@@ -51,19 +51,21 @@ class ComputeResource extends BaseController{
 						);
 
 			$computeDescription = Session::get("computeResource");
-			$computeDescription->batchQueues[] = Utilities::createQueueObject( $queue);
-			$computeResource = Utilities::register_or_update_compute_resource( $computeDescription, true);
+			$computeDescription->batchQueues[] = CRUtilities::createQueueObject( $queue);
+			$computeResource = CRUtilities::register_or_update_compute_resource( $computeDescription, true);
 			Session::put("computeResource", $computeResource);
 
 			return Redirect::to("cr/edit");
 		}
-		else if( Input::get("cr-edit") == "jsp")
-		{
-			$computeDescription = Session::get("computeResource");
-			//print_r( $computeDescription); exit;
+		else if( Input::get("cr-edit") == "jsp") /* Add / Modify a Job Submission Interface */
+		{			//print_r( $computeDescription); exit;
 			//var_dump( Input::all()); exit;
-			$jobSubmissionInterface = Utilities::createJSIObject( Input::all() );
-			//print_r( $jobSubmissionInterface); exit;
+			$jobSubmissionInterface = CRUtilities::createJSIObject( Input::all() );
+			print_r( $jobSubmissionInterface); exit;
+		}
+		else if( Input::get("cr-edit") == "dmp") /* Add / Modify a Data Movement Interface */
+		{
+			$dataMovementInterface = CRUtilities::createDMIObject( Input::all() );
 		}
 		else
 			return Redirect::to("cr/create");

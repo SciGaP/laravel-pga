@@ -108,7 +108,6 @@
           		</div>
       		</form>
       	</div>
-      	<hr/>
 		<div class="form-group required">
 			<button type="button" class="btn btn-sm btn-default add-queue">Add a Queue</button>
 		</div>
@@ -213,18 +212,29 @@
 		<hr/>
 
 		<div class="select-data-movement hide">
-			<h4>
-				Select the Data Movement Protocol
-				<button type='button' class='close' data-dismiss='alert'>
-					<span aria-hidden='true'>&times;</span><span class='sr-only'>Close</span>
-				</button>
-					<select name="dataMovementProtocol" class="form-control selected-data-movement-protocol">
-				  		<option></option>
-					@foreach( $dataMovementProtocols as $dmp)
-						<option value="{{ $dmp }}">{{ $dmp }}</option>
-					@endforeach
-					</select>
-			</h4>
+
+			<form role="form" method="POST" action="{{ URL::to('/') }}/cr/edit">
+				<input type="hidden" name="cr-edit" value="dmp"/>
+				<h4>
+					Select the Data Movement Protocol
+					<button type='button' class='close' data-dismiss='alert'>
+						<span aria-hidden='true'>&times;</span><span class='sr-only'>Close</span>
+					</button>
+				</h4>
+
+				<select name="dataMovementProtocol" class="form-control selected-data-movement-protocol">
+			  		<option></option>
+				@foreach( $dataMovementProtocols as $index => $dmp)
+					<option value="{{ $index }}">{{ $dmp }}</option>
+				@endforeach
+				</select>
+
+				<div class="form-group">
+					<button type="submit" class="btn btn-primary dmpSubmit hide">Add Data Movement Protocol</button>
+				</div>
+
+			</form>
+
 		</div>
 
 		<div class="dm-gridftp hide">
@@ -241,10 +251,13 @@
 		</div>
 		<hr/>
 
+		<!-- 
 		<div class="form-group">
 			<input type="submit" class="btn  btn-primary" name="step2" value="Continue"/>
 			<input type="reset" class="btn  btn-success" value="Reset"/>
 		</div>
+
+		--> 
 	</div>
 </div>
 

@@ -23,17 +23,8 @@ use Airavata\Model\AppCatalog\AppInterface\DataType;
 use Airavata\Model\Workspace\Project;
 use Airavata\Model\Workspace\Experiment\ExperimentState;
 use Airavata\Model\Workspace\Experiment\JobState;
-use Airavata\Model\AppCatalog\ComputeResource\FileSystems;
 use Airavata\Model\AppCatalog\ComputeResource\JobSubmissionInterface;
 use Airavata\Model\AppCatalog\ComputeResource\JobSubmissionProtocol;
-use Airavata\Model\AppCatalog\ComputeResource\SecurityProtocol;
-use Airavata\Model\AppCatalog\ComputeResource\ResourceJobManager;
-use Airavata\Model\AppCatalog\ComputeResource\ResourceJobManagerType;
-use Airavata\Model\AppCatalog\ComputeResource\DataMovementProtocol;
-use Airavata\Model\AppCatalog\ComputeResource\ComputeResourceDescription;
-use Airavata\Model\AppCatalog\ComputeResource\SSHJobSubmission;
-use Airavata\Model\AppCatalog\ComputeResource\LOCALSubmission;
-use Airavata\Model\AppCatalog\ComputeResource\BatchQueue;
 
 
 
@@ -2042,106 +2033,6 @@ public static function apply_changes_to_experiment($experiment, $input)
         return $experiment;
     }
 }
-
-/*
- * Register or update a compute resource
-*/
-
-public static function register_or_update_compute_resource( $computeDescription, $update = false)
-{
-    $airavataclient = Utilities::get_airavata_client();
-    if( $update)
-    {
-        $computeResourceId = $computeDescription->computeResourceId;
-        if( $airavataclient->updateComputeResource( $computeResourceId, $computeDescription) )
-        {
-            // do something when update returns true.
-        }
-    }
-    else
-    {
-        /*
-        $fileSystems = new FileSystems();
-        foreach( $fileSystems as $fileSystem)
-            $computeDescription["fileSystems"][$fileSystem] = "";
-        */
-        $cd = new ComputeResourceDescription( $computeDescription);
-        $computeResourceId = $airavataclient->registerComputeResource( $cd);
-    }
-    $computeResource = $airavataclient->getComputeResource( $computeResourceId);
-    return $computeResource;
-
-}
-
-public static function createQueueObject( $queue){
-    $queueObject = new BatchQueue( $queue); 
-    return $queueObject;
-}
-
-public static function createJSIObject( $inputs){
-
-    $airavataclient = Utilities::get_airavata_client();
-    $computeResource = Session::get("computeResource");
-
-    $computeResource = $airavataclient->getComputeResource( $computeResource->computeResourceId, $computeResource); 
-    //print_r( $computeResource); exit;
-
-    if( $inputs["jobSubmissionProtocol"] == 0) /* LOCAL */
-    {
-        $resourceManager = new ResourceJobManager(array( "resourceJobManagerType"=> $inputs["resourceJobManagerType"]));
-        $localJobSubmission = new LOCALSubmission( array(
-                                                            "resourceJobManager" => $resourceManager
-                                                            )
-                                                    );
-        $localSub = $airavataclient->addLocalSubmissionDetails( $computeResource->computeResourceId, 0, $localJobSubmission);
-        if( $localSub)
-        {
-            if( $localSub)
-            print_r( "The SSH Job Interface has been added. Edit UI for the Job Interface is yet to be made.
-                Please click <a href='" . URL::to('/') . "/cr/edit'>here</a> to go back to edit page for compute resource.");
-        
-        }
-        
-    }
-    else if( $inputs["jobSubmissionProtocol"] == 1) /* SSH */
-    {
-        $resourceManager = new ResourceJobManager(array( "resourceJobManagerType"=> $inputs["resourceJobManagerType"]));
-        $sshJobSubmission = new SSHJobSubmission( array
-                                                    (
-                                                        "securityProtocol" => intval( $inputs["securityProtocol"]),
-                                                        "resourceJobManager" => $resourceManager,
-                                                        "alternativeSSHHostName" => $inputs["alternativeSSHHostName"],
-                                                        "sshPort" => $inputs["sshPort"]
-                                                    )
-                                                );
-
-        $sshSub = $airavataclient->addSSHJobSubmissionDetails( $computeResource->computeResourceId, 0, $sshJobSubmission);
-        if( $sshSub)
-            print_r( "The SSH Job Interface has been added. Edit UI for the Job Interface is yet to be made.
-                Please click <a href='" . URL::to('/') . "/cr/edit'>here</a> to go back to edit page for compute resource.");
-        
-    }
-
-}
-/*
- * Getting data for Compute resource inputs 
-*/
-
-public static function getEditCRData(){
-    $files = new FileSystems();
-    $jsp = new JobSubmissionProtocol();
-    $rjmt = new ResourceJobManagerType();
-    $sp = new SecurityProtocol();
-    $dmp = new DataMovementProtocol();
-    return array(
-                    "fileSystems" => $files::$__names,
-                    "jobSubmissionProtocols" => $jsp::$__names,
-                    "resourceJobManagerTypes" => $rjmt::$__names,
-                    "securityProtocols" => $sp::$__names,
-                    "dataMovementProtocols" => $dmp::$__names
-                );
-}
-	
 }
 
 ?>

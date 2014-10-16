@@ -97,6 +97,7 @@ $(document).ready( function(){
       alert("Something went wrong. Please try again");
       $(".jspSubmit").addClass("hide");
     }
+
     $(".jspSubmit").removeClass("hide");
   });
   
@@ -116,12 +117,12 @@ $(document).ready( function(){
 
   $("body").on("change", ".selected-data-movement-protocol", function(){
 
-    var selectedVal = $(this).val().toLowerCase();
+    var selectedVal = $(this).children("option:selected").html().toLowerCase();
 
     $(this).parent().find("div[class*='dataprotocol-']").remove();
     var parentDataDiv = "<div class='dataprotocol-" + selectedVal + "'>"
                 + "<hr/>" 
-                + "Data Management Protocol: <h4>" + $(this).val() + "</h4>"
+                + "Data Management Protocol: <h4>" + selectedVal + "</h4>"
                 + "<hr/>";
     if( selectedVal == "local")
     {
@@ -129,30 +130,36 @@ $(document).ready( function(){
     }
     else if( selectedVal == "scp" )
     {
-      $(this).parent().append(  parentDataDiv 
+      $(this).after(  parentDataDiv 
                       + $(".ssh-block").html()
                       + "</div>" );
-      $(this).parent().find("addedScpValue").removeClass("hide");
+      $(this).parent().find(".addedScpValue").removeClass("hide");
     }
     else if( selectedVal == "sftp")
     {
-      // to find out what oes here.
+      // to find out what goes here.
     }
     else if( selectedVal == "gridftp")
     {
-      $(this).parent().append(  parentDataDiv 
+      $(this).after(  parentDataDiv 
                       + $(".ssh-block").html()
                       + $(".dm-gridftp").html()
                       + "</div>" );
     }
     else if( selectedVal == "unicore_storage_service")
     {
-      $(this).parent().append(  parentDataDiv 
+      $(this).after(  parentDataDiv 
                       + $(".ssh-block").html()
                       + "<h5>Unicore End Point Url</h5>" 
                       + "<input class='form-control' name='unicoreEndPointURL'/>"
                       + "</div>" );
     }
+    else{
+      alert("Something went wrong. Please try again");
+      $(".dmpSubmit").addClass("hide");
+    }
+    $(".dmpSubmit").removeClass("hide");
+
   });
 
   $("body").on("click", ".add-gridFTPEndPoint", function(){
