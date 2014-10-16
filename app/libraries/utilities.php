@@ -32,6 +32,7 @@ use Airavata\Model\AppCatalog\ComputeResource\ResourceJobManagerType;
 use Airavata\Model\AppCatalog\ComputeResource\DataMovementProtocol;
 use Airavata\Model\AppCatalog\ComputeResource\ComputeResourceDescription;
 use Airavata\Model\AppCatalog\ComputeResource\SSHJobSubmission;
+use Airavata\Model\AppCatalog\ComputeResource\LOCALSubmission;
 use Airavata\Model\AppCatalog\ComputeResource\BatchQueue;
 
 
@@ -2082,7 +2083,27 @@ public static function createJSIObject( $inputs){
     $airavataclient = Utilities::get_airavata_client();
     $computeResource = Session::get("computeResource");
 
-    if( $inputs["jobSubmissionProtocol"] == 1) /* SSH */
+    $computeResource = $airavataclient->getComputeResource( $computeResource->computeResourceId, $computeResource); 
+    //print_r( $computeResource); exit;
+
+    if( $inputs["jobSubmissionProtocol"] == 0) /* LOCAL */
+    {
+        $resourceManager = new ResourceJobManager(array( "resourceJobManagerType"=> $inputs["resourceJobManagerType"]));
+        $localJobSubmission = new LOCALSubmission( array(
+                                                            "resourceJobManager" => $resourceManager
+                                                            )
+                                                    );
+        $localSub = $airavataclient->addLocalSubmissionDetails( $computeResource->computeResourceId, 0, $localJobSubmission);
+        if( $localSub)
+        {
+            if( $localSub)
+            print_r( "The SSH Job Interface has been added. Edit UI for the Job Interface is yet to be made.
+                Please click <a href='" . URL::to('/') . "/cr/edit'>here</a> to go back to edit page for compute resource.");
+        
+        }
+        
+    }
+    else if( $inputs["jobSubmissionProtocol"] == 1) /* SSH */
     {
         $resourceManager = new ResourceJobManager(array( "resourceJobManagerType"=> $inputs["resourceJobManagerType"]));
         $sshJobSubmission = new SSHJobSubmission( array
@@ -2095,10 +2116,12 @@ public static function createJSIObject( $inputs){
                                                 );
 
         $sshSub = $airavataclient->addSSHJobSubmissionDetails( $computeResource->computeResourceId, 0, $sshJobSubmission);
-        print_r( $sshSub); exit;
-
+        if( $sshSub)
+            print_r( "The SSH Job Interface has been added. Edit UI for the Job Interface is yet to be made.
+                Please click <a href='" . URL::to('/') . "/cr/edit'>here</a> to go back to edit page for compute resource.");
         
     }
+
 }
 /*
  * Getting data for Compute resource inputs 
