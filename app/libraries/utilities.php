@@ -47,7 +47,7 @@ const AIRAVATA_TIMEOUT = 100000;
 const EXPERIMENT_DATA_ROOT = '../../experimentData/';
 
 const SSH_USER = 'root';
-const DATA_PATH = 'file://var/www/htm/experimentData/';
+const DATA_PATH = 'file://var/www/html/experimentData/';
 
 const EXPERIMENT_DATA_ROOT_ABSOLUTE = '/var/www/html/experimentData/';
 
@@ -275,6 +275,7 @@ public static function get_airavata_client()
         $transport->open();
 
         $client = new AiravataClient($protocol);
+        return $client;
     }
     catch (Exception $e)
     {
@@ -282,9 +283,6 @@ public static function get_airavata_client()
             Please try again later or submit a bug report using the link in the Help menu.</p>' .
             '<p>' . $e->getMessage() . '</p>');
     }
-
-
-    return $client;
 }
 
 
