@@ -38,18 +38,18 @@ class Utilities{
 /**
  * Define configuration constants
  */
-const AIRAVATA_SERVER = 'gw111.iu.xsede.org';
-//const AIRAVATA_SERVER = 'gw127.iu.xsede.org';
+//const AIRAVATA_SERVER = 'gw111.iu.xsede.org';
+const AIRAVATA_SERVER = 'gw127.iu.xsede.org';
 //const AIRAVATA_SERVER = 'gw56.iu.xsede.org'; //Mirror
 //const AIRAVATA_PORT = 8930; //development
 const AIRAVATA_PORT = 9930; //production
 const AIRAVATA_TIMEOUT = 100000;
-const EXPERIMENT_DATA_ROOT = '../../experimentData/';
+const EXPERIMENT_DATA_ROOT = '../../../experimentData/';
 
 const SSH_USER = 'root';
-const DATA_PATH = 'file://var/www/html/experimentData/';
+const DATA_PATH = 'file://home/pga/production/experimentData/';
 
-const EXPERIMENT_DATA_ROOT_ABSOLUTE = '/var/www/html/experimentData/';
+const EXPERIMENT_DATA_ROOT_ABSOLUTE = '/home/pga/production/experimentData/';
 
 //const EXPERIMENT_DATA_ROOT_ABSOLUTE = 'C:/wamp/www/experimentData/';
 
