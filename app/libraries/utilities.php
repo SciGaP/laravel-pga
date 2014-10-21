@@ -1,5 +1,16 @@
 <?php
 
+
+
+
+
+
+
+
+
+
+
+
 //Thrift classes - loaded from Vendor/Thrift
 use Thrift\Transport\TTransport;
 use Thrift\Exception\TException;
@@ -44,13 +55,12 @@ const AIRAVATA_SERVER = 'gw127.iu.xsede.org';
 //const AIRAVATA_PORT = 8930; //development
 const AIRAVATA_PORT = 9930; //production
 const AIRAVATA_TIMEOUT = 100000;
-const EXPERIMENT_DATA_ROOT = '../../../experimentData/';
+const EXPERIMENT_DATA_ROOT = '/../experimentData/';
 
 const SSH_USER = 'root';
 const DATA_PATH = 'file://home/pga/production/experimentData/';
 
 const EXPERIMENT_DATA_ROOT_ABSOLUTE = '/home/pga/production/experimentData/';
-
 //const EXPERIMENT_DATA_ROOT_ABSOLUTE = 'C:/wamp/www/experimentData/';
 
 //const USER_STORE = 'WSO2','XML','USER_API';
@@ -574,7 +584,7 @@ public static function list_input_files($experiment)
             $explode = explode('/', $input->value);
             //echo '<p><a href="' . $input->value . '">' . $input->key . '</a></p>';
             echo '<p><a target="_blank"
-                        href="' . Utilities::EXPERIMENT_DATA_ROOT . $explode[sizeof($explode)-2] . '/' . $explode[sizeof($explode)-1] . '">' .
+                        href="' . base_path() . Utilities::EXPERIMENT_DATA_ROOT . $explode[sizeof($explode)-2] . '/' . $explode[sizeof($explode)-1] . '">' .
                 $input->key . '
                 <span class="glyphicon glyphicon-new-window"></span></a></p>';
             //echo $input->value . '<br>';
@@ -790,7 +800,7 @@ public static function assemble_experiment()
     if( Utilities::EXPERIMENT_PATH != null){
         $advHandling = new AdvancedOutputDataHandling();
         //echo($experimentPath);
-        $advHandling->outputDataDir = str_replace(Utilities::EXPERIMENT_DATA_ROOT, $pathConstant , $experimentPath);
+        $advHandling->outputDataDir = str_replace( base_path() . Utilities::EXPERIMENT_DATA_ROOT, $pathConstant , $experimentPath);
         $userConfigData->advanceOutputDataHandling = $advHandling;
     }
 
@@ -865,10 +875,9 @@ public static function process_inputs($applicationInputs, $experimentInputs)
             // construct unique path
             do
             {
-                $experimentPath = Utilities::EXPERIMENT_DATA_ROOT . str_replace(' ', '', Session::get('username') ) . md5(rand() * time()) . '/';
+                $experimentPath = base_path() . Utilities::EXPERIMENT_DATA_ROOT . str_replace(' ', '', Session::get('username') ) . md5(rand() * time()) . '/';
             }
             while (is_dir($experimentPath)); // if dir already exists, try again
-
             // create upload directory
             if (!mkdir($experimentPath))
             {
@@ -958,7 +967,7 @@ public static function process_inputs($applicationInputs, $experimentInputs)
 
                 global $pathConstant;
 
-                $experimentInput->value = str_replace(Utilities::EXPERIMENT_DATA_ROOT, $pathConstant , $filePath);
+                $experimentInput->value = str_replace(base_path() . Utilities::EXPERIMENT_DATA_ROOT, $pathConstant , $filePath);
             }
             else
             {
@@ -1582,7 +1591,7 @@ public static function create_project()
 {
     
     $airavataclient = Utilities::get_airavata_client();
-
+    
     $project = new Project();
     $project->owner = Session::get('username');
     $project->name = $_POST['project-name'];
@@ -1754,7 +1763,7 @@ public static function list_output_files($experiment)
         {
             //echo '<p>' . $output->key .  ': <a href="' . $output->value . '">' . $output->value . '</a></p>';
             echo '<p><a target="_blank"
-                        href="' . str_replace(EXPERIMENT_DATA_ROOT_ABSOLUTE, EXPERIMENT_DATA_ROOT, $output->value) . '">' .
+                        href="' . str_replace(EXPERIMENT_DATA_ROOT_ABSOLUTE, base_path() . EXPERIMENT_DATA_ROOT, $output->value) . '">' .
                         $output->key . ' <span class="glyphicon glyphicon-new-window"></span></a></p>';
         }
         elseif ($output->type == DataType::STRING)
