@@ -879,7 +879,7 @@ public static function process_inputs($applicationInputs, $experimentInputs)
             }
             while (is_dir($experimentPath)); // if dir already exists, try again
             // create upload directory
-            if (!mkdir($experimentPath))
+            if (!mkdir($experimentPath, 0775))
             {
                 Utilities::print_error_message('<p>Error creating upload directory!
                     Please try again later or report a bug using the link in the Help menu.</p>');
