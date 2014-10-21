@@ -584,7 +584,7 @@ public static function list_input_files($experiment)
             $explode = explode('/', $input->value);
             //echo '<p><a href="' . $input->value . '">' . $input->key . '</a></p>';
             echo '<p><a target="_blank"
-                        href="' . URL::to("/") . "/../" . Utilities::EXPERIMENT_DATA_ROOT . $explode[sizeof($explode)-2] . '/' . $explode[sizeof($explode)-1] . '">' .
+                        href="' . URL::to("/") . "/../../" . Utilities::EXPERIMENT_DATA_ROOT . $explode[sizeof($explode)-2] . '/' . $explode[sizeof($explode)-1] . '">' .
                 $input->key . '
                 <span class="glyphicon glyphicon-new-window"></span></a></p>';
             //echo $input->value . '<br>';
