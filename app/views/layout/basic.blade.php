@@ -13,8 +13,7 @@
             <meta charset="utf-8">
             <meta name="viewport" content="width=device-width, initial-scale=1">
             <link rel="icon" href="resources/assets/favicon.ico" type="image/x-icon">
-            <link rel="stylesheet" href="//netdna.bootstrapcdn.com/bootstrap/3.1.1/css/bootstrap.min.css">
-            
+            {{ HTML::style('css/bootstrap.min.css')}}            
         </head>
 
 <?php

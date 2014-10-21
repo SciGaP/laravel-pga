@@ -16,23 +16,23 @@
 				<label class="control-label">Host Name</label>
 				<input class="form-control" value="{{ $computeResource->hostName }}" maxlength="30" name="hostname" required="required"/>
 			</div>
-			<div class="form-group required">
+			<div class="form-group">
 				<label class="control-label">Host Aliases</label>
 				@foreach( $computeResource->hostAliases as $hostAlias )
-					<input class="form-control" value="{{$hostAlias}}" maxlength="30" name="hostaliases[]" required="required"/>
+					<input class="form-control" value="{{$hostAlias}}" maxlength="30" name="hostaliases[]"/>
 				@endforeach
 				<button type="button" class="btn btn-sm btn-default add-alias">Add More Aliases</button>
 			</div>
-			<div class="form-group required">
+			<div class="form-group">
 				<label class="control-label">IP Addresses</label>
 				@foreach( $computeResource->ipAddresses as $ip )
-					<input class="form-control" value="{{ $ip }}" maxlength="30" name="ips[]" required="required"/>
+					<input class="form-control" value="{{ $ip }}" maxlength="30" name="ips[]"/>
 				@endforeach
 				<button type="button" class="btn btn-sm btn-default add-ip">Add More IP Addresses</button>
 			</div>
-			<div class="form-group required">
+			<div class="form-group">
 				<label class="control-label">Resource Description</label>
-				<textarea class="form-control" maxlength="255" name="description" required="required">{{ $computeResource->resourceDescription }}</textarea>
+				<textarea class="form-control" maxlength="255" name="description">{{ $computeResource->resourceDescription }}</textarea>
 			</div>
 			<div class="form-group">
 				<input type="submit" class="btn btn-primary" name="step1" value="Save changes"/>
@@ -112,15 +112,17 @@
 			<button type="button" class="btn btn-sm btn-default add-queue">Add a Queue</button>
 		</div>
 		<hr/>
-		<form role="form" method="POST" action="cr/edit">
-			<div class="form-group required">
-				<label class="control-label">FileSystem</label>
-				<select class="form-label">
-					<option></option>
-				@foreach( $fileSystems as $fileSystem)
-					<option value="{{ $fileSystem }}">{{ $fileSystem }}</option>
+		<form role="form" method="POST" action="{{URL::to('/')}}/cr/edit">
+			<input type="hidden" name="cr-edit" value="fileSystems"/>
+			<div class="form-group">
+				<h3>FileSystem</h3>
+				@foreach( $fileSystems as $index => $fileSystem)
+					<label class="control-label">{{ $fileSystem }}</label>
+					<input class="form-control" name="fileSystems[{{ $index }}]" placeholder="{{ $fileSystem }}" value="@if( isset( $computeResource->fileSystems[ $index]) ){{ $computeResource->fileSystems[ $index] }} @endif"/>
 				@endforeach
 				</select>
+			</div>
+			<div class="form-group">
 				<button class="btn btn-prim">Update</button>
 			</div>
 		</form>
@@ -264,7 +266,6 @@
 @stop
 
 @section('scripts')
-	@parent
 	@parent
     {{ HTML::script('js/script.js') }}
 @stop

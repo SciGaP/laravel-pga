@@ -33,6 +33,9 @@ $(document).ready( function(){
     */
   });
 
+  $(".add-alias").click( function(){
+    $(this).before( '<input class="form-control" maxlength="30" name="hostaliases[]"/>');
+  });
 
   $(".add-ip").click( function(){
     $(this).before( '<input class="form-control" maxlength="30" name="ips[]"/>');

@@ -40,6 +40,20 @@ class ComputeResource extends BaseController{
 		
 	public function editSubmit(){
 
+		if( Input::get("cr-edit") == "resDesc") /* Modify compute Resource description */
+		{
+			$computeDescription = Session::get("computeResource");
+			$computeDescription->hostName = Input::get("hostname");
+			$computeDescription->hostAliases = Input::get("hostaliases");
+			$computeDescription->ipAddresses = Input::get("ips");
+			$computeDescription->resourceDescription = Input::get("description") ;
+
+			$computeResource = CRUtilities::register_or_update_compute_resource( $computeDescription, true);
+			Session::put("computeResource", $computeResource);
+
+			return Redirect::to("cr/edit");
+			
+		}
 		if( Input::get("cr-edit") == "queue") /* Add / Modify a Queue */
 		{
 			$queue = array( "queueName"=>Input::get("qname"),
@@ -66,6 +80,15 @@ class ComputeResource extends BaseController{
 		else if( Input::get("cr-edit") == "dmp") /* Add / Modify a Data Movement Interface */
 		{
 			$dataMovementInterface = CRUtilities::createDMIObject( Input::all() );
+		}
+		else if( Input::get("cr-edit") == "fileSystems")
+		{
+			$computeDescription = Session::get("computeResource");
+			$computeDescription->fileSystems = Input::get("fileSystems");
+			$computeResource = CRUtilities::register_or_update_compute_resource( $computeDescription, true);
+			Session::put("computeResource", $computeResource);
+
+			return Redirect::to("cr/edit");
 		}
 		else
 			return Redirect::to("cr/create");

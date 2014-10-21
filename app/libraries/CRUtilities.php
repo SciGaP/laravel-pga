@@ -15,6 +15,7 @@ use Airavata\API\Error\AiravataClientException;
 use Airavata\API\Error\AiravataSystemException;
 use Airavata\Model\AppCatalog\AppInterface\DataType;
 use Airavata\Model\Workspace\Project;
+
 use Airavata\Model\AppCatalog\ComputeResource\FileSystems;
 use Airavata\Model\AppCatalog\ComputeResource\JobSubmissionInterface;
 use Airavata\Model\AppCatalog\ComputeResource\JobSubmissionProtocol;
@@ -43,88 +44,20 @@ class CRUtilities{
 /**
  * Define configuration constants
  */
-const AIRAVATA_SERVER = 'gw111.iu.xsede.org';
-//const AIRAVATA_SERVER = 'gw127.iu.xsede.org';
-//const AIRAVATA_SERVER = 'gw56.iu.xsede.org'; //Mirror
-//const AIRAVATA_PORT = 8930; //development
-const AIRAVATA_PORT = 9930; //production
-const AIRAVATA_TIMEOUT = 100000;
-const EXPERIMENT_DATA_ROOT = '../../experimentData/';
-
-const SSH_USER = 'root';
-const DATA_PATH = 'file://var/www/htm/experimentData/';
-
-const EXPERIMENT_DATA_ROOT_ABSOLUTE = '/var/www/html/experimentData/';
-
-//const EXPERIMENT_DATA_ROOT_ABSOLUTE = 'C:/wamp/www/experimentData/';
-
-//const USER_STORE = 'WSO2','XML','USER_API';
-const USER_STORE = 'WSO2';
-
-
-const REQ_URL = 'https://gw111.iu.xsede.org:8443/credential-store/acs-start-servlet';
-const GATEWAY_NAME = 'PHP-Reference-Gateway';
-const EMAIL = 'admin@gw120.iu.xsede.org';
-private $tokenFilePath = 'tokens.xml';
-private $tokenFile = null;
-const EXPERIMENT_PATH = null;
-
-//already set inside app/config.php
-//date_default_timezone_set('UTC');
-
-/**
- * Import user store utilities
- */
-/*
-switch (USER_STORE)
-{
-    case 'WSO2':
-        require_once 'wsis_utilities.php'; // WS02 Identity Server
-        break;
-    case 'XML':
-        require_once 'xml_id_utilities.php'; // XML user database
-        break;
-    case 'USER_API':
-        require_once 'userapi_utilities.php'; // Airavata UserAPI
-        break;
-}
-*/
-/**
- * import Thrift and Airavata
- */
-//$GLOBALS['THRIFT_ROOT'] = './lib/Thrift/';
-
-/*
-require_once 'Thrift/Transport/TTransport.php';
-require_once 'Thrift/Transport/TSocket.php';
-require_once 'Thrift/Protocol/TProtocol.php';
-require_once 'Thrift/Protocol/TBinaryProtocol.php';
-require_once 'Thrift/Exception/TException.php';
-require_once 'Thrift/Exception/TApplicationException.php';
-require_once 'Thrift/Exception/TProtocolException.php';
-require_once 'Thrift/Base/TBase.php';
-require_once 'Thrift/Type/TType.php';
-require_once 'Thrift/Type/TMessageType.php';
-require_once 'Thrift/Factory/TStringFuncFactory.php';
-require_once 'Thrift/StringFunc/TStringFunc.php';
-require_once 'Thrift/StringFunc/Core.php';
-*/
-
-
-/*
- * Register or update a compute resource
-*/
-
 public static function register_or_update_compute_resource( $computeDescription, $update = false)
 {
     $airavataclient = Utilities::get_airavata_client();
     if( $update)
     {
         $computeResourceId = $computeDescription->computeResourceId;
+
         if( $airavataclient->updateComputeResource( $computeResourceId, $computeDescription) )
         {
-            // do something when update returns true.
+            $computeResource = $airavataclient->getComputeResource( $computeResourceId);
+            return $computeResource;
         }
+        else
+            print_r( "Something went wrong while updating!"); exit;
     }
     else
     {
@@ -136,6 +69,7 @@ public static function register_or_update_compute_resource( $computeDescription,
         $cd = new ComputeResourceDescription( $computeDescription);
         $computeResourceId = $airavataclient->registerComputeResource( $cd);
     }
+
     $computeResource = $airavataclient->getComputeResource( $computeResourceId);
     return $computeResource;
 

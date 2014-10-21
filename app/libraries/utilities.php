@@ -879,7 +879,7 @@ public static function process_inputs($applicationInputs, $experimentInputs)
             }
             while (is_dir($experimentPath)); // if dir already exists, try again
             // create upload directory
-            if (!mkdir($experimentPath, 0775))
+            if (!mkdir($experimentPath))
             {
                 Utilities::print_error_message('<p>Error creating upload directory!
                     Please try again later or report a bug using the link in the Help menu.</p>');
@@ -1409,7 +1409,7 @@ public static function create_nav_bar()
                        <span class="icon-bar"></span>
                        <span class="icon-bar"></span>
                     </button>
-                    <a class="navbar-brand" href="index.php" title="PHP Gateway with Airavata">PGA</a>
+                    <a class="navbar-brand" href="' . URL::to('home') . '" title="PHP Gateway with Airavata">PGA</a>
                 </div>
 
                 <!-- Collect the nav links, forms, and other content for toggling -->
