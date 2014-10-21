@@ -60,7 +60,7 @@ const EXPERIMENT_DATA_ROOT = '/../experimentData/';
 const SSH_USER = 'root';
 const DATA_PATH = 'file://home/pga/production/experimentData/';
 
-const EXPERIMENT_DATA_ROOT_ABSOLUTE = '/home/pga/production/experimentData/';
+const EXPERIMENT_DATA_ROOT_ABSOLUTE = 'file://home/pga/production/experimentData/';
 //const EXPERIMENT_DATA_ROOT_ABSOLUTE = 'C:/wamp/www/experimentData/';
 
 //const USER_STORE = 'WSO2','XML','USER_API';
@@ -584,7 +584,7 @@ public static function list_input_files($experiment)
             $explode = explode('/', $input->value);
             //echo '<p><a href="' . $input->value . '">' . $input->key . '</a></p>';
             echo '<p><a target="_blank"
-                        href="' . base_path() . Utilities::EXPERIMENT_DATA_ROOT . $explode[sizeof($explode)-2] . '/' . $explode[sizeof($explode)-1] . '">' .
+                        href="' . Utilities::EXPERIMENT_DATA_ROOT_ABSOLUTE . $explode[sizeof($explode)-2] . '/' . $explode[sizeof($explode)-1] . '">' .
                 $input->key . '
                 <span class="glyphicon glyphicon-new-window"></span></a></p>';
             //echo $input->value . '<br>';
