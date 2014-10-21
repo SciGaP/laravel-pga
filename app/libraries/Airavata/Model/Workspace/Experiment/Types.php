@@ -222,10 +222,12 @@ final class ExecutionUnit {
   const INPUT = 0;
   const APPLICATION = 1;
   const OUTPUT = 2;
+  const OTHER = 3;
   static public $__names = array(
     0 => 'INPUT',
     1 => 'APPLICATION',
     2 => 'OUTPUT',
+    3 => 'OTHER',
   );
 }
 
@@ -1511,6 +1513,7 @@ class UserConfigurationData {
   public $advanceInputDataHandling = null;
   public $advanceOutputDataHandling = null;
   public $qosParams = null;
+  public $throttleResources = false;
 
   public function __construct($vals=null) {
     if (!isset(self::$_TSPEC)) {
@@ -1547,6 +1550,10 @@ class UserConfigurationData {
           'type' => TType::STRUCT,
           'class' => '\Airavata\Model\Workspace\Experiment\QualityOfServiceParams',
           ),
+        8 => array(
+          'var' => 'throttleResources',
+          'type' => TType::BOOL,
+          ),
         );
     }
     if (is_array($vals)) {
@@ -1570,6 +1577,9 @@ class UserConfigurationData {
       }
       if (isset($vals['qosParams'])) {
         $this->qosParams = $vals['qosParams'];
+      }
+      if (isset($vals['throttleResources'])) {
+        $this->throttleResources = $vals['throttleResources'];
       }
     }
   }
@@ -1646,6 +1656,13 @@ class UserConfigurationData {
             $xfer += $input->skip($ftype);
           }
           break;
+        case 8:
+          if ($ftype == TType::BOOL) {
+            $xfer += $input->readBool($this->throttleResources);
+          } else {
+            $xfer += $input->skip($ftype);
+          }
+          break;
         default:
           $xfer += $input->skip($ftype);
           break;
@@ -1704,6 +1721,11 @@ class UserConfigurationData {
       }
       $xfer += $output->writeFieldBegin('qosParams', TType::STRUCT, 7);
       $xfer += $this->qosParams->write($output);
+      $xfer += $output->writeFieldEnd();
+    }
+    if ($this->throttleResources !== null) {
+      $xfer += $output->writeFieldBegin('throttleResources', TType::BOOL, 8);
+      $xfer += $output->writeBool($this->throttleResources);
       $xfer += $output->writeFieldEnd();
     }
     $xfer += $output->writeFieldStop();
@@ -1981,6 +2003,7 @@ class JobDetails {
   public $applicationStatus = null;
   public $errors = null;
   public $computeResourceConsumed = null;
+  public $jobName = null;
 
   public function __construct($vals=null) {
     if (!isset(self::$_TSPEC)) {
@@ -2020,6 +2043,10 @@ class JobDetails {
           'var' => 'computeResourceConsumed',
           'type' => TType::STRING,
           ),
+        8 => array(
+          'var' => 'jobName',
+          'type' => TType::STRING,
+          ),
         );
     }
     if (is_array($vals)) {
@@ -2043,6 +2070,9 @@ class JobDetails {
       }
       if (isset($vals['computeResourceConsumed'])) {
         $this->computeResourceConsumed = $vals['computeResourceConsumed'];
+      }
+      if (isset($vals['jobName'])) {
+        $this->jobName = $vals['jobName'];
       }
     }
   }
@@ -2128,6 +2158,13 @@ class JobDetails {
             $xfer += $input->skip($ftype);
           }
           break;
+        case 8:
+          if ($ftype == TType::STRING) {
+            $xfer += $input->readString($this->jobName);
+          } else {
+            $xfer += $input->skip($ftype);
+          }
+          break;
         default:
           $xfer += $input->skip($ftype);
           break;
@@ -2192,6 +2229,11 @@ class JobDetails {
     if ($this->computeResourceConsumed !== null) {
       $xfer += $output->writeFieldBegin('computeResourceConsumed', TType::STRING, 7);
       $xfer += $output->writeString($this->computeResourceConsumed);
+      $xfer += $output->writeFieldEnd();
+    }
+    if ($this->jobName !== null) {
+      $xfer += $output->writeFieldBegin('jobName', TType::STRING, 8);
+      $xfer += $output->writeString($this->jobName);
       $xfer += $output->writeFieldEnd();
     }
     $xfer += $output->writeFieldStop();
