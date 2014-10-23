@@ -24,6 +24,7 @@ class ComputeResource extends BaseController{
 									"resourceDescription"=>Input::get("description") 
 									);
 		$computeResource = CRUtilities::register_or_update_compute_resource( $computeDescription);
+		
 		Session::put( "computeResource", $computeResource);
 		return Redirect::to( "cr/edit");
 	}

@@ -49,8 +49,8 @@ class Utilities{
 /**
  * Define configuration constants
  */
-//const AIRAVATA_SERVER = 'gw111.iu.xsede.org';
-const AIRAVATA_SERVER = 'gw127.iu.xsede.org';
+const AIRAVATA_SERVER = 'gw111.iu.xsede.org';
+//const AIRAVATA_SERVER = 'gw127.iu.xsede.org';
 //const AIRAVATA_SERVER = 'gw56.iu.xsede.org'; //Mirror
 //const AIRAVATA_PORT = 8930; //development
 const AIRAVATA_PORT = 9930; //production
@@ -2027,15 +2027,6 @@ public static function apply_changes_to_experiment($experiment, $input)
     //var_dump($experimentInputs);
     $experimentInputs = Utilities::process_inputs($applicationInputs, $experimentInputs); // get new inputs
     //var_dump($experimentInputs);
-
-
-
-
-
-
-
-
-
 
     if ($experimentInputs)
     {

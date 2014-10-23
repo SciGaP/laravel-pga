@@ -14,7 +14,6 @@
               title="Refresh"><span class="glyphicon glyphicon-refresh"></span></a></small>
 </h1>
 
-
     <table class="table">
         <tr>
             <td><strong>Name</strong></td>
@@ -34,7 +33,7 @@
         </tr>
         <tr>
             <td><strong>Compute resource</strong></td>
-            <td><?php $expVal["computeResource"]->hostName; ?></td>
+            <td><?php echo $expVal["computeResource"]->hostName; ?></td>
         </tr>
         <tr>
             <td><strong>Experiment Status</strong></td>

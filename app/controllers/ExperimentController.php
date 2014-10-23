@@ -144,13 +144,11 @@ class ExperimentController extends BaseController {
 
 		    Utilities::update_experiment($experiment->experimentID, $updatedExperiment);
 
-
-
 		    if (isset($_POST['save']))
 		    {
 		        $experiment = Utilities::get_experiment(Input::get('expId') ); // update local experiment variable
 		    }
-		    elseif (isset($_POST['launch']))
+		    if (isset($_POST['launch']))
 		    {
 		        Utilities::launch_experiment($experiment->experimentID);
 		    }

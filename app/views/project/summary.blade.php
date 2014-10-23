@@ -44,18 +44,15 @@
 
     foreach ($experiments as $experiment)
     {
-        $experimentStatus = $experiment->experimentStatus;
-        $experimentState = $experimentStatus->experimentState;
-        $experimentStatusString = ExperimentState::$__names[$experimentState];
-        $experimentTimeOfStateChange = date('Y-m-d H:i:s', $experimentStatus->timeOfStateChange/1000);// divide by 1000 since timeOfStateChange is in ms
-        $applicationInterface = get_application_interface($experiment->applicationId);
+    	$expValues = Utilities::get_experiment_values( $experiment, Utilities::get_project($experiment->projectID), true );
+        $applicationInterface = Utilities::get_application_interface($experiment->applicationId);
 
         echo '<tr>';
 
         echo '<td>';
 
 
-        switch ($experimentStatusString)
+        switch ($expValues["experimentStatusString"])
         {
             case 'SCHEDULED':
             case 'LAUNCHED':
@@ -80,10 +77,10 @@
 
 
 
-        echo '<td>' . $experimentTimeOfStateChange . '</td>';
+        echo '<td>' . $expValues["experimentTimeOfStateChange"] . '</td>';
 
 
-        switch ($experimentStatusString)
+        switch ($expValues["experimentStatusString"])
         {
             case 'CANCELING':
             case 'CANCELED':
@@ -107,7 +104,7 @@
             '" href="experiment_summary.php?expId=' .
             $experiment->experimentID .
             '">' .
-            $experimentStatusString .
+            $expValues["experimentStatusString"] .
             '</a></td>';
 
         echo '</tr>';

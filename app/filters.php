@@ -98,5 +98,6 @@ Route::filter('verifylogin',function()
 
 Route::filter('verifyadmin', function()
 {
+	//if( Session::has("username") && Session::get("username") == "admin")
 	// separate function just to check if logged in user is an admin.
 });
