@@ -100,20 +100,14 @@ class ExperimentController extends BaseController {
 			$project = Utilities::get_project($experiment->projectID);
 
 			$expVal = Utilities::get_experiment_values( $experiment, $project);
-		    return View::make("experiment/edit", array(
-
-							'experiment' => $experiment,
-							'project' => $project,
-							'expVal' => $expVal
-							
-							)
-						);
 		}
 		
 		elseif (isset($_POST['cancel']))
 		{
 		    Utilities::cancel_experiment($experiment->experimentID);
 		}
+
+		return Redirect::to('experiment/summary?expId=' . $experiment->experimentID);
 	}
 
 	public function editView()
