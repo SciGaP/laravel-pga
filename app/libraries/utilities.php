@@ -1290,18 +1290,25 @@ public static function create_compute_resources_select($applicationId, $resource
 {
     $computeResources = Utilities::get_available_app_interface_compute_resources($applicationId);
 
-    echo '<select class="form-control" name="compute-resource" id="compute-resource">';
-
-    foreach ($computeResources as $id => $name)
+    if( count( $computeResources) > 0)
     {
-        $selected = ($resourceHostId == $id)? ' selected' : '';
+    	echo '<select class="form-control" name="compute-resource" id="compute-resource">';
+	    foreach ($computeResources as $id => $name)
+	    {
+	        $selected = ($resourceHostId == $id)? ' selected' : '';
 
-        echo '<option value="' . $id . '"' . $selected . '>' .
-                $name . '</option>';
+	        echo '<option value="' . $id . '"' . $selected . '>' .
+	                $name . '</option>';
 
+	    }
+
+    	echo '</select>';
+    }
+    else
+    {
+    	echo "<h4>No Compute Resources exist at the moment.";
     }
 
-    echo '</select>';
 }
 
 
@@ -1807,7 +1814,6 @@ public static function get_experiment_values( $experiment, $project, $forSearch 
         $expVal['scheduling'] = $scheduling;
         $expVal["computeResource"] = Utilities::get_compute_resource($scheduling->resourceHostId);
     }
-
     $expVal["applicationInterface"] = Utilities::get_application_interface($experiment->applicationId);
 
 

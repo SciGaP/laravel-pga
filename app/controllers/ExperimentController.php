@@ -65,7 +65,6 @@ class ExperimentController extends BaseController {
 		$project = Utilities::get_project($experiment->projectID);
 
 		$expVal = Utilities::get_experiment_values( $experiment, $project);
-
 		return View::make( "experiment/summary", 
 								array(
 									"expId" => Input::get("expId"),
@@ -173,7 +172,7 @@ class ExperimentController extends BaseController {
 	public function searchSubmit()
 	{
 		$expContainer = Utilities::get_expsearch_results( Input::get('search-key'), Input::get('search-value'));
-		
+
 		return View::make('experiment/search', array('expContainer' => $expContainer ));
 	}
 

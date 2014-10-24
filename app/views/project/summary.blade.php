@@ -101,7 +101,7 @@
 
         echo '<td><a class="' .
             $textClass .
-            '" href="experiment_summary.php?expId=' .
+            '" href="' . URL::to('/') . '/experiment/summary?expId=' .
             $experiment->experimentID .
             '">' .
             $expValues["experimentStatusString"] .

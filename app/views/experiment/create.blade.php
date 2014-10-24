@@ -130,10 +130,8 @@
                     <button name="save" type="submit" class="btn btn-primary" value="Save">Save</button>
                     <button name="launch" type="submit" class="btn btn-success" value="Save and launch">Save and launch</button>
                 </div>
-            <div class="btn-group">
-                <button name="clear" type="reset" class="btn btn-default" value="Reset values">Reset application configuration</button>
+                
                 <a href="' . URL::to('/') . '/experiment/create" class="btn btn-default" role="button">Start over</a>
-            </div>
         </div>';
     }
 
