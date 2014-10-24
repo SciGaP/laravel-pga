@@ -17,10 +17,12 @@ class ComputeResource extends BaseController{
 
 	public function createSubmit(){
 
+		$hostAliases = Input::get("hostaliases");
+		$ips = Input::get("ips");
 		$computeDescription = array( 
 									"hostName"=>Input::get("hostname"),
-									"hostAliases"=>Input::get("hostaliases"),
-									"ipAddresses"=>Input::get("ips"),
+									"hostAliases"=> array_unique( $hostAliases ),
+									"ipAddresses"=> array_unique( $ips),
 									"resourceDescription"=>Input::get("description") 
 									);
 		$computeResource = CRUtilities::register_or_update_compute_resource( $computeDescription);
@@ -45,8 +47,8 @@ class ComputeResource extends BaseController{
 		{
 			$computeDescription = Session::get("computeResource");
 			$computeDescription->hostName = Input::get("hostname");
-			$computeDescription->hostAliases = Input::get("hostaliases");
-			$computeDescription->ipAddresses = Input::get("ips");
+			$computeDescription->hostAliases = array_unique( Input::get("hostaliases") );
+			$computeDescription->ipAddresses = array_unique( Input::get("ips") );
 			$computeDescription->resourceDescription = Input::get("description") ;
 
 			$computeResource = CRUtilities::register_or_update_compute_resource( $computeDescription, true);
