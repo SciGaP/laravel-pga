@@ -38,7 +38,7 @@ class AccountController extends BaseController {
         $mobile = $_POST['mobile'];
         $im = $_POST['im'];
         $url = $_POST['url'];
-        
+
         $idStore = new WSISUtilities();
 
         try
@@ -56,6 +56,7 @@ class AccountController extends BaseController {
         	return Redirect::to("create")
 										->withInput(Input::except('password', 'password_confirm'))
 										->with("username_exists", true);
+		}
         else{
             $idStore->add_user($username, $password, $first_name, $last_name, $email, $organization,
             $address, $country,$telephone, $mobile, $im, $url);
