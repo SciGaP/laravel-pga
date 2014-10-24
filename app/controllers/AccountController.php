@@ -9,66 +9,59 @@ class AccountController extends BaseController {
 
 	public function createAccountSubmit()
 	{
-		if (Utilities::form_submitted() 
-				&& isset($_POST['username']) 
-				&& isset($_POST['password']) 
-				&& isset($_POST['confirm_password']) ) 
-		{
-	        $first_name = $_POST['first_name'];
-	        $last_name = $_POST['last_name'];
-	        $username = $_POST['username'];
-	        $password = $_POST['password'];
-	        $confirm_password = $_POST['confirm_password'];
-	        $email = $_POST['email'];
-	        $organization = $_POST['organization'];
-	        $address = $_POST['address'];
-	        $country = $_POST['country'];
-	        $telephone = $_POST['telephone'];
-	        $mobile = $_POST['mobile'];
-	        $im = $_POST['im'];
-	        $url = $_POST['url'];
+		$rules = array(
+				"username" => "required|min:6",
+				"password" => "required",
+				"confirm_password" => "required|same:password",
+				"email" => "required",
+		);
 
-	        /* this part of code below between '///////' needs to go global instead of being 
-	        called in every function.
-	        */
+		$validator = Validator::make( Input::all(), $rules);
+		if( $validator->fails()){
+			$messages = $validator->messages();
 
-	        ///////
-	        $idStore = new WSISUtilities();
+			return Redirect::to("create")
+										->withInput(Input::except('password', 'password_confirm'))
+										->withErrors( $validator);
+		}
 
-	        try
-		    {
-		        $idStore->connect();
-		    }
-		    catch (Exception $e)
-		    {
-		        Utilities::print_error_message('<p>Error connecting to ID store.
-		            Please try again later or report a bug using the link in the Help menu</p>' .
-		            '<p>' . $e->getMessage() . '</p>');
-		    }
-		    ////////
+        $first_name = $_POST['first_name'];
+        $last_name = $_POST['last_name'];
+        $username = $_POST['username'];
+        $password = $_POST['password'];
+        $confirm_password = $_POST['confirm_password'];
+        $email = $_POST['email'];
+        $organization = $_POST['organization'];
+        $address = $_POST['address'];
+        $country = $_POST['country'];
+        $telephone = $_POST['telephone'];
+        $mobile = $_POST['mobile'];
+        $im = $_POST['im'];
+        $url = $_POST['url'];
+        
+        $idStore = new WSISUtilities();
 
+        try
+	    {
+	        $idStore->connect();
+	    }
+	    catch (Exception $e)
+	    {
+	        Utilities::print_error_message('<p>Error connecting to ID store.
+	            Please try again later or report a bug using the link in the Help menu</p>' .
+	            '<p>' . $e->getMessage() . '</p>');
+	    }
 
-	        if ($idStore->username_exists($username)) {
-	            Utilities::print_error_message('The username you entered is already in use. Please select another.');
-	        } else if (strlen($username) < 3) {
-	            Utilities::print_error_message('Username should be more than three characters long!');
-	        } else if ($password != $confirm_password) {
-	            Utilities::print_error_message('The passwords that you entered do not match!');
-	        }elseif(!isset($first_name)){
-	            Utilities::print_error_message('First name is required.');
-	        }elseif(!isset($last_name)){
-	            Utilities::print_error_message('Last name is required.');
-	        }elseif(!isset($email)){
-	            Utilities::print_error_message('Email address is required.');
-	        }else{
-	            $idStore->add_user($username, $password, $first_name, $last_name, $email, $organization,
-	            $address, $country,$telephone, $mobile, $im, $url);
-	            Utilities::print_success_message('New user created!');
+        if ($idStore->username_exists($username)) {
+        	return Redirect::to("create")
+										->withInput(Input::except('password', 'password_confirm'))
+										->with("username_exists", true);
+        else{
+            $idStore->add_user($username, $password, $first_name, $last_name, $email, $organization,
+            $address, $country,$telephone, $mobile, $im, $url);
+            Utilities::print_success_message('New user created!');
 
-	            return View::make('home');
-
-			}
-
+            return View::make('home');
 		}
 	}
 
@@ -89,10 +82,10 @@ class AccountController extends BaseController {
                 	return Redirect::to( "home");
 
                 } else {
-                    Utilities::print_error_message('Invalid username or password. Please try again.');
+                	return Redirect::to("login")->with("invalid-credentials", true); 
                 }
             } catch (Exception $ex) {
-                Utilities::print_error_message('Invalid username or password. Please try again.');
+                	return Redirect::to("login")->with("invalid-credentials", true); 
             }
         }
 

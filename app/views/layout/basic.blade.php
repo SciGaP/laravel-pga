@@ -6,8 +6,16 @@
         <?php
         	// Alerts if guests users try to go to the link without signing in.
         	if( Session::has("login-alert"))
-        		Utilities::print_error_message("You need to login to use this service.");
-        	Session::forget("alert-login");
+        	{
+                Utilities::print_error_message("You need to login to use this service.");
+                Session::forget("login-alert");
+            }            
+            if( Session::has("admin-alert"))
+            {
+                Utilities::print_error_message("You need to be an admin to use this service.");
+                Session::forget("admin-alert");
+            }
+            
         ?>
             <title>PHP Reference Gateway</title>
             <meta charset="utf-8">

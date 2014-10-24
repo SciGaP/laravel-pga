@@ -18,6 +18,13 @@
         
 
         <form action="login" method="post" role="form">
+            @if( Session::has("invalid-credentials") )
+                {{ Utilities::print_error_message('Invalid username or password. Please try again.') }}
+            @endif
+            <?php
+            Session::forget( "invalid-credentials");
+            ?>
+
             <div class="form-group">
                 <label class="sr-only" for="username">Username</label>
                 <input type="text" class="form-control" name="username" placeholder="Username" autofocus required>

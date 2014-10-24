@@ -1,16 +1,5 @@
 <?php
 
-
-
-
-
-
-
-
-
-
-
-
 //Thrift classes - loaded from Vendor/Thrift
 use Thrift\Transport\TTransport;
 use Thrift\Exception\TException;

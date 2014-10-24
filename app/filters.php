@@ -98,6 +98,6 @@ Route::filter('verifylogin',function()
 
 Route::filter('verifyadmin', function()
 {
-	//if( Session::has("username") && Session::get("username") == "admin")
-	// separate function just to check if logged in user is an admin.
+	if( !(Utilities::verify_login() ) || (Session::get("username") != "adminuits" ) )
+		return Redirect::to("home")->with("admin-alert", true);
 });
