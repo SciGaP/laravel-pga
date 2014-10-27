@@ -68,12 +68,14 @@ Route::get("cr/edit", "ComputeResource@editView");
 
 Route::post("cr/edit", "ComputeResource@editSubmit"); 
 
+Route::get("cr/browse", "ComputeResource@browseView");
+
 /*
  * Test Routes.
 */
 
 Route::get("testjob", function(){
-	print_r( Session::all());
+	//print_r( Session::all());
 });
 
 

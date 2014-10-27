@@ -27,17 +27,49 @@ class ComputeResource extends BaseController{
 									);
 		$computeResource = CRUtilities::register_or_update_compute_resource( $computeDescription);
 		
-		Session::put( "computeResource", $computeResource);
-		return Redirect::to( "cr/edit");
+		return Redirect::to( "cr/edit?crId=" . $computeResource->computeResourceId);
 	}
 
 	public function editView(){
 		
 		$data = CRUtilities::getEditCRData();
-		$computeResource = Session::get("computeResource");
-		$data["computeResource"] = Utilities::get_compute_resource(  $computeResource->computeResourceId);
-		//print_r( $data["computeResource"]); exit;
-		return View::make("resource/edit", $data);
+		$computeResourceId = "";
+		if( Input::has("crId"))
+			$computeResourceId = Input::get("crId");
+		else if( Session::has("computeResource"))
+		{
+			$computeResource = Session::get("computeResource");
+			$computeResourceId = $computeResource->computeResourceId;
+		}
+
+		if( $computeResourceId != "")
+		{
+			$computeResource = Utilities::get_compute_resource(  $computeResourceId);
+			$jobSubmissionInterfaces = array();
+			$dataMovementInterfaces = array();
+			//var_dump( $data["computeResource"]->jobSubmissionInterfaces[0]); exit;
+			if( count( $computeResource->jobSubmissionInterfaces) )
+			{
+				foreach( $computeResource->jobSubmissionInterfaces as $JSI )
+				{
+					$jobSubmissionInterfaces[] = CRUtilities::getJobSubmissionDetails( $JSI->jobSubmissionInterfaceId, $JSI->jobSubmissionProtocol);
+				}
+			}
+			//var_dump( CRUtilities::getJobSubmissionDetails( $data["computeResource"]->jobSubmissionInterfaces[0]->jobSubmissionInterfaceId, 1) ); exit;
+			if( count( $computeResource->dataMovementInterfaces) )
+			{
+				foreach( $computeResource->dataMovementInterfaces as $DMI )
+				{
+					$dataMovementInterfaces[] = CRUtilities::getDataMovementDetails( $DMI->dataMovementInterfaceId, $DMI->dataMovementProtocol);
+				}
+				var_dump( $dataMovementInterfaces); exit;
+			}
+			$data["computeResource"] = $computeResource;
+			$data["jobSubmissionInterfaces"] = $jobSubmissionInterfaces;
+			$data["dataMovementInterfaces"] = $dataMovementInterfaces;
+		}
+		else
+			return View::make("resource/browse")->with("login-alert", "Unable to retrieve this Compute Resource. Please report this error to devs.");
 
 	}
 		
@@ -45,17 +77,14 @@ class ComputeResource extends BaseController{
 
 		if( Input::get("cr-edit") == "resDesc") /* Modify compute Resource description */
 		{
-			$computeDescription = Session::get("computeResource");
+			$computeDescription = Utilities::get_compute_resource(  Input::get("crId"));
 			$computeDescription->hostName = Input::get("hostname");
 			$computeDescription->hostAliases = array_unique( Input::get("hostaliases") );
 			$computeDescription->ipAddresses = array_unique( Input::get("ips") );
 			$computeDescription->resourceDescription = Input::get("description") ;
 
 			$computeResource = CRUtilities::register_or_update_compute_resource( $computeDescription, true);
-			Session::put("computeResource", $computeResource);
-
-			return Redirect::to("cr/edit");
-			
+			Session::put("computeResource", $computeResource);			
 		}
 		if( Input::get("cr-edit") == "queue") /* Add / Modify a Queue */
 		{
@@ -67,18 +96,14 @@ class ComputeResource extends BaseController{
 							"maxJobsInQueue"=>Input::get("qmaxjobsinqueue")
 						);
 
-			$computeDescription = Session::get("computeResource");
+			$computeDescription = Utilities::get_compute_resource(  Input::get("crId"));
 			$computeDescription->batchQueues[] = CRUtilities::createQueueObject( $queue);
 			$computeResource = CRUtilities::register_or_update_compute_resource( $computeDescription, true);
 			Session::put("computeResource", $computeResource);
-
-			return Redirect::to("cr/edit");
 		}
 		else if( Input::get("cr-edit") == "jsp") /* Add / Modify a Job Submission Interface */
-		{			//print_r( $computeDescription); exit;
-			//var_dump( Input::all()); exit;
+		{			
 			$jobSubmissionInterface = CRUtilities::createJSIObject( Input::all() );
-			print_r( $jobSubmissionInterface); exit;
 		}
 		else if( Input::get("cr-edit") == "dmp") /* Add / Modify a Data Movement Interface */
 		{
@@ -86,15 +111,28 @@ class ComputeResource extends BaseController{
 		}
 		else if( Input::get("cr-edit") == "fileSystems")
 		{
-			$computeDescription = Session::get("computeResource");
+			$computeDescription = Utilities::get_compute_resource(  Input::get("crId"));
 			$computeDescription->fileSystems = Input::get("fileSystems");
 			$computeResource = CRUtilities::register_or_update_compute_resource( $computeDescription, true);
 			Session::put("computeResource", $computeResource);
-
-			return Redirect::to("cr/edit");
 		}
-		else
-			return Redirect::to("cr/create");
+		return Redirect::to("cr/edit?crId=" . Input::get("crId") );
+	}
+
+	public function browseView(){
+		$allCRs = CRUtilities::getAllCRObjects();
+		/*
+		if( count( $allCRs)>0 )
+		{
+			foreach( $allCRs as $crId => $crName)
+			{
+				//
+			}
+		}
+		*/
+
+		return View::make("resource/browse", array("allCRs" => $allCRs));
+
 	}
 }
 

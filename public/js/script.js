@@ -168,4 +168,16 @@ $(document).ready( function(){
   $("body").on("click", ".add-gridFTPEndPoint", function(){
         $(this).before( '<input class="form-control" maxlength="30" name="gridFTPEndPoints[]"/>');
   });
+
+  var highest = null;
+
+   $(".nav-tabs a").each(function(){  //find the height of your highest link
+       var h = $(this).height();
+       if(h > highest){
+          highest = $(this).height();  
+       }    
+    });
+
+   $(".nav-tabs a").height(highest);  //set all your links to that height.
+   
 });

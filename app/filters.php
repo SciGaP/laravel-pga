@@ -98,6 +98,11 @@ Route::filter('verifylogin',function()
 
 Route::filter('verifyadmin', function()
 {
-	if( !(Utilities::verify_login() ) || (Session::get("username") != "adminuits" ) )
-		return Redirect::to("home")->with("admin-alert", true);
+	if( Utilities::verify_login() )
+	{
+		if( Session::get("username") != "adminuits" )
+			return Redirect::to("home")->with("admin-alert", true);
+	} 
+	else
+		return Redirect::to("home")->with("login-alert", true);
 });

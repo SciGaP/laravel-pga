@@ -108,7 +108,7 @@ public static function createQueueObject( $queue){
 public static function createJSIObject( $inputs){
 
     $airavataclient = Utilities::get_airavata_client();
-    $computeResource = Session::get("computeResource");
+    $computeResource = Utilities::get_compute_resource(  $inputs["crId"]);
 
     $computeResource = $airavataclient->getComputeResource( $computeResource->computeResourceId, $computeResource); 
     //print_r( $computeResource); exit;
@@ -124,7 +124,7 @@ public static function createJSIObject( $inputs){
         if( $localSub)
         {
             if( $localSub)
-            print_r( "The SSH Job Interface has been added. Edit UI for the Job Interface is yet to be made.
+            print_r( "The Local Job Interface has been added. Edit UI for the Job Interface is yet to be made.
                 Please click <a href='" . URL::to('/') . "/cr/edit'>here</a> to go back to edit page for compute resource.");
         
         }
@@ -160,10 +160,9 @@ public static function createJSIObject( $inputs){
  * Getting Job Submission Interface Object.
 */
 public static function createDMIObject( $inputs){
-    //print_r( $inputs); exit;
     $airavataclient = Utilities::get_airavata_client();
 
-    $computeResource = Session::get("computeResource");
+    $computeResource = Utilities::get_compute_resource(  $inputs["crId"] );
     if( $inputs["dataMovementProtocol"] == 0) /* LOCAL */
     {
         $localDataMovement = new LOCALDataMovement();
@@ -207,6 +206,41 @@ public static function createDMIObject( $inputs){
     }
 }
 
+public static function getAllCRObjects(){
+    $airavataclient = Utilities::get_airavata_client();
+    return $airavataclient->getAllComputeResourceNames();
 }
 
+public static function getJobSubmissionDetails( $jobSubmissionInterfaceId, $jsp){
+    //jsp = job submission protocol type
+    $airavataclient = Utilities::get_airavata_client();
+    if( $jsp == JobSubmissionProtocol::LOCAL)
+        return $airavataclient->getLocalJobSubmission( $jobSubmissionInterfaceId);
+    else if( $jsp == JobSubmissionProtocol::SSH)
+        return $airavataclient->getSSHJobSubmission( $jobSubmissionInterfaceId);
+    else if( $jsp == JobSubmissionProtocol::UNICORE)
+        return $airavataclient->getUnicoreJobSubmission( $jobSubmissionInterfaceId);
+    else if( $jsp == JobSubmissionProtocol::CLOUD)
+        return $airavataclient->getCloudJobSubmission( $jobSubmissionInterfaceId);
+
+    //globus get function not present ??
+}
+
+public static function getDataMovementDetails( $dataMovementInterfaceId, $dmi){
+    //jsp = job submission protocol type
+    $airavataclient = Utilities::get_airavata_client();
+    if( $dmi == DataMovementProtocol::LOCAL)
+        return $airavataclient->getLocalDataMovement( $dataMovementInterfaceId);
+    else if( $dmi == DataMovementProtocol::SCP)
+        return $airavataclient->getSCPDataMovement( $dataMovementInterfaceId);
+    else if( $dmi == DataMovementProtocol::GridFTP)
+        return $airavataclient->getGridFTPDataMovement( $dataMovementInterfaceId);
+    else if( $dmi == JobSubmissionProtocol::CLOUD)
+        return $airavataclient->getCloudJobSubmission( $dataMovementInterfaceId);
+
+    //globus get function not present ??
+}
+
+
+}
 ?>

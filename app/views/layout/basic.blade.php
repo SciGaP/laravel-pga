@@ -9,7 +9,8 @@
         	{
                 Utilities::print_error_message("You need to login to use this service.");
                 Session::forget("login-alert");
-            }            
+            } 
+            // if signed in user is not an admin.           
             if( Session::has("admin-alert"))
             {
                 Utilities::print_error_message("You need to be an admin to use this service.");
