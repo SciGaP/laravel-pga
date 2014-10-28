@@ -18,20 +18,15 @@ function getAccodrionCode()
 }
 
 $(document).ready( function(){
-  $(".add-queue").click( function(){
-    $(this).before( $(".queue-block").html() );
-    /* '\
-        Queue - \
-          <input class="form-control" maxlength="30" name="qname[]" placeholder="Queue Name"/>\
-          <input class="form-control" maxlength="30" name="qdesc[]" placeholder="Queue Description"/>\
-          <input class="form-control" maxlength="30" name="qmaxruntime[]" placeholder="Queue Max Run Time"/>\
-          <input class="form-control" maxlength="30" name="qmaxnodes[]" placeholder="Queue Max Nodes"/>\
-          <input class="form-control" maxlength="30" name="qmaxprocessors[]" placeholder="Queue Max Processors"/>\
-          <input class="form-control" maxlength="30" name="qmaxjobsinqueue[]" placeholder="Max JObs In Queue"/>\
-          <hr/> \
-          ');
-    */
-  });
+
+	// not letting users to add host names with no spaces.
+	$(".hostName").blur( function(){
+		$(this).val( $.trim( $(this).val() ) );
+	});
+
+	$(".add-queue").click( function(){
+		$(this).before( $(".queue-block").html() );
+	});
 
   $(".add-alias").click( function(){
     $(this).before( '<input class="form-control" maxlength="30" name="hostaliases[]"/>');

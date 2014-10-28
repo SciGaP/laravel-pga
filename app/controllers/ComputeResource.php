@@ -20,7 +20,7 @@ class ComputeResource extends BaseController{
 		$hostAliases = Input::get("hostaliases");
 		$ips = Input::get("ips");
 		$computeDescription = array( 
-									"hostName"=>Input::get("hostname"),
+									"hostName"=> trim( Input::get("hostname") ),
 									"hostAliases"=> array_unique( $hostAliases ),
 									"ipAddresses"=> array_unique( $ips),
 									"resourceDescription"=>Input::get("description") 
@@ -78,10 +78,12 @@ class ComputeResource extends BaseController{
 		
 	public function editSubmit(){
 
+		//var_dump( Input::all() ); exit;
+
 		if( Input::get("cr-edit") == "resDesc") /* Modify compute Resource description */
 		{
 			$computeDescription = Utilities::get_compute_resource(  Input::get("crId"));
-			$computeDescription->hostName = Input::get("hostname");
+			$computeDescription->hostName = trim( Input::get("hostname") );
 			$computeDescription->hostAliases = array_unique( Input::get("hostaliases") );
 			$computeDescription->ipAddresses = array_unique( Input::get("ips") );
 			$computeDescription->resourceDescription = Input::get("description") ;

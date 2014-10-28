@@ -43,16 +43,16 @@ class ExperimentController extends BaseController {
 		    if (isset($_POST['launch']) && $expId)
 		    {
 		        Utilities::launch_experiment($expId);
-            	return Redirect::to('experiment/summary?expId=' . $expId);
 		    }
+		    /* Not required.
 		    else
 		    {
 		        Utilities::print_success_message("<p>Experiment {$_POST['experiment-name']} created!</p>" .
 		            '<p>You will be redirected to the summary page shortly, or you can
 		            <a href=' . URL::to('/') . '"/experiment/summary?expId=' . $expId . '">go directly</a> to experiment summary page.</p>');
-            	return Redirect::to('experiment/summary?expId=' . $expId);
 		        
-		    }
+		    }*/
+        	return Redirect::to('experiment/summary?expId=' . $expId);
 		}
 		else
 			return Redirect::to("home");
@@ -65,6 +65,11 @@ class ExperimentController extends BaseController {
 		$project = Utilities::get_project($experiment->projectID);
 
 		$expVal = Utilities::get_experiment_values( $experiment, $project);
+
+		// User should not clone or edit a failed experiment. Only create clones of it.
+		if( $expVal["experimentStatusString"] == "FAILED")
+			$expVal["editable"] = false;
+
 		return View::make( "experiment/summary", 
 								array(
 									"expId" => Input::get("expId"),
@@ -78,6 +83,8 @@ class ExperimentController extends BaseController {
 
 	public function expChange()
 	{
+
+		var_dump( Input::all() ); exit;
 		$experiment = Utilities::get_experiment( Input::get('expId') );
 		$project = Utilities::get_project($experiment->projectID);
 
@@ -91,6 +98,7 @@ class ExperimentController extends BaseController {
 		if (isset($_POST['launch']))
 		{
 		    Utilities::launch_experiment($experiment->experimentID);
+			return Redirect::to('experiment/summary?expId=' . $experiment->experimentID);
 		}
 		elseif (isset($_POST['clone']))
 		{
@@ -99,14 +107,17 @@ class ExperimentController extends BaseController {
 			$project = Utilities::get_project($experiment->projectID);
 
 			$expVal = Utilities::get_experiment_values( $experiment, $project);
+
+			return Redirect::to('experiment/edit?expId=' . $experiment->experimentID);
+
 		}
 		
 		elseif (isset($_POST['cancel']))
 		{
 		    Utilities::cancel_experiment($experiment->experimentID);
-		}
+			return Redirect::to('experiment/summary?expId=' . $experiment->experimentID);
 
-		return Redirect::to('experiment/summary?expId=' . $experiment->experimentID);
+		}
 	}
 
 	public function editView()
@@ -129,7 +140,6 @@ class ExperimentController extends BaseController {
 
 	public function editSubmit()
 	{
-
 		if (isset($_POST['save']) || isset($_POST['launch']))
 		{
 	        $experiment = Utilities::get_experiment(Input::get('expId') ); // update local experiment variable
@@ -146,19 +156,7 @@ class ExperimentController extends BaseController {
 		        Utilities::launch_experiment($experiment->experimentID);
 		    }
 
-		    $project = Utilities::get_project($experiment->projectID);
-
-			$expVal = Utilities::get_experiment_values( $experiment, $project);
-
-
-			return View::make("experiment/edit", array(
-
-								'experiment' => $experiment,
-								'project' => $project,
-								'expVal' => $expVal
-								
-								)
-							);
+			return Redirect::to('experiment/summary?expId=' . $experiment->experimentID);
 		}
 		else
 			return View::make("home");

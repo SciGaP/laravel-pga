@@ -31,7 +31,7 @@
 					<input type="hidden" name="cr-edit" value="resDesc"/>
 					<div class="form-group required">
 						<label class="control-label">Host Name</label>
-						<input class="form-control" value="{{ $computeResource->hostName }}" maxlength="30" name="hostname" required="required"/>
+						<input class="form-control hostName" value="{{ $computeResource->hostName }}" maxlength="30" name="hostname" required="required"/>
 					</div>
 					<div class="form-group">
 						<label class="control-label">Host Aliases</label>
@@ -39,6 +39,8 @@
 							@foreach( $computeResource->hostAliases as $hostAlias )
 								<input class="form-control" value="{{$hostAlias}}" maxlength="30" name="hostaliases[]"/>
 							@endforeach
+						@else
+							<input class="form-control" value="" maxlength="30" name="hostaliases[]"/>
 						@endif
 						<button type="button" class="btn btn-sm btn-default add-alias">Add Aliases</button>
 					</div>
@@ -48,6 +50,8 @@
 							@foreach( $computeResource->ipAddresses as $ip )
 								<input class="form-control" value="{{ $ip }}" maxlength="30" name="ips[]"/>
 							@endforeach
+						@else
+							<input class="form-control" value="" maxlength="30" name="ips[]"/>
 						@endif
 						<button type="button" class="btn btn-sm btn-default add-ip">Add IP Addresses</button>
 					</div>

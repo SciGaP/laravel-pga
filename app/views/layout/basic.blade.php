@@ -3,10 +3,17 @@
 <!DOCTYPE html>
         <html lang="en">
         <head>
+            <title>PHP Reference Gateway</title>
+            <meta charset="utf-8">
+            <meta name="viewport" content="width=device-width, initial-scale=1">
+            <link rel="icon" href="resources/assets/favicon.ico" type="image/x-icon">
+            {{ HTML::style('css/bootstrap.min.css')}}            
+        </head>
+        
         <?php
-        	// Alerts if guests users try to go to the link without signing in.
-        	if( Session::has("login-alert"))
-        	{
+            // Alerts if guests users try to go to the link without signing in.
+            if( Session::has("login-alert"))
+            {
                 Utilities::print_error_message("You need to login to use this service.");
                 Session::forget("login-alert");
             } 
@@ -18,12 +25,6 @@
             }
             
         ?>
-            <title>PHP Reference Gateway</title>
-            <meta charset="utf-8">
-            <meta name="viewport" content="width=device-width, initial-scale=1">
-            <link rel="icon" href="resources/assets/favicon.ico" type="image/x-icon">
-            {{ HTML::style('css/bootstrap.min.css')}}            
-        </head>
 
 <?php
 

@@ -326,11 +326,13 @@ public static function launch_experiment($expId)
         $hardCodedToken = '2c308fa9-99f8-4baa-92e4-d062e311483c';
         $airavataclient->launchExperiment($expId, $hardCodedToken);
 
-        //Utilities::print_success_message('Experiment launched!');
+        /*
+        Utilities::print_success_message('Experiment launched!');
         Utilities::print_success_message("<p>Experiment launched!</p>" .
             '<p>You will be redirected to the summary page shortly, or you can
             <a href="experiment_summary.php?expId=' . $expId . '">go directly</a> to the experiment summary page.</p>');
-        //redirect('experiment_summary.php?expId=' . $expId);
+        redirect('experiment_summary.php?expId=' . $expId);
+        */
     }
     catch (InvalidRequestException $ire)
     {
@@ -1089,9 +1091,11 @@ public static function update_experiment($expId, $updatedExperiment)
     {
         $airavataclient->updateExperiment($expId, $updatedExperiment);
 
+        /*
         Utilities::print_success_message("<p>Experiment updated!</p>" .
             '<p>Click
             <a href="' . URL::to('/') . '/experiment/summary?expId=' . $expId . '">here</a> to visit the experiment summary page.</p>');
+        */
     }
     catch (InvalidRequestException $ire)
     {

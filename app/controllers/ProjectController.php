@@ -64,7 +64,7 @@ class ProjectController extends BaseController {
 
 	        Utilities::update_project( Input::get("projectId"), $projectDetails);
 
-	        return Redirect::to("project/edit?projId=" . Input::get("projectId") )->with("project_edited", true);
+	        return Redirect::to("project/summary?projId=" . Input::get("projectId") )->with("project_edited", true);
 	    }
 	}
 

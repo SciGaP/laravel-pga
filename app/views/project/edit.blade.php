@@ -33,14 +33,12 @@
             <label for="project-description">Project Description</label>
             <textarea class="form-control"
                       name="project-description"
-                      id="project-description">{{ $project->description }}
-            </textarea>
+                      id="project-description">{{ $project->description }}</textarea>
             <input type="hidden" name="projectId" value="{{ Input::get('projId') }}"/>
         </div>
 
         <div class="btn-toolbar">
-            <input name="save" type="submit" class="btn btn-primary" value="Save">
-            <input name="clear" type="reset" class="btn btn-default" value="Reset values">
+            <input name="save" type="submit" class="btn" value="Save">
         </div>
 
 
