@@ -773,7 +773,7 @@ public static function get_project($projectId)
  */
 public static function assemble_experiment()
 {
-	global $experimentPath;
+	global $experimentPath, $pathConstant;
     //$experimentAssemblySuccessful = true; // errors will set this to false
     //$experimentPath = Utilities::EXPERIMENT_DATA_ROOT;
     $experimentInputs = array();
