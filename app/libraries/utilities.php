@@ -798,7 +798,7 @@ public static function assemble_experiment()
     $experimentInputs = Utilities::process_inputs($applicationInputs, $experimentInputs);
     //var_dump($experimentInputs);
 
-    if( $experimentPath != null){
+    if( $this->experimentPath != null){
         $advHandling = new AdvancedOutputDataHandling();
         //echo($experimentPath);
         $advHandling->outputDataDir = str_replace( base_path() . Utilities::EXPERIMENT_DATA_ROOT, $pathConstant , $experimentPath);
