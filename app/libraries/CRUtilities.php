@@ -86,10 +86,15 @@ public static function getEditCRData(){
     $sp = new SecurityProtocol();
     $dmp = new DataMovementProtocol();
     return array(
+                    "fileSystemsObject" => $files,
                     "fileSystems" => $files::$__names,
+                    "jobSubmissionProtocolsObject" => $jsp,
                     "jobSubmissionProtocols" => $jsp::$__names,
+                    "resourceJobManagerTypesObject" => $rjmt,
                     "resourceJobManagerTypes" => $rjmt::$__names,
+                    "securityProtocolsObject" => $sp,
                     "securityProtocols" => $sp::$__names,
+                    "dataMovementProtocolsObject" => $dmp,
                     "dataMovementProtocols" => $dmp::$__names
                 );
 }
@@ -223,7 +228,7 @@ public static function getJobSubmissionDetails( $jobSubmissionInterfaceId, $jsp)
     else if( $jsp == JobSubmissionProtocol::CLOUD)
         return $airavataclient->getCloudJobSubmission( $jobSubmissionInterfaceId);
 
-    //globus get function not present ??
+    //globus get function not present ??	
 }
 
 public static function getDataMovementDetails( $dataMovementInterfaceId, $dmi){

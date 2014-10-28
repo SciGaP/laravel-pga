@@ -61,7 +61,19 @@ const GATEWAY_NAME = 'PHP-Reference-Gateway';
 const EMAIL = 'admin@gw120.iu.xsede.org';
 private $tokenFilePath = 'tokens.xml';
 private $tokenFile = null;
-const EXPERIMENT_PATH = null;
+
+private $sshUser;
+private $hostName;
+private $pathConstant;
+private $experimentPath;
+
+public function __construct(){
+	$sshUser = "root";
+	$hostName = $_SERVER['SERVER_NAME'];
+	$pathConstant = 'file://'.$sshUser.'@'.$hostName.'://var/www/experimentData/';
+	$experimentPath = null;
+}
+
 
 //already set inside app/config.php
 //date_default_timezone_set('UTC');
@@ -786,7 +798,7 @@ public static function assemble_experiment()
     $experimentInputs = Utilities::process_inputs($applicationInputs, $experimentInputs);
     //var_dump($experimentInputs);
 
-    if( Utilities::EXPERIMENT_PATH != null){
+    if( $experimentPath != null){
         $advHandling = new AdvancedOutputDataHandling();
         //echo($experimentPath);
         $advHandling->outputDataDir = str_replace( base_path() . Utilities::EXPERIMENT_DATA_ROOT, $pathConstant , $experimentPath);
@@ -1380,7 +1392,8 @@ public static function create_nav_bar()
         ),
         'Compute Resource' => array
         (
-            array('label' => 'Register a Compute Resource', 'url' => URL::to('/') . '/cr/create')
+            array('label' => 'Register', 'url' => URL::to('/') . '/cr/create'),
+            array('label' => 'Browse', 'url' => URL::to('/') . '/cr/browse')
         ),
         'Help' => array
         (

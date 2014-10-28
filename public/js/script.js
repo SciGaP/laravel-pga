@@ -47,6 +47,10 @@ $(document).ready( function(){
 
   $(".add-job-submission").click( function(){
     $(".job-submission-info").removeClass("hide").append( "<div class='job-protocol-block col-md-12'>" + $(".select-job-protocol").html() + "</div><hr/>");
+  	
+  	$('html, body').animate({
+        scrollTop: $(this).position().top + 500
+    }, 200);
   });
 
   $("body").on("change", ".selected-job-protocol", function(){
@@ -75,11 +79,14 @@ $(document).ready( function(){
     }
     else if( selectedVal == "globus")
     {
+    	alert("Globus Protool is not being setup right now. Please choose another option.");
+    	/*	
       $(this).parent().append(  parentResDiv 
                       + $(".ssh-block").html()
                       + "<h5>Globus Gate Keeper End Point</h5>" 
                       + "<input class='form-control' name='globusGateKeeperEndPoint'/>"
                       + "</div>" );
+         */
     }
     else if( selectedVal == "unicore")
     {

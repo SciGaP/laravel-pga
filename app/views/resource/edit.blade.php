@@ -35,17 +35,21 @@
 					</div>
 					<div class="form-group">
 						<label class="control-label">Host Aliases</label>
-						@foreach( $computeResource->hostAliases as $hostAlias )
-							<input class="form-control" value="{{$hostAlias}}" maxlength="30" name="hostaliases[]"/>
-						@endforeach
-						<button type="button" class="btn btn-sm btn-default add-alias">Add More Aliases</button>
+						@if( count(  $computeResource->hostAliases) )
+							@foreach( $computeResource->hostAliases as $hostAlias )
+								<input class="form-control" value="{{$hostAlias}}" maxlength="30" name="hostaliases[]"/>
+							@endforeach
+						@endif
+						<button type="button" class="btn btn-sm btn-default add-alias">Add Aliases</button>
 					</div>
 					<div class="form-group">
 						<label class="control-label">IP Addresses</label>
-						@foreach( $computeResource->ipAddresses as $ip )
-							<input class="form-control" value="{{ $ip }}" maxlength="30" name="ips[]"/>
-						@endforeach
-						<button type="button" class="btn btn-sm btn-default add-ip">Add More IP Addresses</button>
+						@if( count( $computeResource->ipAddresses))
+							@foreach( $computeResource->ipAddresses as $ip )
+								<input class="form-control" value="{{ $ip }}" maxlength="30" name="ips[]"/>
+							@endforeach
+						@endif
+						<button type="button" class="btn btn-sm btn-default add-ip">Add IP Addresses</button>
 					</div>
 					<div class="form-group">
 						<label class="control-label">Resource Description</label>
@@ -157,9 +161,126 @@
 
         	<div class="tab-pane" id="tab-jobSubmission">
 
+        		@if( count( $jobSubmissionInterfaces ) )
+        			<div class="job-edit-info">
+        			@foreach( $jobSubmissionInterfaces as $index => $JSI )
+
+        				<div class="job-protocol-block">
+
+							<form role="form" method="POST" action="{{ URL::to('/') }}/cr/edit">
+								<input type="hidden" name="crId" value="{{Input::get('crId') }}"/>
+								<input type="hidden" name="cr-edit" value="edit-jsp"/>
+								<input type="hidden" name="jsiId" value="{{ $JSI->jobSubmissionInterfaceId }}"/>
+								<?php $selectedJspIndex = $computeResource->jobSubmissionInterfaces[ $index]->jobSubmissionProtocol; ?>
+
+        						<h4>Job Submission Protocol : {{ $jobSubmissionProtocols[ $selectedJspIndex] }}
+									<button type='button' class='close'>
+										<span class="glyphicon glyphicon-trash"></span>
+									</button>
+								</h4>
+								<div class="form-group">
+								</div>
+								@if( $selectedJspIndex == $jobSubmissionProtocolsObject::LOCAL)
+									<h4> Local Data </h4>
+								@elseif( $selectedJspIndex == $jobSubmissionProtocolsObject::SSH)
+
+									<div class="form-group">		
+										<label class="control-label">Select Security Protocol</label>
+										<select name="securityProtocol">
+											<option></option>
+										@foreach( $securityProtocols as $index => $sp)
+											<option value="{{ $index }}" @if( $JSI->securityProtocol == $index ) selected @endif>{{ $sp }}</option>
+										@endforeach
+										</select>
+									</div>
+
+									<div class="form-group addedScpValue">
+										<label class="control-label">Alternate SSH Host Name</label>
+						                <input class='form-control' name='alternativeSSHHostName' value="{{ $JSI->alternativeSSHHostName}}"/>
+						            </div>
+						            <div class="form-group addedScpValue">
+										<label class="control-label">SSH Port</label>
+						                <input class='form-control' name='sshPort' value="{{ $JSI->sshPort }}"/>
+						            </div>
+
+									<div class="form-group">
+										<div class="select-resource-manager-type">
+											<h4>Select resource manager type</h4>
+											<select name="resourceJobManagerType" class="form-control selected-resource-manager">
+												<option></option>
+											@foreach( $resourceJobManagerTypes as $index => $rJmT)
+												<option value="{{ $index }}" @if( $JSI->resourceJobManager->resourceJobManagerType == $index ) selected @endif >{{ $rJmT }}</option>
+											@endforeach
+											</select>
+										</div>
+									</div>
+
+								@endif
+								<div class="form-group">
+									<button type="submit" class="btn">Update</button>
+								</div>
+							</form>
+
+						</div>
+        			@endforeach
+        			</div>
+        		@endif
+        				<div class="select-job-protocol hide">
+							<form role="form" method="POST" action="{{ URL::to('/') }}/cr/edit">
+								<input type="hidden" name="crId" value="{{Input::get('crId') }}"/>
+								<input type="hidden" name="cr-edit" value="edit-jsp"/>
+								<h4>
+									Job Submission Protocol:
+									<button type='button' class='close'>
+										<span class="glyphicon glyphicon-trash"></span>
+									</button>
+								</h4>
+								<div class="form-group">
+
+									<select name="jobSubmissionProtocol" class="form-control selected-job-protocol">
+								  		<option></option>
+									@foreach( $jobSubmissionProtocols as $index => $jobSubmissionProtocol)
+										<option value="{{ $index }}">{{ $jobSubmissionProtocol }}</option>
+									@endforeach
+									</select>
+								</div>
+
+								<div class="form-group">
+									<button type="submit" class="btn btn-primary jspSubmit hide">Add Job Submission Protocol</button>
+								</div>
+							</form>
+						</div>
+
+
         		<div class="form-group">
 					<div class="job-submission-info row hide"></div>
 					<button type="button" class="btn btn-sm btn-default add-job-submission">Add a new Job Submission Interface</button>
+				</div>
+
+				<div class="select-job-protocol hide">
+					<form role="form" method="POST" action="{{ URL::to('/') }}/cr/edit">
+						<input type="hidden" name="crId" value="{{Input::get('crId') }}"/>
+						<input type="hidden" name="cr-edit" value="edit-jsp"/>
+						<h4>
+							Select the Job Submission Protocol
+							<button type='button' class='close' data-dismiss='alert'>
+								<span class="glyphicon glyphicon-trash"></span>
+							</button>
+						</h4>
+						<div class="form-group">
+
+							<select name="jobSubmissionProtocol" class="form-control selected-job-protocol">
+						  		<option></option>
+							@foreach( $jobSubmissionProtocols as $index => $jobSubmissionProtocol)
+								<option value="{{ $index }}">{{ $jobSubmissionProtocol }}</option>
+							@endforeach
+							</select>
+						</div>
+
+						<div class="form-group">
+							<button type="submit" class="btn btn-primary jspSubmit hide">Add Job Submission Protocol</button>
+						</div>
+					</form>
 				</div>
 
 				<div class="select-job-protocol hide">
@@ -169,10 +290,11 @@
 						<h4>
 							Select the Job Submission Protocol
 							<button type='button' class='close' data-dismiss='alert'>
-								<span aria-hidden='true'>&times;</span><span class='sr-only'>Close</span>
+								<span class="glyphicon glyphicon-trash"></span>
 							</button>
 						</h4>
 						<div class="form-group">
+
 							<select name="jobSubmissionProtocol" class="form-control selected-job-protocol">
 						  		<option></option>
 							@foreach( $jobSubmissionProtocols as $index => $jobSubmissionProtocol)
@@ -204,7 +326,7 @@
 						<h4>
 							Select the Data Movement Protocol
 							<button type='button' class='close' data-dismiss='alert'>
-								<span aria-hidden='true'>&times;</span><span class='sr-only'>Close</span>
+								<span class="glyphicon glyphicon-trash"></span>
 							</button>
 						</h4>
 

@@ -1,4 +1,4 @@
-.job-submission-info, .data-movement-info{
+.job-submission-info, .job-edit-info, .data-movement-info{
 	border: 1px solid #000;
 	padding: 5%;
 }
@@ -7,5 +7,6 @@
 	border: 3.5px dashed #666;
 	border-radius: 15px;
 	margin-bottom:5%;
+	padding:2%;
 	padding-bottom: 5%;
 }

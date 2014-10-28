@@ -47,7 +47,7 @@ class ComputeResource extends BaseController{
 			$computeResource = Utilities::get_compute_resource(  $computeResourceId);
 			$jobSubmissionInterfaces = array();
 			$dataMovementInterfaces = array();
-			//var_dump( $data["computeResource"]->jobSubmissionInterfaces[0]); exit;
+			//var_dump( $computeResource->jobSubmissionInterfaces); exit;
 			if( count( $computeResource->jobSubmissionInterfaces) )
 			{
 				foreach( $computeResource->jobSubmissionInterfaces as $JSI )
@@ -62,11 +62,14 @@ class ComputeResource extends BaseController{
 				{
 					$dataMovementInterfaces[] = CRUtilities::getDataMovementDetails( $DMI->dataMovementInterfaceId, $DMI->dataMovementProtocol);
 				}
-				var_dump( $dataMovementInterfaces); exit;
+				//var_dump( $dataMovementInterfaces); exit;
 			}
 			$data["computeResource"] = $computeResource;
 			$data["jobSubmissionInterfaces"] = $jobSubmissionInterfaces;
 			$data["dataMovementInterfaces"] = $dataMovementInterfaces;
+			//var_dump( $data["securityProtocolsObject"]); exit;
+
+			return View::make("resource/edit", $data);
 		}
 		else
 			return View::make("resource/browse")->with("login-alert", "Unable to retrieve this Compute Resource. Please report this error to devs.");
