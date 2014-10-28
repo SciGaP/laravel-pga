@@ -116,9 +116,8 @@ public static function createJSIObject( $inputs){
     $computeResource = Utilities::get_compute_resource(  $inputs["crId"]);
 
     $computeResource = $airavataclient->getComputeResource( $computeResource->computeResourceId, $computeResource); 
-    //print_r( $computeResource); exit;
 
-    if( $inputs["jobSubmissionProtocol"] == 0) /* LOCAL */
+    if( $inputs["jobSubmissionProtocol"] == JobSubmissionProtocol::LOCAL)
     {
         $resourceManager = new ResourceJobManager(array( "resourceJobManagerType"=> $inputs["resourceJobManagerType"]));
         $localJobSubmission = new LOCALSubmission( array(
@@ -127,15 +126,12 @@ public static function createJSIObject( $inputs){
                                                     );
         $localSub = $airavataclient->addLocalSubmissionDetails( $computeResource->computeResourceId, 0, $localJobSubmission);
         if( $localSub)
-        {
-            if( $localSub)
-            print_r( "The Local Job Interface has been added. Edit UI for the Job Interface is yet to be made.
-                Please click <a href='" . URL::to('/') . "/cr/edit'>here</a> to go back to edit page for compute resource.");
-        
-        }
+        	return;
+        else 
+        	return $localSub;
         
     }
-    else if( $inputs["jobSubmissionProtocol"] == 1) /* SSH */
+    else if( $inputs["jobSubmissionProtocol"] ==  JobSubmissionProtocol::SSH) /* SSH */
     {
         $resourceManager = new ResourceJobManager(array( "resourceJobManagerType"=> $inputs["resourceJobManagerType"]));
         $sshJobSubmission = new SSHJobSubmission( array
@@ -149,8 +145,7 @@ public static function createJSIObject( $inputs){
 
         $sshSub = $airavataclient->addSSHJobSubmissionDetails( $computeResource->computeResourceId, 0, $sshJobSubmission);
         if( $sshSub)
-            print_r( "The SSH Job Interface has been added. Edit UI for the Job Interface is yet to be made.
-                Please click <a href='" . URL::to('/') . "/cr/edit'>here</a> to go back to edit page for compute resource.");
+            return;
         
     }
     else /* Globus & Unicore currently */

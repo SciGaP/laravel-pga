@@ -20,7 +20,7 @@ function getAccodrionCode()
 $(document).ready( function(){
 
 	// not letting users to add host names with no spaces.
-	$(".hostName").blur( function(){
+	$(".hostName, .form-control").blur( function(){
 		$(this).val( $.trim( $(this).val() ) );
 	});
 

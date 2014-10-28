@@ -185,7 +185,17 @@
 								<div class="form-group">
 								</div>
 								@if( $selectedJspIndex == $jobSubmissionProtocolsObject::LOCAL)
-									<h4> Local Data </h4>
+									<div class="form-group">
+										<div class="select-resource-manager-type">
+											<h4>Select resource manager type</h4>
+											<select name="resourceJobManagerType" class="form-control selected-resource-manager">
+												<option></option>
+											@foreach( $resourceJobManagerTypes as $index => $rJmT)
+												<option value="{{ $index }}" @if( $JSI->resourceJobManager->resourceJobManagerType == $index ) selected @endif >{{ $rJmT }}</option>
+											@endforeach
+											</select>
+										</div>
+									</div>
 								@elseif( $selectedJspIndex == $jobSubmissionProtocolsObject::SSH)
 
 									<div class="form-group">		
@@ -229,31 +239,32 @@
         			@endforeach
         			</div>
         		@endif
-        				<div class="select-job-protocol hide">
-							<form role="form" method="POST" action="{{ URL::to('/') }}/cr/edit">
-								<input type="hidden" name="crId" value="{{Input::get('crId') }}"/>
-								<input type="hidden" name="cr-edit" value="edit-jsp"/>
-								<h4>
-									Job Submission Protocol:
-									<button type='button' class='close'>
-										<span class="glyphicon glyphicon-trash"></span>
-									</button>
-								</h4>
-								<div class="form-group">
 
-									<select name="jobSubmissionProtocol" class="form-control selected-job-protocol">
-								  		<option></option>
-									@foreach( $jobSubmissionProtocols as $index => $jobSubmissionProtocol)
-										<option value="{{ $index }}">{{ $jobSubmissionProtocol }}</option>
-									@endforeach
-									</select>
-								</div>
+				<div class="select-job-protocol hide">
+					<form role="form" method="POST" action="{{ URL::to('/') }}/cr/edit">
+						<input type="hidden" name="crId" value="{{Input::get('crId') }}"/>
+						<input type="hidden" name="cr-edit" value="jsp"/>
+						<h4>
+							Job Submission Protocol:
+							<button type='button' class='close'>
+								<span class="glyphicon glyphicon-trash"></span>
+							</button>
+						</h4>
+						<div class="form-group">
 
-								<div class="form-group">
-									<button type="submit" class="btn btn-primary jspSubmit hide">Add Job Submission Protocol</button>
-								</div>
-							</form>
+							<select name="jobSubmissionProtocol" class="form-control selected-job-protocol">
+						  		<option></option>
+							@foreach( $jobSubmissionProtocols as $index => $jobSubmissionProtocol)
+								<option value="{{ $index }}">{{ $jobSubmissionProtocol }}</option>
+							@endforeach
+							</select>
 						</div>
+
+						<div class="form-group">
+							<button type="submit" class="btn btn-primary jspSubmit hide">Add Job Submission Protocol</button>
+						</div>
+					</form>
+				</div>
 
 
         		<div class="form-group">
@@ -264,7 +275,7 @@
 				<div class="select-job-protocol hide">
 					<form role="form" method="POST" action="{{ URL::to('/') }}/cr/edit">
 						<input type="hidden" name="crId" value="{{Input::get('crId') }}"/>
-						<input type="hidden" name="cr-edit" value="edit-jsp"/>
+						<input type="hidden" name="cr-edit" value="jsp"/>
 						<h4>
 							Select the Job Submission Protocol
 							<button type='button' class='close' data-dismiss='alert'>

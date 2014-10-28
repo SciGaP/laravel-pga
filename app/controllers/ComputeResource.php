@@ -21,8 +21,8 @@ class ComputeResource extends BaseController{
 		$ips = Input::get("ips");
 		$computeDescription = array( 
 									"hostName"=> trim( Input::get("hostname") ),
-									"hostAliases"=> array_unique( $hostAliases ),
-									"ipAddresses"=> array_unique( $ips),
+									"hostAliases"=> array_unique( array_filter( $hostAliases) ),
+									"ipAddresses"=> array_unique( array_filter( $ips) ),
 									"resourceDescription"=>Input::get("description") 
 									);
 		$computeResource = CRUtilities::register_or_update_compute_resource( $computeDescription);
@@ -62,12 +62,11 @@ class ComputeResource extends BaseController{
 				{
 					$dataMovementInterfaces[] = CRUtilities::getDataMovementDetails( $DMI->dataMovementInterfaceId, $DMI->dataMovementProtocol);
 				}
-				//var_dump( $dataMovementInterfaces); exit;
 			}
 			$data["computeResource"] = $computeResource;
 			$data["jobSubmissionInterfaces"] = $jobSubmissionInterfaces;
 			$data["dataMovementInterfaces"] = $dataMovementInterfaces;
-			//var_dump( $data["securityProtocolsObject"]); exit;
+			//var_dump( $data["jobSubmissionInterfaces"]); exit;
 
 			return View::make("resource/edit", $data);
 		}
@@ -84,9 +83,10 @@ class ComputeResource extends BaseController{
 		{
 			$computeDescription = Utilities::get_compute_resource(  Input::get("crId"));
 			$computeDescription->hostName = trim( Input::get("hostname") );
-			$computeDescription->hostAliases = array_unique( Input::get("hostaliases") );
-			$computeDescription->ipAddresses = array_unique( Input::get("ips") );
+			$computeDescription->hostAliases = array_unique( array_filter( Input::get("hostaliases") ) );
+			$computeDescription->ipAddresses = array_unique( array_filter( Input::get("ips") ) );
 			$computeDescription->resourceDescription = Input::get("description") ;
+			//var_dump( $computeDescription); exit;
 
 			$computeResource = CRUtilities::register_or_update_compute_resource( $computeDescription, true);
 			Session::put("computeResource", $computeResource);			
