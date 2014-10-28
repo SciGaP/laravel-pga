@@ -100,7 +100,7 @@ Route::filter('verifyadmin', function()
 {
 	if( Utilities::verify_login() )
 	{
-		if( Session::get("username") != "adminuits" )
+		if( Session::get("username") != "admin101" )
 			return Redirect::to("home")->with("admin-alert", true);
 	} 
 	else
