@@ -773,6 +773,7 @@ public static function get_project($projectId)
  */
 public static function assemble_experiment()
 {
+	global $experimentPath;
     //$experimentAssemblySuccessful = true; // errors will set this to false
     //$experimentPath = Utilities::EXPERIMENT_DATA_ROOT;
     $experimentInputs = array();
@@ -798,7 +799,7 @@ public static function assemble_experiment()
     $experimentInputs = Utilities::process_inputs($applicationInputs, $experimentInputs);
     //var_dump($experimentInputs);
 
-    if( $this->experimentPath != null){
+    if( $experimentPath != null){
         $advHandling = new AdvancedOutputDataHandling();
         //echo($experimentPath);
         $advHandling->outputDataDir = str_replace( base_path() . Utilities::EXPERIMENT_DATA_ROOT, $pathConstant , $experimentPath);
