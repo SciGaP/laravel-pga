@@ -83,8 +83,7 @@ class ExperimentController extends BaseController {
 
 	public function expChange()
 	{
-
-		var_dump( Input::all() ); exit;
+		//var_dump( Input::all() ); exit;
 		$experiment = Utilities::get_experiment( Input::get('expId') );
 		$project = Utilities::get_project($experiment->projectID);
 

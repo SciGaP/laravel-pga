@@ -182,14 +182,12 @@
 										<span class="glyphicon glyphicon-trash"></span>
 									</button>
 								</h4>
-								<div class="form-group">
-								</div>
+								<input type="hidden" name="jobSubmissionProtocol" value="{{ $selectedJspIndex }}"/>
 								@if( $selectedJspIndex == $jobSubmissionProtocolsObject::LOCAL)
 									<div class="form-group">
 										<div class="select-resource-manager-type">
 											<h4>Select resource manager type</h4>
 											<select name="resourceJobManagerType" class="form-control selected-resource-manager">
-												<option></option>
 											@foreach( $resourceJobManagerTypes as $index => $rJmT)
 												<option value="{{ $index }}" @if( $JSI->resourceJobManager->resourceJobManagerType == $index ) selected @endif >{{ $rJmT }}</option>
 											@endforeach
@@ -197,11 +195,9 @@
 										</div>
 									</div>
 								@elseif( $selectedJspIndex == $jobSubmissionProtocolsObject::SSH)
-
 									<div class="form-group">		
 										<label class="control-label">Select Security Protocol</label>
 										<select name="securityProtocol">
-											<option></option>
 										@foreach( $securityProtocols as $index => $sp)
 											<option value="{{ $index }}" @if( $JSI->securityProtocol == $index ) selected @endif>{{ $sp }}</option>
 										@endforeach
@@ -221,7 +217,6 @@
 										<div class="select-resource-manager-type">
 											<h4>Select resource manager type</h4>
 											<select name="resourceJobManagerType" class="form-control selected-resource-manager">
-												<option></option>
 											@foreach( $resourceJobManagerTypes as $index => $rJmT)
 												<option value="{{ $index }}" @if( $JSI->resourceJobManager->resourceJobManagerType == $index ) selected @endif >{{ $rJmT }}</option>
 											@endforeach
@@ -229,6 +224,20 @@
 										</div>
 									</div>
 
+								@elseif(  $selectedJspIndex == $jobSubmissionProtocolsObject::UNICORE)
+									<div class="form-group">		
+										<label class="control-label">Select Security Protocol</label>
+										<select name="securityProtocol">
+											<option></option>
+										@foreach( $securityProtocols as $index => $sp)
+											<option value="{{ $index }}" @if( $JSI->securityProtocol == $index ) selected @endif>{{ $sp }}</option>
+										@endforeach
+										</select>
+									</div>
+									<div class="form-group">
+										<label class="form-label">Unicore End Point URL</label>
+										<input class='form-control' name='unicoreEndPointURL'/>
+									</div>
 								@endif
 								<div class="form-group">
 									<button type="submit" class="btn">Update</button>

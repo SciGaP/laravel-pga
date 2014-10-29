@@ -64,14 +64,14 @@ private $tokenFile = null;
 
 private $sshUser;
 private $hostName;
-private $pathConstant;
-private $experimentPath;
+private static $pathConstant;
+private static $experimentPath;
 
-public function __construct(){
-	$sshUser = "root";
-	$hostName = $_SERVER['SERVER_NAME'];
-	$pathConstant = 'file://'.$sshUser.'@'.$hostName.'://var/www/experimentData/';
-	$experimentPath = null;
+function __construct(){
+	$this->sshUser = "root";
+	$this->hostName = $_SERVER['SERVER_NAME'];
+	self::$pathConstant = 'file://'.'@'.$this->hostName.'://var/www/experimentData/';
+	self::$experimentPath = null;
 }
 
 
@@ -775,7 +775,7 @@ public static function get_project($projectId)
  */
 public static function assemble_experiment()
 {
-	global $experimentPath, $pathConstant;
+    $utility = new Utilities();
     //$experimentAssemblySuccessful = true; // errors will set this to false
     //$experimentPath = Utilities::EXPERIMENT_DATA_ROOT;
     $experimentInputs = array();
@@ -801,10 +801,10 @@ public static function assemble_experiment()
     $experimentInputs = Utilities::process_inputs($applicationInputs, $experimentInputs);
     //var_dump($experimentInputs);
 
-    if( $experimentPath != null){
+    if( Utilities::$experimentPath != null){
         $advHandling = new AdvancedOutputDataHandling();
-        //echo($experimentPath);
-        $advHandling->outputDataDir = str_replace( base_path() . Utilities::EXPERIMENT_DATA_ROOT, $pathConstant , $experimentPath);
+
+        $advHandling->outputDataDir = str_replace( base_path() . Utilities::EXPERIMENT_DATA_ROOT, Utilities::$pathConstant , Utilities::$experimentPath);
         $userConfigData->advanceOutputDataHandling = $advHandling;
     }
 
@@ -866,7 +866,7 @@ public static function assemble_experiment()
  */
 public static function process_inputs($applicationInputs, $experimentInputs)
 {
-    global $experimentPath;
+    $utility = new Utilities();
     $experimentAssemblySuccessful = true;
     $newExperimentInputs = array();
 
@@ -879,11 +879,11 @@ public static function process_inputs($applicationInputs, $experimentInputs)
             // construct unique path
             do
             {
-                $experimentPath = base_path() . Utilities::EXPERIMENT_DATA_ROOT . str_replace(' ', '', Session::get('username') ) . md5(rand() * time()) . '/';
+                Utilities::$experimentPath = base_path() . Utilities::EXPERIMENT_DATA_ROOT . str_replace(' ', '', Session::get('username') ) . md5(rand() * time()) . '/';
             }
-            while (is_dir($experimentPath)); // if dir already exists, try again
+            while (is_dir( Utilities::$experimentPath)); // if dir already exists, try again
             // create upload directory
-            if (!mkdir($experimentPath))
+            if (!mkdir( Utilities::$experimentPath))
             {
                 Utilities::print_error_message('<p>Error creating upload directory!
                     Please try again later or report a bug using the link in the Help menu.</p>');
@@ -943,7 +943,7 @@ public static function process_inputs($applicationInputs, $experimentInputs)
                 //
                 // move file to experiment data directory
                 //
-                $filePath = $experimentPath . $file['name'];
+                $filePath = Utilities::$experimentPath . $file['name'];
 
                 // check if file already exists
                 if (is_file($filePath))
@@ -969,9 +969,7 @@ public static function process_inputs($applicationInputs, $experimentInputs)
                     $experimentAssemblySuccessful = false;
                 }
 
-                global $pathConstant;
-
-                $experimentInput->value = str_replace(base_path() . Utilities::EXPERIMENT_DATA_ROOT, $pathConstant , $filePath);
+                $experimentInput->value = str_replace(base_path() . Utilities::EXPERIMENT_DATA_ROOT, Utilities::$pathConstant , $filePath);
             }
             else
             {

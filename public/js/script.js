@@ -70,7 +70,6 @@ $(document).ready( function(){
                       + $(".resource-manager-block").html() 
                       + "</div>" );
       $(this).parent().find(".addedScpValue").removeClass("hide");
-
     }
     else if( selectedVal == "globus")
     {
@@ -85,25 +84,36 @@ $(document).ready( function(){
     }
     else if( selectedVal == "unicore")
     {
+      alert("Unicore Protool is not being setup right now. Please choose another option.");
+      /*
       $(this).parent().append(  parentResDiv 
                       + $(".ssh-block").html()
                       + "<h5>Unicore End Point Url</h5>" 
                       + "<input class='form-control' name='unicoreEndPointURL'/>"
                       + "</div>" );
+      */
     }
     else if( selectedVal == "cloud")
     {
+      alert("Cloud Protool is not being setup right now. Please choose another option.");
+      /*
       $(this).parent().append(  parentResDiv 
                       + $(".ssh-block").html()
                       + $(".cloud-block").html()
                       );
+      */
     }
     else{
       alert("Something went wrong. Please try again");
       $(".jspSubmit").addClass("hide");
     }
 
-    $(".jspSubmit").removeClass("hide");
+    //temporary till all protocols are not setup
+    if( selectedVal == "local" || selectedVal == "ssh" )
+      $(".jspSubmit").removeClass("hide");
+    else
+      $(".jspSubmit").addClass("hide");
+
   });
   
   /* 

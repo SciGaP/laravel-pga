@@ -107,28 +107,34 @@ public static function createQueueObject( $queue){
 
 
 /*
- * Getting Job Submission Interface Object.
+ * Creating Job Submission Interface.
 */
 
-public static function createJSIObject( $inputs){
+public static function create_or_update_JSIObject( $inputs, $update = false){
 
     $airavataclient = Utilities::get_airavata_client();
     $computeResource = Utilities::get_compute_resource(  $inputs["crId"]);
 
-    $computeResource = $airavataclient->getComputeResource( $computeResource->computeResourceId, $computeResource); 
-
     if( $inputs["jobSubmissionProtocol"] == JobSubmissionProtocol::LOCAL)
     {
+        $jsiId = null;
+        if( isset( $inputs["jsiId"]))
+            $jsiId = $inputs["jsiId"];
         $resourceManager = new ResourceJobManager(array( "resourceJobManagerType"=> $inputs["resourceJobManagerType"]));
-        $localJobSubmission = new LOCALSubmission( array(
+        $localJobSubmission = new LOCALSubmission(  array(
+                                                            "JobSubmissionInterfaceId" => $jsiId,
                                                             "resourceJobManager" => $resourceManager
-                                                            )
+                                                        )
                                                     );
-        $localSub = $airavataclient->addLocalSubmissionDetails( $computeResource->computeResourceId, 0, $localJobSubmission);
-        if( $localSub)
-        	return;
-        else 
-        	return $localSub;
+        if( $update)
+        {
+            $localSub = $airavataclient->updateLocalSubmissionDetails( $jsiId, $localJobSubmission);
+        }
+        else
+        {
+            $localSub = $airavataclient->addLocalSubmissionDetails( $computeResource->computeResourceId, 0, $localJobSubmission);
+            return $localSub;
+        }
         
     }
     else if( $inputs["jobSubmissionProtocol"] ==  JobSubmissionProtocol::SSH) /* SSH */
@@ -154,10 +160,8 @@ public static function createJSIObject( $inputs){
     }
 }
 
-
-
 /*
- * Getting Job Submission Interface Object.
+ * Creating Data Movement Interface Object.
 */
 public static function createDMIObject( $inputs){
     $airavataclient = Utilities::get_airavata_client();

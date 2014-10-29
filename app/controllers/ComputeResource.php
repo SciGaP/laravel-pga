@@ -106,9 +106,13 @@ class ComputeResource extends BaseController{
 			$computeResource = CRUtilities::register_or_update_compute_resource( $computeDescription, true);
 			Session::put("computeResource", $computeResource);
 		}
-		else if( Input::get("cr-edit") == "jsp") /* Add / Modify a Job Submission Interface */
-		{			
-			$jobSubmissionInterface = CRUtilities::createJSIObject( Input::all() );
+		else if( Input::get("cr-edit") == "jsp" ||  Input::get("cr-edit") == "edit-jsp" ) /* Add / Modify a Job Submission Interface */
+		{		
+			$update = false;	
+			if( Input::get("cr-edit") == "edit-jsp")
+				$update = true;
+
+			$jobSubmissionInterface = CRUtilities::create_or_update_JSIObject( Input::all(), $update );
 		}
 		else if( Input::get("cr-edit") == "dmp") /* Add / Modify a Data Movement Interface */
 		{
