@@ -167,6 +167,11 @@
 
         	<div class="tab-pane" id="tab-jobSubmission">
 
+        		<div class="form-group">
+					<div class="job-submission-info row hide"></div>
+					<button type="button" class="btn btn-sm btn-default add-job-submission">Add a new Job Submission Interface</button>
+				</div>
+
         		@if( count( $jobSubmissionInterfaces ) )
         			<div class="job-edit-info">
         			@foreach( $jobSubmissionInterfaces as $index => $JSI )
@@ -193,6 +198,14 @@
 												<option value="{{ $index }}" @if( $JSI->resourceJobManager->resourceJobManagerType == $index ) selected @endif >{{ $rJmT }}</option>
 											@endforeach
 											</select>
+											<div class="form-group">
+												<label class="control-label">Push Monitoring End Point</label>
+												<input type="text" class="form-control" name="pushMonitoringEndpoint" value="{{ $JSI->resourceJobManager->pushMonitoringEndpoint }}"/>
+											</div>
+											<div class="form-group">
+												<label class="control-label">Job Manager Bin Path</label>
+												<input type="text" class="form-control" name="jobManagerBinPath" value="{{ $JSI->resourceJobManager->jobManagerBinPath }}"/>
+											</div>
 										</div>
 									</div>
 								@elseif( $selectedJspIndex == $jobSubmissionProtocolsObject::SSH)
@@ -222,6 +235,14 @@
 												<option value="{{ $index }}" @if( $JSI->resourceJobManager->resourceJobManagerType == $index ) selected @endif >{{ $rJmT }}</option>
 											@endforeach
 											</select>
+											<div class="form-group">
+												<label class="control-label">Push Monitoring End Point</label>
+												<input type="text" class="form-control" name="pushMonitoringEndpoint" value="{{ $JSI->resourceJobManager->pushMonitoringEndpoint }}"/>
+											</div>
+											<div class="form-group">
+												<label class="control-label">Job Manager Bin Path</label>
+												<input type="text" class="form-control" name="jobManagerBinPath" value="{{ $JSI->resourceJobManager->jobManagerBinPath }}"/>
+											</div>
 										</div>
 									</div>
 
@@ -276,22 +297,21 @@
 					</form>
 				</div>
 
-
-        		<div class="form-group">
-					<div class="job-submission-info row hide"></div>
-					<button type="button" class="btn btn-sm btn-default add-job-submission">Add a new Job Submission Interface</button>
-				</div>
-
         	</div>
 
         	<div class="tab-pane" id="tab-dataMovement">
+
+				<div class="form-group">
+					<div class="data-movement-info row hide"></div>
+					<button type="button" class="btn btn-sm btn-default add-data-movement">Add a new Data Movement Interface</button>
+				</div>
 
         		@if( count( $dataMovementInterfaces ) )
         			<div class="job-edit-info">
         			@foreach( $dataMovementInterfaces as $index => $DMI )
         				<div class="data-movement-block">
 							<form role="form" method="POST" action="{{ URL::to('/') }}/cr/edit">
-								<input type="hidden" name="crId" value="{{Input::get('crId') }}"/>
+								<input type="hidden" name="crId" class="crId" value="{{Input::get('crId') }}"/>
 								<input type="hidden" name="cr-edit" value="edit-dmi"/>
 								<input type="hidden" name="dmiId" value="{{ $DMI->dataMovementInterfaceId }}"/>
 								<?php $selectedDMIIndex = $computeResource->dataMovementInterfaces[ $index]->dataMovementProtocol; ?>
@@ -332,16 +352,10 @@
 					@endforeach
 					</div>
 				@endif
-
-				<div class="form-group">
-					<div class="data-movement-info row hide"></div>
-					<button type="button" class="btn btn-sm btn-default add-data-movement">Add a new Data Movement Interface</button>
-				</div>
-
         		<div class="select-data-movement hide">
 
 					<form role="form" method="POST" action="{{ URL::to('/') }}/cr/edit">
-						<input type="hidden" name="crId" value="{{Input::get('crId') }}"/>
+						<input type="hidden" name="crId" class="crId" value="{{Input::get('crId') }}"/>
 						<input type="hidden" name="cr-edit" value="dmp"/>
 						<h4>
 							Select the Data Movement Protocol
@@ -380,6 +394,14 @@
 					<option value="{{ $index }}">{{ $rJmT }}</option>
 				@endforeach
 				</select>
+			</div>
+			<div class="form-group">
+				<label class="control-label">Push Monitoring End Point</label>
+				<input type="text" class="form-control" name="pushMonitoringEndpoint"/>
+			</div>
+			<div class="form-group">
+				<label class="control-label">Job Manager Bin Path</label>
+				<input type="text" class="form-control" name="jobManagerBinPath"/>
 			</div>
 		</div>
 
@@ -480,6 +502,33 @@
         </div>
     </div>
 </div>
+
+<div class="modal fade" id="add-dmi" tabindex="-1" role="dialog" aria-labelledby="add-modal" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                Add a Data Model Interface
+            </div>
+            <div class="modal-body add-dmi-body row">
+               
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="modal fade" id="add-jsi" tabindex="-1" role="dialog" aria-labelledby="add-modal" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                Add a Job Submission Interface
+            </div>
+            <div class="modal-body add-jsi-body row">
+               
+            </div>
+        </div>
+    </div>
+</div>
+
 
 @stop
 

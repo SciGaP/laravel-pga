@@ -117,12 +117,13 @@ public static function create_or_update_JSIObject( $inputs, $update = false){
 
     if( $inputs["jobSubmissionProtocol"] == JobSubmissionProtocol::LOCAL)
     {
-        $jsiId = null;
-        if( isset( $inputs["jsiId"]))
-            $jsiId = $inputs["jsiId"];
-        //$jsiObject = $airavataclient->getLocalJobSubmission( $jsiId); 
+
         //print_r( $jsiObject->resourceJobManager->resourceJobManagerId);
-        $resourceManager = new ResourceJobManager(array( "resourceJobManagerType"=> $inputs["resourceJobManagerType"]));
+        $resourceManager = new ResourceJobManager(array( 
+                                                    "resourceJobManagerType" => $inputs["resourceJobManagerType"],
+                                                    "pushMonitoringEndpoint" => $inputs["pushMonitoringEndpoint"],
+                                                    "jobManagerBinPath"      => $inputs["jobManagerBinPath"]
+                                                    ));
 
         //$rmId = $jsiObject->resourceJobManager->resourceJobManagerId;
         //$rm = $airavataclient->updateResourceJobManager($rmId, $resourceManager);
@@ -134,7 +135,12 @@ public static function create_or_update_JSIObject( $inputs, $update = false){
 
         if( $update) //update Local JSP
         {
-            $localSub = $airavataclient->updateLocalSubmissionDetails( $jsiId, $localJobSubmission);
+            $jsiId = null;
+            if( isset( $inputs["jsiId"]))
+                $jsiId = $inputs["jsiId"];
+            $jsiObject = $airavataclient->getLocalJobSubmission( $jsiId); 
+            $localSub = $airavataclient->updateResourceJobManager(  $jsiObject->resourceJobManager->resourceJobManagerId, $resourceManager);
+            //$localSub = $airavataclient->updateLocalSubmissionDetails( $jsiId, $localJobSubmission);
         }
         else        // create Local JSP
         {
@@ -145,7 +151,11 @@ public static function create_or_update_JSIObject( $inputs, $update = false){
     }
     else if( $inputs["jobSubmissionProtocol"] ==  JobSubmissionProtocol::SSH) /* SSH */
     {
-        $resourceManager = new ResourceJobManager(array( "resourceJobManagerType"=> $inputs["resourceJobManagerType"]));
+        $resourceManager = new ResourceJobManager(array( 
+                                                    "resourceJobManagerType" => $inputs["resourceJobManagerType"],
+                                                    "pushMonitoringEndpoint" => $inputs["pushMonitoringEndpoint"],
+                                                    "jobManagerBinPath"      => $inputs["jobManagerBinPath"]
+                                                    ));
         $sshJobSubmission = new SSHJobSubmission( array
                                                     (
                                                         "securityProtocol" => intval( $inputs["securityProtocol"]),
@@ -154,11 +164,32 @@ public static function create_or_update_JSIObject( $inputs, $update = false){
                                                         "sshPort" => intval( $inputs["sshPort"] )
                                                     )
                                                 );
+        if( $update) //update Local JSP
+        {
+            $jsiId = null;
+            if( isset( $inputs["jsiId"]))
+                $jsiId = $inputs["jsiId"];
+            $jsiObject = $airavataclient->getSSHJobSubmission( $jsiId);
 
-        $sshSub = $airavataclient->addSSHJobSubmissionDetails( $computeResource->computeResourceId, 0, $sshJobSubmission);
-        if( $sshSub)
-            return;
-        
+            //first update resource job manager
+            $rmjId = $jsiObject->resourceJobManager->resourceJobManagerId;
+            $airavataclient->updateResourceJobManager(  $rmjId, $resourceManager);
+            $jsiObject = $airavataclient->getSSHJobSubmission( $jsiId);
+
+            $jsiObject->securityProtocol = intval( $inputs["securityProtocol"] );
+            $jsiObject->alternativeSSHHostName = $inputs["alternativeSSHHostName"];
+            $jsiObject->sshPort = intval( $inputs["sshPort"] );
+            $jsiObject->resourceJobManager = $airavataclient->getresourceJobManager( $rmjId);
+            //var_dump( $jsiObject); exit;
+            //add updated resource job manager to ssh job submission object.
+            //$sshJobSubmission->resourceJobManager->resourceJobManagerId = $rmjId;
+            $localSub = $airavataclient->updateSSHJobSubmissionDetails( $jsiId, $jsiObject);
+        }
+        else
+        {
+            $sshSub = $airavataclient->addSSHJobSubmissionDetails( $computeResource->computeResourceId, 0, $sshJobSubmission);
+        }
+        return;        
     }
     else /* Globus & Unicore currently */
     {
@@ -173,7 +204,7 @@ public static function create_or_update_DMIObject( $inputs, $update = false){
     $airavataclient = Utilities::get_airavata_client();
 
     $computeResource = Utilities::get_compute_resource(  $inputs["crId"] );
-    if( $inputs["dataMovementProtocol"] == 0) /* LOCAL */
+    if( $inputs["dataMovementProtocol"] == DataMovementProtocol::LOCAL) /* LOCAL */
     {
         $localDataMovement = new LOCALDataMovement();
         $localdmp = $airavataclient->addLocalDataMovementDetails( $computeResource->computeResourceId, 0, $localDataMovement);
@@ -182,7 +213,7 @@ public static function create_or_update_DMIObject( $inputs, $update = false){
             print_r( "The Local Data Movement has been added. Edit UI for the Local Data Movement Interface is yet to be made.
                 Please click <a href='" . URL::to('/') . "/cr/edit'>here</a> to go back to edit page for compute resource.");
     }
-    else if( $inputs["dataMovementProtocol"] == 1) /* SCP */
+    else if( $inputs["dataMovementProtocol"] == DataMovementProtocol::SCP) /* SCP */
     {
         //var_dump( $inputs); exit;
         $scpDataMovement = new SCPDataMovement( array(
@@ -198,7 +229,7 @@ public static function create_or_update_DMIObject( $inputs, $update = false){
         else
             $scpdmp = $airavataclient->addSCPDataMovementDetails( $computeResource->computeResourceId, 0, $scpDataMovement);   
    }
-    else if( $inputs["dataMovementProtocol"] == 3) /* GridFTP */
+    else if( $inputs["dataMovementProtocol"] == DataMovementProtocol::GridFTP) /* GridFTP */
     {
         //var_dump( $inputs); exit;
         $gridFTPDataMovement = new GridFTPDataMovement( array(
@@ -255,9 +286,15 @@ public static function getDataMovementDetails( $dataMovementInterfaceId, $dmi){
 public static function deleteActions( $inputs){
     $airavataclient = Utilities::get_airavata_client();
     if( isset( $inputs["jsiId"]) )
-        return $airavataclient->deleteJobSubmissionInterface( $inputs["jsiId"]);
+        if( $airavataclient->deleteJobSubmissionInterface( $inputs["crId"], $inputs["jsiId"]) )
+            return 1;
+        else
+            return 0;
     else if( isset( $inputs["dmiId"]) )
-        return $airavataclient->deleteDataMovementInterface( $inputs["dmiId"]);
+        if( $airavataclient->deleteDataMovementInterface( $inputs["crId"], $inputs["dmiId"]) )
+            return 1;
+        else 
+            return 0;
 
 }
 

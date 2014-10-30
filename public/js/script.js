@@ -41,11 +41,14 @@ $(document).ready( function(){
   */
 
   $(".add-job-submission").click( function(){
-    $(".job-submission-info").removeClass("hide").append( "<div class='job-protocol-block col-md-12'>" + $(".select-job-protocol").html() + "</div><hr/>");
+    /*$(".job-submission-info").removeClass("hide").append( "<div class='job-protocol-block col-md-12'>" + $(".select-job-protocol").html() + "</div><hr/>");
   	
   	$('html, body').animate({
         scrollTop: $(this).position().top + 500
     }, 200);
+    */
+    $(".add-jsi-body").html( "<div class='job-protocol-block col-md-12'>" + $(".select-job-protocol").html() + "</div><hr/>");
+    $("#add-jsi").modal("show");
   });
 
   $("body").on("change", ".selected-job-protocol", function(){
@@ -126,7 +129,9 @@ $(document).ready( function(){
   */
 
   $(".add-data-movement").click( function(){
-    $(".data-movement-info").removeClass("hide").append( "<div class='data-movement-block col-md-12'>" + $(".select-data-movement").html() + "</div><hr/>");
+    //$(".data-movement-info").removeClass("hide").append( "<div class='data-movement-block col-md-12'>" + $(".select-data-movement").html() + "</div><hr/>");
+    $(".add-dmi-body").html("<div class='data-movement-block col-md-12'>" + $(".select-data-movement").html() + "</div><hr/>");
+    $("#add-dmi").modal("show");
   });
 
 
@@ -152,7 +157,7 @@ $(document).ready( function(){
     }
     else if( selectedVal == "sftp")
     {
-      // to find out what goes here.
+      alert( "SFTP has not been setup yet. Please choose another Data Movement Protocol");
     }
     else if( selectedVal == "gridftp")
     {
@@ -202,16 +207,22 @@ $(document).ready( function(){
     $.ajax({
       type: "POST",
       url: $(".base-url").val() + "/cr/delete-jsi",
-      data: { jsiId : jsiId }
+      data: { 
+              crId : $(".crId").val(), 
+              jsiId : jsiId 
+            }
     })
-    .done(function( deleted ) {
+    .complete(function( data ) {
       $("#confirm-delete-jsi").modal("hide");
-      if( deleted)
+      if( data.responseText == 1)
       {
         $(".job-protocol-block").each( function(i, elem){
-          var toBeRemovedChild = $(elem).children(".delete-jsi");
+          var toBeRemovedChild = $(elem).find(".delete-jsi");
           if( toBeRemovedChild.data("jsi-id") == jsiId )
+          {
+            $(elem).before("<div class='alert alert-success'>The Job Submission Interface has been successfully deleted.</div>");
             $(elem).fadeOut().remove();
+          }
         });
       }
     });
@@ -228,16 +239,22 @@ $(document).ready( function(){
     $.ajax({
       type: "POST",
       url: $(".base-url").val() + "/cr/delete-dmi",
-      data: { dmiId : dmiId }
+      data: {
+              crId : $(".crId").val(), 
+              dmiId : dmiId 
+            }
     })
-    .done(function( deleted ) {
+    .complete(function( data ) {
       $("#confirm-delete-dmi").modal("hide");
-      if( 1)
+      if( data.responseText == 1)
       {
         $(".data-movement-block").each( function(i, elem){
-          var toBeRemovedChild = $(elem).children(".delete-dmi");
+          var toBeRemovedChild = $(elem).find(".delete-dmi");
           if( toBeRemovedChild.data("dmi-id") == dmiId )
+          {
+            $(elem).before("<div class='alert alert-success'>The Data Movement Interface has been successfully deleted.</div>");
             $(elem).fadeOut().remove();
+          }
         });
       }
 
