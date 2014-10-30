@@ -70,6 +70,10 @@ Route::post("cr/edit", "ComputeResource@editSubmit");
 
 Route::get("cr/browse", "ComputeResource@browseView");
 
+Route::post("cr/delete-jsi", "ComputeResource@deleteActions");
+
+Route::post("cr/delete-dmi", "ComputeResource@deleteActions");
+
 /*
  * Test Routes.
 */

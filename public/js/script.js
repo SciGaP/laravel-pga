@@ -191,5 +191,57 @@ $(document).ready( function(){
     });
 
    $(".nav-tabs a").height(highest);  //set all your links to that height.
+
+   $(".delete-jsi").click( function(){
+      $(".delete-jsi-confirm").data("jsi-id", $(this).data("jsi-id"));
+   });
+
+  $(".delete-jsi-confirm").click( function(){
+
+    var jsiId = $(this).data("jsi-id");
+    $.ajax({
+      type: "POST",
+      url: $(".base-url").val() + "/cr/delete-jsi",
+      data: { jsiId : jsiId }
+    })
+    .done(function( deleted ) {
+      $("#confirm-delete-jsi").modal("hide");
+      if( deleted)
+      {
+        $(".job-protocol-block").each( function(i, elem){
+          var toBeRemovedChild = $(elem).children(".delete-jsi");
+          if( toBeRemovedChild.data("jsi-id") == jsiId )
+            $(elem).fadeOut().remove();
+        });
+      }
+    });
+
+  });
+
+  $(".delete-dmi").click( function(){
+      $(".delete-dmi-confirm").data("dmi-id", $(this).data("dmi-id"));
+   });
+
+  $(".delete-dmi-confirm").click( function(){
+
+    var dmiId = $(this).data("dmi-id");
+    $.ajax({
+      type: "POST",
+      url: $(".base-url").val() + "/cr/delete-dmi",
+      data: { dmiId : dmiId }
+    })
+    .done(function( deleted ) {
+      $("#confirm-delete-dmi").modal("hide");
+      if( 1)
+      {
+        $(".data-movement-block").each( function(i, elem){
+          var toBeRemovedChild = $(elem).children(".delete-dmi");
+          if( toBeRemovedChild.data("dmi-id") == dmiId )
+            $(elem).fadeOut().remove();
+        });
+      }
+
+    });
+  });
    
 });

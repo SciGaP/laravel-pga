@@ -120,17 +120,23 @@ public static function create_or_update_JSIObject( $inputs, $update = false){
         $jsiId = null;
         if( isset( $inputs["jsiId"]))
             $jsiId = $inputs["jsiId"];
+        //$jsiObject = $airavataclient->getLocalJobSubmission( $jsiId); 
+        //print_r( $jsiObject->resourceJobManager->resourceJobManagerId);
         $resourceManager = new ResourceJobManager(array( "resourceJobManagerType"=> $inputs["resourceJobManagerType"]));
+
+        //$rmId = $jsiObject->resourceJobManager->resourceJobManagerId;
+        //$rm = $airavataclient->updateResourceJobManager($rmId, $resourceManager);
+        //print_r( $rm); exit;
         $localJobSubmission = new LOCALSubmission(  array(
-                                                            "JobSubmissionInterfaceId" => $jsiId,
                                                             "resourceJobManager" => $resourceManager
                                                         )
                                                     );
-        if( $update)
+
+        if( $update) //update Local JSP
         {
             $localSub = $airavataclient->updateLocalSubmissionDetails( $jsiId, $localJobSubmission);
         }
-        else
+        else        // create Local JSP
         {
             $localSub = $airavataclient->addLocalSubmissionDetails( $computeResource->computeResourceId, 0, $localJobSubmission);
             return $localSub;
@@ -163,7 +169,7 @@ public static function create_or_update_JSIObject( $inputs, $update = false){
 /*
  * Creating Data Movement Interface Object.
 */
-public static function createDMIObject( $inputs){
+public static function create_or_update_DMIObject( $inputs, $update = false){
     $airavataclient = Utilities::get_airavata_client();
 
     $computeResource = Utilities::get_compute_resource(  $inputs["crId"] );
@@ -186,11 +192,12 @@ public static function createDMIObject( $inputs){
                                                 )
 
                                             );
-        $scpdmp = $airavataclient->addSCPDataMovementDetails( $computeResource->computeResourceId, 0, $scpDataMovement);
-        if( $scpdmp)
-            print_r( "The SCP Data Movement has been added. Edit UI for the SCP Data Movement Interface is yet to be made.
-                Please click <a href='" . URL::to('/') . "/cr/edit'>here</a> to go back to edit page for compute resource.");   
-    }
+
+        if( $update)
+            $scpdmp = $airavataclient->updateSCPDataMovementDetails( $inputs["dmiId"], $scpDataMovement);
+        else
+            $scpdmp = $airavataclient->addSCPDataMovementDetails( $computeResource->computeResourceId, 0, $scpDataMovement);   
+   }
     else if( $inputs["dataMovementProtocol"] == 3) /* GridFTP */
     {
         //var_dump( $inputs); exit;
@@ -243,6 +250,15 @@ public static function getDataMovementDetails( $dataMovementInterfaceId, $dmi){
         return $airavataclient->getCloudJobSubmission( $dataMovementInterfaceId);
 
     //globus get function not present ??
+}
+
+public static function deleteActions( $inputs){
+    $airavataclient = Utilities::get_airavata_client();
+    if( isset( $inputs["jsiId"]) )
+        return $airavataclient->deleteJobSubmissionInterface( $inputs["jsiId"]);
+    else if( isset( $inputs["dmiId"]) )
+        return $airavataclient->deleteDataMovementInterface( $inputs["dmiId"]);
+
 }
 
 

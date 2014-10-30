@@ -66,7 +66,7 @@ class ComputeResource extends BaseController{
 			$data["computeResource"] = $computeResource;
 			$data["jobSubmissionInterfaces"] = $jobSubmissionInterfaces;
 			$data["dataMovementInterfaces"] = $dataMovementInterfaces;
-			//var_dump( $data["jobSubmissionInterfaces"]); exit;
+			//var_dump( $data["dataMovementInterfaces"]); exit;
 
 			return View::make("resource/edit", $data);
 		}
@@ -114,9 +114,12 @@ class ComputeResource extends BaseController{
 
 			$jobSubmissionInterface = CRUtilities::create_or_update_JSIObject( Input::all(), $update );
 		}
-		else if( Input::get("cr-edit") == "dmp") /* Add / Modify a Data Movement Interface */
+		else if( Input::get("cr-edit") == "dmp" ||  Input::get("cr-edit") == "edit-dmi" ) /* Add / Modify a Data Movement Interface */
 		{
-			$dataMovementInterface = CRUtilities::createDMIObject( Input::all() );
+			$update = false;	
+			if( Input::get("cr-edit") == "edit-dmi")
+				$update = true;
+			$dataMovementInterface = CRUtilities::create_or_update_DMIObject( Input::all(), $update );
 		}
 		else if( Input::get("cr-edit") == "fileSystems")
 		{
@@ -126,6 +129,11 @@ class ComputeResource extends BaseController{
 			Session::put("computeResource", $computeResource);
 		}
 		return Redirect::to("cr/edit?crId=" . Input::get("crId") );
+	}
+
+	public function deleteActions(){
+		return CRUtilities::deleteActions( Input::all() );
+
 	}
 
 	public function browseView(){

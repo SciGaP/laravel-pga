@@ -10,6 +10,8 @@
 <div class="container">
 	<div class="col-md-offset-2 col-md-8">
 
+		<input type="hidden" class="base-url" value="{{URL::to('/')}}"/>
+
 		<div class="well">
 			<h4>Compute Resource : {{ $computeResource->hostName }}</h4>
 		</div>
@@ -170,7 +172,6 @@
         			@foreach( $jobSubmissionInterfaces as $index => $JSI )
 
         				<div class="job-protocol-block">
-
 							<form role="form" method="POST" action="{{ URL::to('/') }}/cr/edit">
 								<input type="hidden" name="crId" value="{{Input::get('crId') }}"/>
 								<input type="hidden" name="cr-edit" value="edit-jsp"/>
@@ -179,7 +180,7 @@
 
         						<h4>Job Submission Protocol : {{ $jobSubmissionProtocols[ $selectedJspIndex] }}
 									<button type='button' class='close'>
-										<span class="glyphicon glyphicon-trash"></span>
+										<span class="glyphicon glyphicon-trash delete-jsi" data-toggle="modal" data-target="#confirm-delete-jsi" data-jsi-id="{{ $JSI->jobSubmissionInterfaceId }}"></span>
 									</button>
 								</h4>
 								<input type="hidden" name="jobSubmissionProtocol" value="{{ $selectedJspIndex }}"/>
@@ -204,11 +205,11 @@
 										</select>
 									</div>
 
-									<div class="form-group addedScpValue">
+									<div class="form-group">
 										<label class="control-label">Alternate SSH Host Name</label>
 						                <input class='form-control' name='alternativeSSHHostName' value="{{ $JSI->alternativeSSHHostName}}"/>
 						            </div>
-						            <div class="form-group addedScpValue">
+						            <div class="form-group">
 										<label class="control-label">SSH Port</label>
 						                <input class='form-control' name='sshPort' value="{{ $JSI->sshPort }}"/>
 						            </div>
@@ -281,61 +282,56 @@
 					<button type="button" class="btn btn-sm btn-default add-job-submission">Add a new Job Submission Interface</button>
 				</div>
 
-				<div class="select-job-protocol hide">
-					<form role="form" method="POST" action="{{ URL::to('/') }}/cr/edit">
-						<input type="hidden" name="crId" value="{{Input::get('crId') }}"/>
-						<input type="hidden" name="cr-edit" value="jsp"/>
-						<h4>
-							Select the Job Submission Protocol
-							<button type='button' class='close' data-dismiss='alert'>
-								<span class="glyphicon glyphicon-trash"></span>
-							</button>
-						</h4>
-						<div class="form-group">
-
-							<select name="jobSubmissionProtocol" class="form-control selected-job-protocol">
-						  		<option></option>
-							@foreach( $jobSubmissionProtocols as $index => $jobSubmissionProtocol)
-								<option value="{{ $index }}">{{ $jobSubmissionProtocol }}</option>
-							@endforeach
-							</select>
-						</div>
-
-						<div class="form-group">
-							<button type="submit" class="btn btn-primary jspSubmit hide">Add Job Submission Protocol</button>
-						</div>
-					</form>
-				</div>
-
-				<div class="select-job-protocol hide">
-					<form role="form" method="POST" action="{{ URL::to('/') }}/cr/edit">
-						<input type="hidden" name="crId" value="{{Input::get('crId') }}"/>
-						<input type="hidden" name="cr-edit" value="jsp"/>
-						<h4>
-							Select the Job Submission Protocol
-							<button type='button' class='close' data-dismiss='alert'>
-								<span class="glyphicon glyphicon-trash"></span>
-							</button>
-						</h4>
-						<div class="form-group">
-
-							<select name="jobSubmissionProtocol" class="form-control selected-job-protocol">
-						  		<option></option>
-							@foreach( $jobSubmissionProtocols as $index => $jobSubmissionProtocol)
-								<option value="{{ $index }}">{{ $jobSubmissionProtocol }}</option>
-							@endforeach
-							</select>
-						</div>
-
-						<div class="form-group">
-							<button type="submit" class="btn btn-primary jspSubmit hide">Add Job Submission Protocol</button>
-						</div>
-					</form>
-				</div>
-
         	</div>
 
         	<div class="tab-pane" id="tab-dataMovement">
+
+        		@if( count( $dataMovementInterfaces ) )
+        			<div class="job-edit-info">
+        			@foreach( $dataMovementInterfaces as $index => $DMI )
+        				<div class="data-movement-block">
+							<form role="form" method="POST" action="{{ URL::to('/') }}/cr/edit">
+								<input type="hidden" name="crId" value="{{Input::get('crId') }}"/>
+								<input type="hidden" name="cr-edit" value="edit-dmi"/>
+								<input type="hidden" name="dmiId" value="{{ $DMI->dataMovementInterfaceId }}"/>
+								<?php $selectedDMIIndex = $computeResource->dataMovementInterfaces[ $index]->dataMovementProtocol; ?>
+
+        						<h4>Data Movement Protocol : {{ $dataMovementProtocols[ $selectedDMIIndex] }}
+									<button type='button' class='close'>
+										<span class="glyphicon glyphicon-trash delete-dmi" data-toggle="modal" data-target="#confirm-delete-dmi" data-dmi-id="{{ $DMI->dataMovementInterfaceId }}"></span>
+									</button>
+								</h4>
+								<input type="hidden" name="dataMovementProtocol" value="{{ $selectedDMIIndex }}"/>
+								@if( $selectedDMIIndex == $dataMovementProtocolsObject::LOCAL)
+									<!-- Nothing here on local UI -->
+								@elseif( $selectedDMIIndex == $dataMovementProtocolsObject::SCP)
+									<div class="form-group">		
+										<label class="control-label">Select Security Protocol</label>
+										<select name="securityProtocol">
+											<option></option>
+										@foreach( $securityProtocols as $index => $sp)
+											<option value="{{ $index }}" @if( $DMI->securityProtocol == $index ) selected @endif>{{ $sp }}</option>
+										@endforeach
+										</select>
+									</div>
+
+									<div class="form-group">
+										<label class="control-label">Alternate SSH Host Name</label>
+						                <input class='form-control' name='alternativeSSHHostName' value="{{ $DMI->alternativeSCPHostName }}"/>
+						            </div>
+						            <div class="form-group">
+										<label class="control-label">SSH Port</label>
+						                <input class='form-control' name='sshPort' value="{{ $DMI->sshPort }}"/>
+						            </div>
+						            <div class="form-group">
+						            	<button type="submit" class="btn">Update</button>
+						            </div>
+								@endif
+							</form>
+						</div>
+					@endforeach
+					</div>
+				@endif
 
 				<div class="form-group">
 					<div class="data-movement-info row hide"></div>
@@ -447,6 +443,42 @@
 
 		--> 
 	</div>
+</div>
+
+<!-- modals -->
+
+<div class="modal fade" id="confirm-delete-jsi" tabindex="-1" role="dialog" aria-labelledby="delete-modal" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                Confirmation
+            </div>
+            <div class="modal-body">
+                Do you really want to delete this Job Submission Interface ?
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-default" data-dismiss="modal">Cancel</button>
+                <button type="button" class="btn btn-danger danger delete-jsi-confirm">Delete</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="modal fade" id="confirm-delete-dmi" tabindex="-1" role="dialog" aria-labelledby="delete-modal" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                Confirmation
+            </div>
+            <div class="modal-body">
+                Do you really want to delete this Data Movement Interface ?
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-default" data-dismiss="modal">Cancel</button>
+                <button type="button" class="btn btn-danger danger delete-dmi-confirm">Delete</button>
+            </div>
+        </div>
+    </div>
 </div>
 
 @stop
