@@ -19,6 +19,12 @@ function getAccodrionCode()
 
 $(document).ready( function(){
 
+  //making the previously opened tab open again on page reload/modifications.
+  var urlArray = window.location.href.split("#");
+  var openTab = urlArray[1];
+  $('a[href="#' + openTab + '"]').click();
+  //tab open code ends here.
+
 	// not letting users to add host names with no spaces.
 	$(".hostName, .form-control").blur( function(){
 		$(this).val( $.trim( $(this).val() ) );
@@ -258,6 +264,50 @@ $(document).ready( function(){
         });
       }
 
+    });
+  });
+
+  $("#jsi-priority-form").submit( function( event ){
+    event.preventDefault();
+    $.ajax({
+        url: $(this).attr("action"),
+        type: 'post',
+        data: $('#jsi-priority-form').serialize(),
+        success: function(data) {
+                  if( data == 1)
+                  {
+                    $(".priority-updated").removeClass("hide");
+                    $(".priority-updated").fadeIn();
+                    setTimeout( function(){
+                      $(".priority-updated").addClass("hide");
+                      $("#update-jsi-priority").modal("hide");
+
+                    }, 3000);
+                    
+                  }
+        }
+    });
+  });
+
+  $("#dmi-priority-form").submit( function( event ){
+    event.preventDefault();
+    $.ajax({
+        url: $(this).attr("action"),
+        type: 'post',
+        data: $('#dmi-priority-form').serialize(),
+        success: function(data) {
+                  if( data == 1)
+                  {
+                    $(".priority-updated").removeClass("hide");
+                    $(".priority-updated").fadeIn();
+                    setTimeout( function(){
+                      $(".priority-updated").addClass("hide");
+                      $("#update-dmi-priority").modal("hide");
+
+                    }, 3000);
+                    
+                  }
+        }
     });
   });
    

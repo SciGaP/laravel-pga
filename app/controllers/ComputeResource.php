@@ -66,7 +66,7 @@ class ComputeResource extends BaseController{
 			$data["computeResource"] = $computeResource;
 			$data["jobSubmissionInterfaces"] = $jobSubmissionInterfaces;
 			$data["dataMovementInterfaces"] = $dataMovementInterfaces;
-			//var_dump( $data["dataMovementInterfaces"]); exit;
+			//var_dump( $computeResource); exit;
 
 			return View::make("resource/edit", $data);
 		}
@@ -77,8 +77,7 @@ class ComputeResource extends BaseController{
 		
 	public function editSubmit(){
 
-		//var_dump( Input::all() ); exit;
-
+		$tabName = "";
 		if( Input::get("cr-edit") == "resDesc") /* Modify compute Resource description */
 		{
 			$computeDescription = Utilities::get_compute_resource(  Input::get("crId"));
@@ -89,7 +88,8 @@ class ComputeResource extends BaseController{
 			//var_dump( $computeDescription); exit;
 
 			$computeResource = CRUtilities::register_or_update_compute_resource( $computeDescription, true);
-			Session::put("computeResource", $computeResource);			
+
+			$tabName =  "#tab-desc";
 		}
 		if( Input::get("cr-edit") == "queue") /* Add / Modify a Queue */
 		{
@@ -104,7 +104,17 @@ class ComputeResource extends BaseController{
 			$computeDescription = Utilities::get_compute_resource(  Input::get("crId"));
 			$computeDescription->batchQueues[] = CRUtilities::createQueueObject( $queue);
 			$computeResource = CRUtilities::register_or_update_compute_resource( $computeDescription, true);
-			Session::put("computeResource", $computeResource);
+
+			$tabName = "#tab-queues";
+
+		}
+		else if( Input::get("cr-edit") == "fileSystems")
+		{
+			$computeDescription = Utilities::get_compute_resource(  Input::get("crId"));
+			$computeDescription->fileSystems = Input::get("fileSystems");
+			$computeResource = CRUtilities::register_or_update_compute_resource( $computeDescription, true);
+
+			$tabName = "#tab-filesystem";
 		}
 		else if( Input::get("cr-edit") == "jsp" ||  Input::get("cr-edit") == "edit-jsp" ) /* Add / Modify a Job Submission Interface */
 		{		
@@ -113,6 +123,27 @@ class ComputeResource extends BaseController{
 				$update = true;
 
 			$jobSubmissionInterface = CRUtilities::create_or_update_JSIObject( Input::all(), $update );
+
+			$tabName = "#tab-jobSubmission";
+		}
+		else if( Input::get("cr-edit") == "jsi-priority") 
+		{
+			$inputs = Input::all();
+			$computeDescription = Utilities::get_compute_resource(  Input::get("crId"));
+			foreach( $computeDescription->jobSubmissionInterfaces as $index => $jsi)
+			{
+				foreach( $inputs["jsi-id"] as $idIndex => $jsiId)
+				{
+					if( $jsiId == $jsi->jobSubmissionInterfaceId )
+					{
+						$computeDescription->jobSubmissionInterfaces[$index]->priorityOrder = $inputs["jsi-priority"][$idIndex];
+						break;
+					}
+				}
+			}
+			$computeResource = CRUtilities::register_or_update_compute_resource( $computeDescription, true);
+
+			return 1; //currently done by ajax.
 		}
 		else if( Input::get("cr-edit") == "dmp" ||  Input::get("cr-edit") == "edit-dmi" ) /* Add / Modify a Data Movement Interface */
 		{
@@ -120,15 +151,30 @@ class ComputeResource extends BaseController{
 			if( Input::get("cr-edit") == "edit-dmi")
 				$update = true;
 			$dataMovementInterface = CRUtilities::create_or_update_DMIObject( Input::all(), $update );
+
+			$tabName = "#tab-dataMovement";
 		}
-		else if( Input::get("cr-edit") == "fileSystems")
+		else if( Input::get("cr-edit") == "dmi-priority") 
 		{
+			$inputs = Input::all();
 			$computeDescription = Utilities::get_compute_resource(  Input::get("crId"));
-			$computeDescription->fileSystems = Input::get("fileSystems");
+			foreach( $computeDescription->dataMovementInterfaces as $index => $dmi)
+			{
+				foreach( $inputs["dmi-id"] as $idIndex => $dmiId)
+				{
+					if( $dmiId == $dmi->dataMovementInterfaceId )
+					{
+						$computeDescription->dataMovementInterfaces[$index]->priorityOrder = $inputs["dmi-priority"][$idIndex];
+						break;
+					}
+				}
+			}
 			$computeResource = CRUtilities::register_or_update_compute_resource( $computeDescription, true);
-			Session::put("computeResource", $computeResource);
+
+			return 1; //currently done by ajax.
 		}
-		return Redirect::to("cr/edit?crId=" . Input::get("crId") );
+
+		return Redirect::to("cr/edit?crId=" . Input::get("crId") . $tabName );
 	}
 
 	public function deleteActions(){

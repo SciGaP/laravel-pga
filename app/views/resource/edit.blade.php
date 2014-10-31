@@ -87,23 +87,33 @@
 									<form role="form" method="POST" action="{{ URL::to('/')}}/cr/edit">
 										<input type="hidden" name="crId" value="{{Input::get('crId') }}"/>
 										<div class="queue">
-											<div class="form-group">
-												<input type="hidden" name="cr-edit" value="queue"/>
+											<input type="hidden" name="cr-edit" value="queue"/>
+											<div class="form-group required">
 												<label class="control-label">Queue Name</label>
-												<input class="form-control" value="{{ $queue->queueName }}" maxlength="30" name="qname" placeholder="Queue Name"/>
+												<input class="form-control" value="{{ $queue->queueName }}" maxlength="30" name="qname" placeholder="Queue Name" readonly />
+											</div>
+											<div class="form-group">
 												<label class="control-label">Queue Description</label>
 												<input class="form-control" value="{{ $queue->queueDescription }}" maxlength="30" name="qdesc" placeholder="Queue Description"/>
+											</div>
+											<div class="form-group">
 												<label class="control-label">Queue Max Run Time</label>
 												<input class="form-control" value="{{ $queue->maxRunTime }}" maxlength="30" name="qmaxruntime" placeholder="Queue Max Run Time"/>
+											</div>
+											<div class="form-group">
 												<label class="control-label">Queue Max Nodes</label>
 												<input class="form-control" value="{{ $queue->maxNodes }}" maxlength="30" name="qmaxnodes" placeholder="Queue Max Nodes"/>
+											</div>
+											<div class="form-group">
 												<label class="control-label">Queue Max Processors</label>
 												<input class="form-control" value="{{ $queue->maxProcessors }}" maxlength="30" name="qmaxprocessors" placeholder="Queue Max Processors"/>
+											</div>
+											<div class="form-group">
 												<label class="control-label">Max Jobs in Queue</label>
 												<input class="form-control" value="{{ $queue->maxJobsInQueue }}" maxlength="30" name="qmaxjobsinqueue" placeholder="Max Jobs In Queue"/>
 						          			</div>
 						          			<div class="form-group">
-												<input type="submit" class="btn btn-primary" name="step1" value="Save Changes"/>
+												<input type="submit" class="btn" name="step1" value="Update"/>
 											</div>
 						          		</div>
 						      		</form>
@@ -117,21 +127,33 @@
 					<form role="form" method="POST" action="{{ URL::to('/')}}/cr/edit">
 						<input type="hidden" name="crId" value="{{Input::get('crId') }}"/>
 						<div class="queue">
-							<div class="form-group">
+							<div class="queue">
 								<input type="hidden" name="cr-edit" value="queue"/>
-								<label class="control-label">Queue Name</label>
-								<input class="form-control" value="" maxlength="30" name="qname" placeholder="Queue Name"/>
-								<label class="control-label">Queue Description</label>
-								<input class="form-control" maxlength="30" name="qdesc" placeholder="Queue Description"/>
-								<label class="control-label">Queue Max Run Time</label>
-								<input class="form-control" maxlength="30" name="qmaxruntime" placeholder="Queue Max Run Time"/>
-								<label class="control-label">Queue Max Nodes</label>
-								<input class="form-control" maxlength="30" name="qmaxnodes" placeholder="Queue Max Nodes"/>
-								<label class="control-label">Queue Max Processors</label>
-								<input class="form-control" maxlength="30" name="qmaxprocessors" placeholder="Queue Max Processors"/>
-								<label class="control-label">Max Jobs in Queue</label>
-								<input class="form-control" maxlength="30" name="qmaxjobsinqueue" placeholder="Max Jobs In Queue"/>
-		          			</div>
+								<div class="form-group required">
+									<label class="control-label">Queue Name</label>
+									<input class="form-control" maxlength="30" name="qname" placeholder="Queue Name" required="required"/>
+								</div>
+								<div class="form-group">
+									<label class="control-label">Queue Description</label>
+									<input class="form-control" maxlength="30" name="qdesc" placeholder="Queue Description"/>
+								</div>
+								<div class="form-group">
+									<label class="control-label">Queue Max Run Time</label>
+									<input class="form-control" maxlength="30" name="qmaxruntime" placeholder="Queue Max Run Time"/>
+								</div>
+								<div class="form-group">
+									<label class="control-label">Queue Max Nodes</label>
+									<input class="form-control" maxlength="30" name="qmaxnodes" placeholder="Queue Max Nodes"/>
+								</div>
+								<div class="form-group">
+									<label class="control-label">Queue Max Processors</label>
+									<input class="form-control" maxlength="30" name="qmaxprocessors" placeholder="Queue Max Processors"/>
+								</div>
+								<div class="form-group">
+									<label class="control-label">Max Jobs in Queue</label>
+									<input class="form-control" maxlength="30" name="qmaxjobsinqueue" placeholder="Max Jobs In Queue"/>
+			          			</div>
+			          		</div>
 		          			<div class="form-group">
 								<input type="submit" class="btn  btn-primary" name="step1" value="Create"/>
 								<input type="reset" class="btn  btn-success" value="Reset"/>
@@ -170,6 +192,9 @@
         		<div class="form-group">
 					<div class="job-submission-info row hide"></div>
 					<button type="button" class="btn btn-sm btn-default add-job-submission">Add a new Job Submission Interface</button>
+					@if( count( $jobSubmissionInterfaces ) > 1)
+        				<button type="button" class="btn btn-sm btn-default update-priority" data-type="jsi" data-toggle="modal" data-target="#update-jsi-priority">Update Priority</button>
+        			@endif
 				</div>
 
         		@if( count( $jobSubmissionInterfaces ) )
@@ -190,28 +215,28 @@
 								</h4>
 								<input type="hidden" name="jobSubmissionProtocol" value="{{ $selectedJspIndex }}"/>
 								@if( $selectedJspIndex == $jobSubmissionProtocolsObject::LOCAL)
-									<div class="form-group">
-										<div class="select-resource-manager-type">
-											<h4>Select resource manager type</h4>
-											<select name="resourceJobManagerType" class="form-control selected-resource-manager">
+									<div class="select-resource-manager-type">
+										<div class="form-group required">
+											<label class="control-label">Select resource manager type</label>
+											<select name="resourceJobManagerType" class="form-control selected-resource-manager" required="required">
 											@foreach( $resourceJobManagerTypes as $index => $rJmT)
 												<option value="{{ $index }}" @if( $JSI->resourceJobManager->resourceJobManagerType == $index ) selected @endif >{{ $rJmT }}</option>
 											@endforeach
 											</select>
-											<div class="form-group">
-												<label class="control-label">Push Monitoring End Point</label>
-												<input type="text" class="form-control" name="pushMonitoringEndpoint" value="{{ $JSI->resourceJobManager->pushMonitoringEndpoint }}"/>
-											</div>
-											<div class="form-group">
-												<label class="control-label">Job Manager Bin Path</label>
-												<input type="text" class="form-control" name="jobManagerBinPath" value="{{ $JSI->resourceJobManager->jobManagerBinPath }}"/>
-											</div>
+										</div>
+										<div class="form-group">
+											<label class="control-label">Push Monitoring End Point</label>
+											<input type="text" class="form-control" name="pushMonitoringEndpoint" value="{{ $JSI->resourceJobManager->pushMonitoringEndpoint }}"/>
+										</div>
+										<div class="form-group">
+											<label class="control-label">Job Manager Bin Path</label>
+											<input type="text" class="form-control" name="jobManagerBinPath" value="{{ $JSI->resourceJobManager->jobManagerBinPath }}"/>
 										</div>
 									</div>
 								@elseif( $selectedJspIndex == $jobSubmissionProtocolsObject::SSH)
-									<div class="form-group">		
+									<div class="form-group required">		
 										<label class="control-label">Select Security Protocol</label>
-										<select name="securityProtocol">
+										<select name="securityProtocol" required="required">
 										@foreach( $securityProtocols as $index => $sp)
 											<option value="{{ $index }}" @if( $JSI->securityProtocol == $index ) selected @endif>{{ $sp }}</option>
 										@endforeach
@@ -229,12 +254,14 @@
 
 									<div class="form-group">
 										<div class="select-resource-manager-type">
-											<h4>Select resource manager type</h4>
-											<select name="resourceJobManagerType" class="form-control selected-resource-manager">
-											@foreach( $resourceJobManagerTypes as $index => $rJmT)
-												<option value="{{ $index }}" @if( $JSI->resourceJobManager->resourceJobManagerType == $index ) selected @endif >{{ $rJmT }}</option>
-											@endforeach
-											</select>
+											<div class="form-group required">
+												<label class="control-label">Select resource manager type</label>
+												<select name="resourceJobManagerType" class="form-control selected-resource-manager" required="required">
+												@foreach( $resourceJobManagerTypes as $index => $rJmT)
+													<option value="{{ $index }}" @if( $JSI->resourceJobManager->resourceJobManagerType == $index ) selected @endif >{{ $rJmT }}</option>
+												@endforeach
+												</select>
+											</div>
 											<div class="form-group">
 												<label class="control-label">Push Monitoring End Point</label>
 												<input type="text" class="form-control" name="pushMonitoringEndpoint" value="{{ $JSI->resourceJobManager->pushMonitoringEndpoint }}"/>
@@ -247,10 +274,9 @@
 									</div>
 
 								@elseif(  $selectedJspIndex == $jobSubmissionProtocolsObject::UNICORE)
-									<div class="form-group">		
+									<div class="form-group required">		
 										<label class="control-label">Select Security Protocol</label>
-										<select name="securityProtocol">
-											<option></option>
+										<select name="securityProtocol" required="required">
 										@foreach( $securityProtocols as $index => $sp)
 											<option value="{{ $index }}" @if( $JSI->securityProtocol == $index ) selected @endif>{{ $sp }}</option>
 										@endforeach
@@ -275,16 +301,10 @@
 					<form role="form" method="POST" action="{{ URL::to('/') }}/cr/edit">
 						<input type="hidden" name="crId" value="{{Input::get('crId') }}"/>
 						<input type="hidden" name="cr-edit" value="jsp"/>
-						<h4>
-							Job Submission Protocol:
-							<button type='button' class='close'>
-								<span class="glyphicon glyphicon-trash"></span>
-							</button>
-						</h4>
+						
 						<div class="form-group">
-
-							<select name="jobSubmissionProtocol" class="form-control selected-job-protocol">
-						  		<option></option>
+							<label class="control-label">Job Submission Protocol:</label>
+							<select name="jobSubmissionProtocol" class="form-control selected-job-protocol" required="required">
 							@foreach( $jobSubmissionProtocols as $index => $jobSubmissionProtocol)
 								<option value="{{ $index }}">{{ $jobSubmissionProtocol }}</option>
 							@endforeach
@@ -304,6 +324,9 @@
 				<div class="form-group">
 					<div class="data-movement-info row hide"></div>
 					<button type="button" class="btn btn-sm btn-default add-data-movement">Add a new Data Movement Interface</button>
+        			@if( count( $dataMovementInterfaces ) > 1)
+						<button type="button" class="btn btn-sm btn-default update-priority" data-type="dmi"  data-toggle="modal" data-target="#update-dmi-priority">Update Priority</button>
+					@endif				
 				</div>
 
         		@if( count( $dataMovementInterfaces ) )
@@ -314,6 +337,7 @@
 								<input type="hidden" name="crId" class="crId" value="{{Input::get('crId') }}"/>
 								<input type="hidden" name="cr-edit" value="edit-dmi"/>
 								<input type="hidden" name="dmiId" value="{{ $DMI->dataMovementInterfaceId }}"/>
+
 								<?php $selectedDMIIndex = $computeResource->dataMovementInterfaces[ $index]->dataMovementProtocol; ?>
 
         						<h4>Data Movement Protocol : {{ $dataMovementProtocols[ $selectedDMIIndex] }}
@@ -328,7 +352,6 @@
 									<div class="form-group">		
 										<label class="control-label">Select Security Protocol</label>
 										<select name="securityProtocol">
-											<option></option>
 										@foreach( $securityProtocols as $index => $sp)
 											<option value="{{ $index }}" @if( $DMI->securityProtocol == $index ) selected @endif>{{ $sp }}</option>
 										@endforeach
@@ -346,6 +369,27 @@
 						            <div class="form-group">
 						            	<button type="submit" class="btn">Update</button>
 						            </div>
+								@elseif( $selectedDMIIndex == $dataMovementProtocolsObject::GridFTP)
+									<div class="form-group">		
+										<label class="control-label">Select Security Protocol</label>
+										<select name="securityProtocol">
+										@foreach( $securityProtocols as $index => $sp)
+											<option value="{{ $index }}" @if( $DMI->securityProtocol == $index ) selected @endif>{{ $sp }}</option>
+										@endforeach
+										</select>
+										<div>
+											<div class="form-group required">
+												<label class="control-label">Grid FTP End Points</label>
+												@foreach( $DMI->gridFTPEndPoints as $endPoint)
+													<input class="form-control" maxlength="30" name="gridFTPEndPoints[]" required="required" value="{{$endPoint}}"/>
+												@endforeach
+												<button type="button" class="btn btn-sm btn-default add-gridFTPEndPoint">Add More Grid FTP End Points</button>
+											</div>
+										</div>
+										<div class="form-group">
+							            	<button type="submit" class="btn">Update</button>
+							            </div>
+									</div>
 								@endif
 							</form>
 						</div>
@@ -359,13 +403,9 @@
 						<input type="hidden" name="cr-edit" value="dmp"/>
 						<h4>
 							Select the Data Movement Protocol
-							<button type='button' class='close' data-dismiss='alert'>
-								<span class="glyphicon glyphicon-trash"></span>
-							</button>
 						</h4>
 
 						<select name="dataMovementProtocol" class="form-control selected-data-movement-protocol">
-					  		<option></option>
 						@foreach( $dataMovementProtocols as $index => $dmp)
 							<option value="{{ $index }}">{{ $dmp }}</option>
 						@endforeach
@@ -387,13 +427,13 @@
 
 		<div class="resource-manager-block hide">
 			<div class="select-resource-manager-type">
-				<h4>Select resource manager type</h4>
-				<select name="resourceJobManagerType" class="form-control selected-resource-manager">
-					<option></option>
-				@foreach( $resourceJobManagerTypes as $index => $rJmT)
-					<option value="{{ $index }}">{{ $rJmT }}</option>
-				@endforeach
-				</select>
+				<div class="form-group required">
+					<label class="control-label">Select resource manager type</label>
+					<select name="resourceJobManagerType" class="form-control selected-resource-manager" required="required">
+					@foreach( $resourceJobManagerTypes as $index => $rJmT)
+						<option value="{{ $index }}">{{ $rJmT }}</option>
+					@endforeach
+					</select>
 			</div>
 			<div class="form-group">
 				<label class="control-label">Push Monitoring End Point</label>
@@ -406,10 +446,9 @@
 		</div>
 
 		<div class="ssh-block hide">
-			<div class="form-group">		
+			<div class="form-group required">		
 				<label class="control-label">Select Security Protocol</label>
-				<select name="securityProtocol">
-					<option></option>
+				<select name="securityProtocol" required>
 				@foreach( $securityProtocols as $index => $sp)
 					<option value="{{ $index }}">{{ $sp }}</option>
 				@endforeach
@@ -452,7 +491,7 @@
 		<div class="dm-gridftp hide">
 			<div class="form-group required">
 				<label class="control-label">Grid FTP End Points</label>
-				<input class="form-control" maxlength="30" name="gridFTPEndPoints[]" required="required"/>
+				<input class="form-control" maxlength="30" name="gridFTPEndPoints[]"/>
 				<button type="button" class="btn btn-sm btn-default add-gridFTPEndPoint">Add More Grid FTP End Points</button>
 			</div>
 		</div>
@@ -503,18 +542,6 @@
     </div>
 </div>
 
-<div class="modal fade" id="add-dmi" tabindex="-1" role="dialog" aria-labelledby="add-modal" aria-hidden="true">
-    <div class="modal-dialog">
-        <div class="modal-content">
-            <div class="modal-header">
-                Add a Data Model Interface
-            </div>
-            <div class="modal-body add-dmi-body row">
-               
-            </div>
-        </div>
-    </div>
-</div>
 
 <div class="modal fade" id="add-jsi" tabindex="-1" role="dialog" aria-labelledby="add-modal" aria-hidden="true">
     <div class="modal-dialog">
@@ -529,6 +556,86 @@
     </div>
 </div>
 
+
+<div class="modal fade" id="update-jsi-priority" tabindex="-1" role="dialog" aria-labelledby="add-modal" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+               Update the Priority Order
+            </div>
+            <div class="modal-body">
+            	<form action="{{URL::to('/')}}/cr/edit" method="POST" id="jsi-priority-form"/> 
+					<input type="hidden" name="crId" value="{{Input::get('crId') }}"/>
+	            	<input type="hidden" name="cr-edit" value="jsi-priority"/>
+	        		@foreach( $computeResource->jobSubmissionInterfaces as $index => $JSI )
+	            	<div class="row">
+	    				<div class="col-md-offset-2 col-md-2">
+	        				<label>
+	        					{{ $jobSubmissionProtocols[ $JSI->jobSubmissionProtocol] }}
+	        				</label>
+	        			</div>
+	    				<input type="hidden" name="jsi-id[]" maxlength="2" value="{{ $JSI->jobSubmissionInterfaceId }}"/>
+	    				<div class="col-md-4">
+	        				<input type="text" name="jsi-priority[]" value="{{ $JSI->priorityOrder }}" required/>
+						</div>
+	        		</div>
+	        		@endforeach
+	        		<button type="submit" class="btn btn-update">Update</button>
+	        		<div class='priority-updated alert alert-success hide'>
+	        			The Job Submission Interface Priority has been updated.
+	        		</div>
+        		</form>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+<div class="modal fade" id="add-dmi" tabindex="-1" role="dialog" aria-labelledby="add-modal" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                Add a Data Model Interface
+            </div>
+            <div class="modal-body add-dmi-body row">
+               
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="modal fade" id="update-dmi-priority" tabindex="-1" role="dialog" aria-labelledby="add-modal" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+               Update the Priority Order
+            </div>
+            <div class="modal-body">
+            	<form action="{{URL::to('/')}}/cr/edit" method="POST" id="dmi-priority-form"/> 
+					<input type="hidden" name="crId" value="{{Input::get('crId') }}"/>
+	            	<input type="hidden" name="cr-edit" value="dmi-priority"/>
+	        		@foreach( $computeResource->dataMovementInterfaces as $index => $DMI )
+	            	<div class="row">
+	    				<div class="col-md-offset-2 col-md-2">
+	        				<label>
+	        					{{ $dataMovementProtocols[ $DMI->dataMovementProtocol] }}
+	        				</label>
+	        			</div>
+	    				<input type="hidden" name="dmi-id[]" maxlength="2" value="{{ $DMI->dataMovementInterfaceId }}"/>
+	    				<div class="col-md-4">
+	        				<input type="text" name="dmi-priority[]" value="{{ $DMI->priorityOrder }}" required/>
+						</div>
+	        		</div>
+	        		@endforeach
+	        		<button type="submit" class="btn btn-update">Update</button>
+	        		<div class='priority-updated alert alert-success hide'>
+	        			The Data Movement Interface Priority has been updated.
+	        		</div>
+        		</form>
+            </div>
+        </div>
+    </div>
+</div>
 
 @stop
 
