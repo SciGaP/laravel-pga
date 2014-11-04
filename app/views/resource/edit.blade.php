@@ -232,6 +232,14 @@
 											<label class="control-label">Job Manager Bin Path</label>
 											<input type="text" class="form-control" name="jobManagerBinPath" value="{{ $JSI->resourceJobManager->jobManagerBinPath }}"/>
 										</div>
+										<div class="form-group">
+											<h3>Job Manager Commands</h3>
+											@foreach( $jobManagerCommands as $index => $jmc)
+												<label class="control-label">{{ $jmc }}</label>
+												<input class="form-control" name="jobManagerCommands[{{ $index }}]" placeholder="{{ $jmc }}" value="@if( isset( $JSI->resourceJobManager->jobManagerCommands[$index] ) ) {{ $JSI->resourceJobManager->jobManagerCommands[$index] }} @endif"/>
+											@endforeach
+											</select>
+										</div>
 									</div>
 								@elseif( $selectedJspIndex == $jobSubmissionProtocolsObject::SSH)
 									<div class="form-group required">		
@@ -305,6 +313,7 @@
 						<div class="form-group">
 							<label class="control-label">Job Submission Protocol:</label>
 							<select name="jobSubmissionProtocol" class="form-control selected-job-protocol" required="required">
+								<option></option>
 							@foreach( $jobSubmissionProtocols as $index => $jobSubmissionProtocol)
 								<option value="{{ $index }}">{{ $jobSubmissionProtocol }}</option>
 							@endforeach
@@ -406,6 +415,7 @@
 						</h4>
 
 						<select name="dataMovementProtocol" class="form-control selected-data-movement-protocol">
+							<option></option>
 						@foreach( $dataMovementProtocols as $index => $dmp)
 							<option value="{{ $index }}">{{ $dmp }}</option>
 						@endforeach
@@ -434,6 +444,7 @@
 						<option value="{{ $index }}">{{ $rJmT }}</option>
 					@endforeach
 					</select>
+				</div>
 			</div>
 			<div class="form-group">
 				<label class="control-label">Push Monitoring End Point</label>
@@ -442,6 +453,14 @@
 			<div class="form-group">
 				<label class="control-label">Job Manager Bin Path</label>
 				<input type="text" class="form-control" name="jobManagerBinPath"/>
+			</div>
+			<div class="form-group">
+				<h3>Job Manager Commands</h3>
+				@foreach( $jobManagerCommands as $index => $jmc)
+					<label class="control-label">{{ $jmc }}</label>
+					<input class="form-control" name="jobManagerCommands[{{ $index }}]" placeholder="{{ $jmc }}"/>
+				@endforeach
+				</select>
 			</div>
 		</div>
 

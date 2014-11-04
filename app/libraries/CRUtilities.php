@@ -86,6 +86,7 @@ public static function getEditCRData(){
     $rjmt = new ResourceJobManagerType();
     $sp = new SecurityProtocol();
     $dmp = new DataMovementProtocol();
+    $jmc = new JobManagerCommand();
     return array(
                     "fileSystemsObject" => $files,
                     "fileSystems" => $files::$__names,
@@ -96,7 +97,8 @@ public static function getEditCRData(){
                     "securityProtocolsObject" => $sp,
                     "securityProtocols" => $sp::$__names,
                     "dataMovementProtocolsObject" => $dmp,
-                    "dataMovementProtocols" => $dmp::$__names
+                    "dataMovementProtocols" => $dmp::$__names,
+                    "jobManagerCommands" => $jmc::$__names
                 );
 }
 
@@ -123,7 +125,8 @@ public static function create_or_update_JSIObject( $inputs, $update = false){
         $resourceManager = new ResourceJobManager(array( 
                                                     "resourceJobManagerType" => $inputs["resourceJobManagerType"],
                                                     "pushMonitoringEndpoint" => $inputs["pushMonitoringEndpoint"],
-                                                    "jobManagerBinPath"      => $inputs["jobManagerBinPath"]
+                                                    "jobManagerBinPath"      => $inputs["jobManagerBinPath"],
+                                                    "jobManagerCommands"     => $inputs["jobManagerCommands"]
                                                     ));
 
         //$rmId = $jsiObject->resourceJobManager->resourceJobManagerId;
@@ -139,7 +142,7 @@ public static function create_or_update_JSIObject( $inputs, $update = false){
             $jsiId = null;
             if( isset( $inputs["jsiId"]))
                 $jsiId = $inputs["jsiId"];
-            $jsiObject = $airavataclient->getLocalJobSubmission( $jsiId); 
+            $jsiObject = $airavataclient->getLocalJobSubmission( $jsiId);
             $localSub = $airavataclient->updateResourceJobManager(  $jsiObject->resourceJobManager->resourceJobManagerId, $resourceManager);
             //$localSub = $airavataclient->updateLocalSubmissionDetails( $jsiId, $localJobSubmission);
         }
@@ -155,7 +158,8 @@ public static function create_or_update_JSIObject( $inputs, $update = false){
         $resourceManager = new ResourceJobManager(array( 
                                                     "resourceJobManagerType" => $inputs["resourceJobManagerType"],
                                                     "pushMonitoringEndpoint" => $inputs["pushMonitoringEndpoint"],
-                                                    "jobManagerBinPath"      => $inputs["jobManagerBinPath"]
+                                                    "jobManagerBinPath"      => $inputs["jobManagerBinPath"],
+                                                    "jobManagerCommands"     => $inputs["jobManagerCommands"]
                                                     ));
         $sshJobSubmission = new SSHJobSubmission( array
                                                     (
