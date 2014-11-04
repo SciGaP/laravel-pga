@@ -22,6 +22,7 @@ use Airavata\Model\AppCatalog\ComputeResource\JobSubmissionProtocol;
 use Airavata\Model\AppCatalog\ComputeResource\SecurityProtocol;
 use Airavata\Model\AppCatalog\ComputeResource\ResourceJobManager;
 use Airavata\Model\AppCatalog\ComputeResource\ResourceJobManagerType;
+use Airavata\Model\AppCatalog\ComputeResource\JobManagerCommand;
 use Airavata\Model\AppCatalog\ComputeResource\DataMovementProtocol;
 use Airavata\Model\AppCatalog\ComputeResource\ComputeResourceDescription;
 use Airavata\Model\AppCatalog\ComputeResource\SSHJobSubmission;

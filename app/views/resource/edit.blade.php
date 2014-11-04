@@ -556,7 +556,7 @@
     </div>
 </div>
 
-
+@if( count( $jobSubmissionInterfaces ) > 1)
 <div class="modal fade" id="update-jsi-priority" tabindex="-1" role="dialog" aria-labelledby="add-modal" aria-hidden="true">
     <div class="modal-dialog">
         <div class="modal-content">
@@ -589,7 +589,7 @@
         </div>
     </div>
 </div>
-
+@endif
 
 <div class="modal fade" id="add-dmi" tabindex="-1" role="dialog" aria-labelledby="add-modal" aria-hidden="true">
     <div class="modal-dialog">
@@ -604,6 +604,7 @@
     </div>
 </div>
 
+@if( count( $dataMovementInterfaces ) > 1)
 <div class="modal fade" id="update-dmi-priority" tabindex="-1" role="dialog" aria-labelledby="add-modal" aria-hidden="true">
     <div class="modal-dialog">
         <div class="modal-content">
@@ -636,6 +637,7 @@
         </div>
     </div>
 </div>
+@endif
 
 @stop
 
