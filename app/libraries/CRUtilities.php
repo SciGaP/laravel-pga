@@ -1,20 +1,8 @@
 <?php
 
-//Thrift classes - loaded from Vendor/Thrift
-use Thrift\Transport\TTransport;
-use Thrift\Exception\TException;
-use Thrift\Exception\TTransportException;
-use Thrift\Factory\TStringFuncFactory;
-use Thrift\Protocol\TBinaryProtocol;
-use Thrift\Transport\TSocket;
 
 //Airavata classes - loaded from app/libraries/Airavata
 use Airavata\API\AiravataClient;
-use Airavata\API\Error\InvalidRequestException;
-use Airavata\API\Error\AiravataClientException;
-use Airavata\API\Error\AiravataSystemException;
-use Airavata\Model\AppCatalog\AppInterface\DataType;
-use Airavata\Model\Workspace\Project;
 
 use Airavata\Model\AppCatalog\ComputeResource\FileSystems;
 use Airavata\Model\AppCatalog\ComputeResource\JobSubmissionInterface;
@@ -28,7 +16,6 @@ use Airavata\Model\AppCatalog\ComputeResource\ComputeResourceDescription;
 use Airavata\Model\AppCatalog\ComputeResource\SSHJobSubmission;
 use Airavata\Model\AppCatalog\ComputeResource\LOCALSubmission;
 use Airavata\Model\AppCatalog\ComputeResource\BatchQueue;
-
 use Airavata\Model\AppCatalog\ComputeResource\SCPDataMovement;
 use Airavata\Model\AppCatalog\ComputeResource\GridFTPDataMovement;
 use Airavata\Model\AppCatalog\ComputeResource\LOCALDataMovement;

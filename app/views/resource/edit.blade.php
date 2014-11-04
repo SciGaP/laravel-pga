@@ -278,6 +278,14 @@
 												<label class="control-label">Job Manager Bin Path</label>
 												<input type="text" class="form-control" name="jobManagerBinPath" value="{{ $JSI->resourceJobManager->jobManagerBinPath }}"/>
 											</div>
+											<div class="form-group">
+											<h3>Job Manager Commands</h3>
+											@foreach( $jobManagerCommands as $index => $jmc)
+												<label class="control-label">{{ $jmc }}</label>
+												<input class="form-control" name="jobManagerCommands[{{ $index }}]" placeholder="{{ $jmc }}" value="@if( isset( $JSI->resourceJobManager->jobManagerCommands[$index] ) ) {{ $JSI->resourceJobManager->jobManagerCommands[$index] }} @endif"/>
+											@endforeach
+											</select>
+										</div>
 										</div>
 									</div>
 

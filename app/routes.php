@@ -74,6 +74,12 @@ Route::post("cr/delete-jsi", "ComputeResource@deleteActions");
 
 Route::post("cr/delete-dmi", "ComputeResource@deleteActions");
 
+Route::get("app/module-create", "ApplicationController@createAppModuleView");
+
+Route::post("app/module-create", "ApplicationController@createAppModuleSubmit");
+
+Route::get("app/interface-create", "ApplicationController@createAppInterfaceView");
+
 /*
  * Test Routes.
 */

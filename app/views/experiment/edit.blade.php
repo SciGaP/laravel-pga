@@ -11,32 +11,10 @@
 //$wrfResources = array('trestles.sdsc.edu');
 
 //$appResources = array('Echo' => $echoResources, 'WRF' => $wrfResources);
-
-
 ?>
 
 
 <div class="container" style="max-width: 750px;">
-    
-
-
-
-
-
-<?php
-
-
-
-
-
-
-
-
-
-//$transport->close();
-
-?>
-
 
 <h1>Edit Experiment</h1>
 

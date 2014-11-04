@@ -6,7 +6,7 @@
 
 @section('content')
 
-<div class="container" style="max-width: 750px;">
+<div class="container">
 
 <?php
 
