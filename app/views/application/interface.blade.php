@@ -38,61 +38,67 @@
 	</div>
 
 	<div class="app-input-block hide">
-		<h4>App Input Fields</h4>
-		<div class="form-group required">
-			<label class="control-label">Name</label>
-			<input type="text" class="form-control" name="inputName" required/>
-		</div>
-		<div class="form-group">
-			<label class="control-label">Value</label>
-			<input type="text" class="form-control" name="inputValue"/>
-		</div>
-		<div class="form-group">
-			<label class="control-label">Type</label>
-			<select class="form-control" name="inputType">
-			@foreach( $dataTypes as $index => $dataType)
-				<option value="{{ $index }}">{{ $dataType }}</option>
-			@endforeach
-			</select>
-		</div>
-		<div class="form-group">
-			<label class="control-label">Application Argument</label>
-			<input type="text" class="form-control" name="applicationArgument"/>
-		</div>
-		<div class="form-group">
-			<label class="control-label">Standard Input</label>
-			<select class="form-control" name="standardInput">
-				<option value="0">False</option>
-				<option value="1">True</option>
-			</select>
-		</div>
-		<div class="form-group">
-			<label class="control-label">User Friendly Description</label>
-			<input type="text" class="form-control" name="userFriendlyDescription"/>
-		</div>
-		<div class="form-group">
-			<label class="control-label">Meta Data</label>
-			<input type="text" class="form-control" name="metaData"/>
+		<div class="well">
+			<button type="button" class="close remove-input-space"><span aria-hidden="true">&times;</span><span class="sr-only">Close</span></button>
+			<h4>App Input Fields</h4>
+			<div class="form-group required">
+				<label class="control-label">Name</label>
+				<input type="text" class="form-control" name="inputName" required/>
+			</div>
+			<div class="form-group">
+				<label class="control-label">Value</label>
+				<input type="text" class="form-control" name="inputValue"/>
+			</div>
+			<div class="form-group">
+				<label class="control-label">Type</label>
+				<select class="form-control" name="inputType">
+				@foreach( $dataTypes as $index => $dataType)
+					<option value="{{ $index }}">{{ $dataType }}</option>
+				@endforeach
+				</select>
+			</div>
+			<div class="form-group">
+				<label class="control-label">Application Argument</label>
+				<input type="text" class="form-control" name="applicationArgument"/>
+			</div>
+			<div class="form-group">
+				<label class="control-label">Standard Input</label>
+				<select class="form-control" name="standardInput">
+					<option value="0">False</option>
+					<option value="1">True</option>
+				</select>
+			</div>
+			<div class="form-group">
+				<label class="control-label">User Friendly Description</label>
+				<input type="text" class="form-control" name="userFriendlyDescription"/>
+			</div>
+			<div class="form-group">
+				<label class="control-label">Meta Data</label>
+				<input type="text" class="form-control" name="metaData"/>
+			</div>
 		</div>
 	</div>
 
 	<div class="app-output-block hide">
-		<h4>App Output Fields</h4>
-		<div class="form-group required">
-			<label class="control-label">Name</label>
-			<input type="text" class="form-control" name="outputName" required/>
-		</div>
-		<div class="form-group required">
-			<label class="control-label">Value</label>
-			<input type="text" class="form-control" name="outputValue"/>
-		</div>
-		<div class="form-group">
-			<label class="control-label">Type</label>
-			<select class="form-control" name="outputType">
-			@foreach( $dataTypes as $index => $dataType)
-				<option value="{{ $index }}">{{ $dataType }}</option>
-			@endforeach
-			</select>
+		<div class="well">
+			<button type="button" class="close remove-output-space"><span aria-hidden="true">&times;</span><span class="sr-only">Close</span></button>
+			<h4>App Output Fields</h4>
+			<div class="form-group required">
+				<label class="control-label">Name</label>
+				<input type="text" class="form-control" name="outputName" required/>
+			</div>
+			<div class="form-group required">
+				<label class="control-label">Value</label>
+				<input type="text" class="form-control" name="outputValue"/>
+			</div>
+			<div class="form-group">
+				<label class="control-label">Type</label>
+				<select class="form-control" name="outputType">
+				@foreach( $dataTypes as $index => $dataType)
+					<option value="{{ $index }}">{{ $dataType }}</option>
+				@endforeach
+				</select>
+			</div>
 		</div>
 	</div>
 </div>
@@ -101,5 +107,5 @@
 
 @section('scripts')
 	@parent
-    {{ HTML::script('js/appscript.js') }}
+    {{ HTML::script('js/interface.js') }}
 @stop

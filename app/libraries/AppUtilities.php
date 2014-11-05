@@ -6,9 +6,12 @@ use Airavata\API\AiravataClient;
 use Airavata\Model\AppCatalog\AppInterface\DataType;
 use Airavata\Model\AppCatalog\AppInterface\InputDataObjectType;
 
+
 use Airavata\Model\Workspace\Project;
 
 use Airavata\Model\AppCatalog\AppDeployment\ApplicationModule;
+use Airavata\Model\AppCatalog\AppDeployment\ApplicationParallelismType;
+
 
 class AppUtilities{
 
@@ -36,6 +39,14 @@ class AppUtilities{
 
 		return array(
 						"dataTypes" => $dataType::$__names
+					);
+	}
+
+	public static function getAppDeploymentData(){
+		$apt = new ApplicationParallelismType();
+
+		return array( 
+						"applicationParallelismTypes" => $apt::$__names
 					);
 	}
 }

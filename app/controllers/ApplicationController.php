@@ -16,9 +16,15 @@ class ApplicationController extends BaseController {
 	public function createAppInterfaceView()
 	{
 		$data = array();
-
 		$data = AppUtilities::getAppInterfaceData();
 		return View::make("application/interface", $data);
+	}
+
+	public function createAppDeploymentView()
+	{
+		$data = array();
+		$data = AppUtilities::getAppDeploymentData();
+		return View::make("application/deployment", $data);
 	}
 
 }

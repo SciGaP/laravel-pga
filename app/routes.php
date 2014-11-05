@@ -80,6 +80,10 @@ Route::post("app/module-create", "ApplicationController@createAppModuleSubmit");
 
 Route::get("app/interface-create", "ApplicationController@createAppInterfaceView");
 
+Route::post("app/interface-create", "ApplicationController@createAppInterfaceSubmit");
+
+Route::get("app/deployment-create", "ApplicationController@createAppDeploymentView");
+
 /*
  * Test Routes.
 */

@@ -66,7 +66,6 @@ class ComputeResource extends BaseController{
 			$data["computeResource"] = $computeResource;
 			$data["jobSubmissionInterfaces"] = $jobSubmissionInterfaces;
 			$data["dataMovementInterfaces"] = $dataMovementInterfaces;
-			//var_dump( $jobSubmissionInterfaces[1]->resourceJobManager); exit;
 
 			return View::make("resource/edit", $data);
 		}
@@ -111,7 +110,7 @@ class ComputeResource extends BaseController{
 		else if( Input::get("cr-edit") == "fileSystems")
 		{
 			$computeDescription = Utilities::get_compute_resource(  Input::get("crId"));
-			$computeDescription->fileSystems = Input::get("fileSystems");
+			$computeDescription->fileSystems = array_filter( Input::get("fileSystems"), "trim");
 			$computeResource = CRUtilities::register_or_update_compute_resource( $computeDescription, true);
 
 			$tabName = "#tab-filesystem";

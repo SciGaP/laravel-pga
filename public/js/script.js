@@ -26,7 +26,7 @@ $(document).ready( function(){
   //tab open code ends here.
 
 	// not letting users to add host names with no spaces.
-	$(".hostName, .form-control").blur( function(){
+	$("body").on( "blur", ".form-control", function(){
 		$(this).val( $.trim( $(this).val() ) );
 	});
 
