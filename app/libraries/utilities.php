@@ -1733,7 +1733,7 @@ public static function create_experiment()
     $airavataclient = Utilities::get_airavata_client();
 
     $experiment = Utilities::assemble_experiment();
-    //var_dump($experiment);
+    //var_dump($experiment); exit;
     $expId = null;
 
     try

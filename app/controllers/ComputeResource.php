@@ -47,12 +47,15 @@ class ComputeResource extends BaseController{
 			$computeResource = Utilities::get_compute_resource(  $computeResourceId);
 			$jobSubmissionInterfaces = array();
 			$dataMovementInterfaces = array();
+			$addedJSP = array();
+			$addedDMI = array();
 			//var_dump( $computeResource->jobSubmissionInterfaces); exit;
 			if( count( $computeResource->jobSubmissionInterfaces) )
 			{
 				foreach( $computeResource->jobSubmissionInterfaces as $JSI )
 				{
 					$jobSubmissionInterfaces[] = CRUtilities::getJobSubmissionDetails( $JSI->jobSubmissionInterfaceId, $JSI->jobSubmissionProtocol);
+					$addedJSP[] = $JSI->jobSubmissionProtocol;
 				}
 			}
 			//var_dump( CRUtilities::getJobSubmissionDetails( $data["computeResource"]->jobSubmissionInterfaces[0]->jobSubmissionInterfaceId, 1) ); exit;
@@ -61,11 +64,14 @@ class ComputeResource extends BaseController{
 				foreach( $computeResource->dataMovementInterfaces as $DMI )
 				{
 					$dataMovementInterfaces[] = CRUtilities::getDataMovementDetails( $DMI->dataMovementInterfaceId, $DMI->dataMovementProtocol);
+					$addedDMI[] = $DMI->dataMovementProtocol;
 				}
 			}
 			$data["computeResource"] = $computeResource;
 			$data["jobSubmissionInterfaces"] = $jobSubmissionInterfaces;
 			$data["dataMovementInterfaces"] = $dataMovementInterfaces;
+			$data["addedJSP"] = $addedJSP;
+			$data["addedDMI"] = $addedDMI;
 
 			return View::make("resource/edit", $data);
 		}
@@ -105,8 +111,12 @@ class ComputeResource extends BaseController{
 			$computeResource = CRUtilities::register_or_update_compute_resource( $computeDescription, true);
 
 			$tabName = "#tab-queues";
-
 		}
+		else if( Input::get("cr-edit") == "delete-queue" )
+		{
+			CRUtilities::deleteQueue( Input::get("crId"), Input::get("queueName") );
+			$tabName = "#tab-queues";
+		} 
 		else if( Input::get("cr-edit") == "fileSystems")
 		{
 			$computeDescription = Utilities::get_compute_resource(  Input::get("crId"));

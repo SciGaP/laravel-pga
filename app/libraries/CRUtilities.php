@@ -95,6 +95,12 @@ public static function createQueueObject( $queue){
     return $queueObject;
 }
 
+public static function deleteQueue( $computeResourceId, $queueName)
+{
+    $airavataclient = Utilities::get_airavata_client();
+    $airavataclient->deleteBatchQueue( $computeResourceId, $queueName);
+}
+
 
 /*
  * Creating Job Submission Interface.

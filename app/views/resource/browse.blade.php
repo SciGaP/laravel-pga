@@ -46,7 +46,7 @@
 	                        </a>
 	                    </td>
 	                    <td>
-	                        <a href="{{URL::to('/')}}/cr/summary?crId={{ $crId }}">
+	                        <a  class="view-cr" href="#" > <!-- {{URL::to('/')}}/cr/summary?crId={{ $crId }}"> -->
 	                            <span class="glyphicon glyphicon-list"></span>
 	                        </a>
 	                    </td>
@@ -65,4 +65,12 @@
 
 </div>
 
+@stop
+@section('scripts')
+	@parent
+	<script type="text/javascript">
+    $(".view-cr").click( function(){
+    	alert("The functionality to view a Compute Resource is under construction.");
+    })
+    </script>
 @stop

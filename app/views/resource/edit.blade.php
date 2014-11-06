@@ -80,6 +80,9 @@
 									<a class="accordion-toggle collapsed" data-toggle="collapse" data-parent="#accordion" href="#collapse-{{$index}}">
 									Queue : {{ $queue->queueName }}
 									</a>
+									<div class="pull-right col-md-1">
+										<span class="glyphicon glyphicon-trash delete-queue" style="cursor:pointer;" data-toggle="modal" data-target="#delete-queue" data-queue-name="{{ $queue->queueName }}"></span>
+									</div>
 								</h4>
 							</div>
 							<div id="collapse-{{$index}}" class="panel-collapse collapse">
@@ -98,19 +101,19 @@
 											</div>
 											<div class="form-group">
 												<label class="control-label">Queue Max Run Time</label>
-												<input class="form-control" value="{{ $queue->maxRunTime }}" maxlength="30" name="qmaxruntime" placeholder="Queue Max Run Time"/>
+												<input type="number" class="form-control" value="{{ $queue->maxRunTime }}" maxlength="30" name="qmaxruntime" placeholder="Queue Max Run Time"/>
 											</div>
 											<div class="form-group">
 												<label class="control-label">Queue Max Nodes</label>
-												<input class="form-control" value="{{ $queue->maxNodes }}" maxlength="30" name="qmaxnodes" placeholder="Queue Max Nodes"/>
+												<input type="number" class="form-control" value="{{ $queue->maxNodes }}" maxlength="30" name="qmaxnodes" placeholder="Queue Max Nodes"/>
 											</div>
 											<div class="form-group">
 												<label class="control-label">Queue Max Processors</label>
-												<input class="form-control" value="{{ $queue->maxProcessors }}" maxlength="30" name="qmaxprocessors" placeholder="Queue Max Processors"/>
+												<input type="number" class="form-control" value="{{ $queue->maxProcessors }}" maxlength="30" name="qmaxprocessors" placeholder="Queue Max Processors"/>
 											</div>
 											<div class="form-group">
 												<label class="control-label">Max Jobs in Queue</label>
-												<input class="form-control" value="{{ $queue->maxJobsInQueue }}" maxlength="30" name="qmaxjobsinqueue" placeholder="Max Jobs In Queue"/>
+												<input type="number" class="form-control" value="{{ $queue->maxJobsInQueue }}" maxlength="30" name="qmaxjobsinqueue" placeholder="Max Jobs In Queue"/>
 						          			</div>
 						          			<div class="form-group">
 												<input type="submit" class="btn" name="step1" value="Update"/>
@@ -323,7 +326,9 @@
 							<select name="jobSubmissionProtocol" class="form-control selected-job-protocol" required="required">
 								<option></option>
 							@foreach( $jobSubmissionProtocols as $index => $jobSubmissionProtocol)
-								<option value="{{ $index }}">{{ $jobSubmissionProtocol }}</option>
+								@if( ! in_array( $index, $addedJSP))
+									<option value="{{ $index }}">{{ $jobSubmissionProtocol }}</option>
+								@endif
 							@endforeach
 							</select>
 						</div>
@@ -425,7 +430,9 @@
 						<select name="dataMovementProtocol" class="form-control selected-data-movement-protocol">
 							<option></option>
 						@foreach( $dataMovementProtocols as $index => $dmp)
-							<option value="{{ $index }}">{{ $dmp }}</option>
+							@if( ! in_array( $index, $addedDMI))
+								<option value="{{ $index }}">{{ $dmp }}</option>
+							@endif
 						@endforeach
 						</select>
 
@@ -603,7 +610,7 @@
 	        			</div>
 	    				<input type="hidden" name="jsi-id[]" maxlength="2" value="{{ $JSI->jobSubmissionInterfaceId }}"/>
 	    				<div class="col-md-4">
-	        				<input type="text" name="jsi-priority[]" value="{{ $JSI->priorityOrder }}" required/>
+	        				<input type="number" name="jsi-priority[]" value="{{ $JSI->priorityOrder }}" required/>
 						</div>
 	        		</div>
 	        		@endforeach
@@ -666,9 +673,38 @@
 </div>
 @endif
 
+
+<div class="modal fade" id="delete-queue" tabindex="-1" role="dialog" aria-labelledby="add-modal" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+        	<form action="{{URL::to('/')}}/cr/edit" method="POST"/> 	
+				<input type="hidden" name="crId" value="{{Input::get('crId') }}"/>    
+				<input type="hidden" name="cr-edit" value="delete-queue"/>
+				<input type="hidden" name="queueName" class="delete-queueName" value=""/>
+	            <div class="modal-header">
+	               Confirmation to Delete Queue
+	            </div>
+	            <div class="modal-body">
+						Do you really want to delete the Batch Queue - <span class="delete-queueName"></span>?
+	            </div>
+	            <div class="modal-footer">
+	            	<button type="submit" class="btn btn-danger">Delete</button>
+	            	<button type="button" class="btn btn-default" data-dismiss="modal">Cancel</button>
+	            </div>
+	        </form>
+        </div>
+    </div>
+</div>
 @stop
 
 @section('scripts')
 	@parent
     {{ HTML::script('js/script.js') }}
+
+    <script type="text/javascript">
+    	$(".delete-queue").click( function(){
+    		$(".delete-queueName").val( $(this).data("queue-name") );
+    		$(".delete-queueName").html( $(this).data("queue-name") );
+    	})
+    </script>
 @stop

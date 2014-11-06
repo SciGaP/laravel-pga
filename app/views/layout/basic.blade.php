@@ -9,31 +9,32 @@
             <link rel="icon" href="resources/assets/favicon.ico" type="image/x-icon">
             {{ HTML::style('css/bootstrap.min.css')}}            
         </head>
-        
-        <?php
-            // Alerts if guests users try to go to the link without signing in.
-            if( Session::has("login-alert"))
-            {
-                Utilities::print_error_message("You need to login to use this service.");
-                Session::forget("login-alert");
-            } 
-            // if signed in user is not an admin.           
-            if( Session::has("admin-alert"))
-            {
-                Utilities::print_error_message("You need to be an admin to use this service.");
-                Session::forget("admin-alert");
-            }
-            
-        ?>
 
 <?php
 
 Utilities::connect_to_id_store();
 
 ?>
+
 <body>
 
 <?php Utilities::create_nav_bar(); ?>
+
+<?php
+    // Alerts if guests users try to go to the link without signing in.
+    if( Session::has("login-alert"))
+    {
+        Utilities::print_error_message("You need to login to use this service.");
+        Session::forget("login-alert");
+    } 
+    // if signed in user is not an admin.           
+    if( Session::has("admin-alert"))
+    {
+        Utilities::print_error_message("You need to be an admin to use this service.");
+        Session::forget("admin-alert");
+    }
+    
+?>
 
 @show
 
