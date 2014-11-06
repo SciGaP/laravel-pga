@@ -11,6 +11,11 @@
 |
 */
 
+
+/*
+ * User Routes
+*/
+
 Route::get("create", "AccountController@createAccountView");
 
 Route::post("create", "AccountController@createAccountSubmit");
@@ -24,6 +29,10 @@ Route::get("logout", "AccountController@logout");
 /*
  * The following routes will not work without logging in.
  *
+*/
+
+/*
+ * Project Routes
 */
 
 Route::get("project/create", "ProjectController@createView");
@@ -40,6 +49,10 @@ Route::get("project/edit", "ProjectController@editView");
 
 Route::post("project/edit", "ProjectController@editSubmit");
 
+/*
+ * Experiment Routes
+*/
+
 Route::get("experiment/create", "ExperimentController@createView");
 
 Route::post("experiment/create", "ExperimentController@createSubmit");
@@ -55,6 +68,10 @@ Route::post("experiment/search", "ExperimentController@searchSubmit");
 Route::get("experiment/edit", "ExperimentController@editView");
 
 Route::post("experiment/edit", "ExperimentController@editSubmit");
+
+/*
+ * Compute Resources Routes
+*/
 
 Route::get("cr/create", function(){
 	return Redirect::to("cr/create/step1");
@@ -74,6 +91,10 @@ Route::post("cr/delete-jsi", "ComputeResource@deleteActions");
 
 Route::post("cr/delete-dmi", "ComputeResource@deleteActions");
 
+/*
+ * Application Catalog Routes
+*/
+
 Route::get("app/module-create", "ApplicationController@createAppModuleView");
 
 Route::post("app/module-create", "ApplicationController@createAppModuleSubmit");
@@ -83,6 +104,9 @@ Route::get("app/interface-create", "ApplicationController@createAppInterfaceView
 Route::post("app/interface-create", "ApplicationController@createAppInterfaceSubmit");
 
 Route::get("app/deployment-create", "ApplicationController@createAppDeploymentView");
+
+Route::post("app/deployment-create", "ApplicationController@createAppDeploymentSubmit");
+
 
 /*
  * Test Routes.

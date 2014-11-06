@@ -12,14 +12,22 @@
 
 		<h3 class="text-center">Create a new Application Interface</h3>
 
-		<form action="{{URL::to('/')}}/app/module-create" method="POST">
+		<form action="{{URL::to('/')}}/app/interface-create" method="POST">
 			<div class="form-group required">
 				<label class="control-label">Application Name</label>
 				<input type="text" class="form-control" name="applicationName" required/>
 			</div>
 			<div class="form-group">
 				<label class="control-label">Application Description</label>
-				<input type="text" class="form-control" name="applicationDesription"/>
+				<input type="text" class="form-control" name="applicationDescription"/>
+			</div>
+			<div class="form-group">
+				<label class="control-label">Application Module</label>
+				<select name="appModuleId" class="form-control">
+				@foreach( $modules as $index => $module)
+					<option value="{{ $module->appModuleId }}">{{ $module->appModuleName }}</option>	
+				@endforeach
+				</select>
 			</div>
 			<div class="form-group">
 				<input type="button" class="btn btn-default add-input" value="Add Application Input"/>
@@ -43,15 +51,15 @@
 			<h4>App Input Fields</h4>
 			<div class="form-group required">
 				<label class="control-label">Name</label>
-				<input type="text" class="form-control" name="inputName" required/>
+				<input type="text" class="form-control" name="inputName[]" required/>
 			</div>
 			<div class="form-group">
 				<label class="control-label">Value</label>
-				<input type="text" class="form-control" name="inputValue"/>
+				<input type="text" class="form-control" name="inputValue[]"/>
 			</div>
 			<div class="form-group">
 				<label class="control-label">Type</label>
-				<select class="form-control" name="inputType">
+				<select class="form-control" name="inputType[]">
 				@foreach( $dataTypes as $index => $dataType)
 					<option value="{{ $index }}">{{ $dataType }}</option>
 				@endforeach
@@ -59,22 +67,22 @@
 			</div>
 			<div class="form-group">
 				<label class="control-label">Application Argument</label>
-				<input type="text" class="form-control" name="applicationArgument"/>
+				<input type="text" class="form-control" name="applicationArgument[]"/>
 			</div>
 			<div class="form-group">
 				<label class="control-label">Standard Input</label>
-				<select class="form-control" name="standardInput">
+				<select class="form-control" name="standardInput[]">
 					<option value="0">False</option>
 					<option value="1">True</option>
 				</select>
 			</div>
 			<div class="form-group">
 				<label class="control-label">User Friendly Description</label>
-				<input type="text" class="form-control" name="userFriendlyDescription"/>
+				<textarea class="form-control" name="userFriendlyDescription[]"></textarea>
 			</div>
 			<div class="form-group">
 				<label class="control-label">Meta Data</label>
-				<input type="text" class="form-control" name="metaData"/>
+				<textarea class="form-control" name="metaData[]"></textarea>
 			</div>
 		</div>
 	</div>
@@ -85,15 +93,15 @@
 			<h4>App Output Fields</h4>
 			<div class="form-group required">
 				<label class="control-label">Name</label>
-				<input type="text" class="form-control" name="outputName" required/>
+				<input type="text" class="form-control" name="outputName[]" required/>
 			</div>
 			<div class="form-group required">
 				<label class="control-label">Value</label>
-				<input type="text" class="form-control" name="outputValue"/>
+				<input type="text" class="form-control" name="outputValue[]"/>
 			</div>
 			<div class="form-group">
 				<label class="control-label">Type</label>
-				<select class="form-control" name="outputType">
+				<select class="form-control" name="outputType[]">
 				@foreach( $dataTypes as $index => $dataType)
 					<option value="{{ $index }}">{{ $dataType }}</option>
 				@endforeach

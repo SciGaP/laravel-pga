@@ -279,20 +279,26 @@ public static function get_airavata_client()
     try
     {
         $transport = new TSocket(Utilities::AIRAVATA_SERVER, Utilities::AIRAVATA_PORT);
-        $transport->setRecvTimeout(Utilities::AIRAVATA_TIMEOUT);
-        $transport->setSendTimeout(Utilities::AIRAVATA_TIMEOUT);
 
-        $protocol = new TBinaryProtocol($transport);
-        $transport->open();
+        if( $transport != null )
+        {
+            $transport->setRecvTimeout(Utilities::AIRAVATA_TIMEOUT);
+            $transport->setSendTimeout(Utilities::AIRAVATA_TIMEOUT);
+            
+            $protocol = new TBinaryProtocol($transport);
+            $transport->open();
 
-        $client = new AiravataClient($protocol);
-        return $client;
+            $client = new AiravataClient($protocol);
+            return $client;
+
+        }
     }
     catch (Exception $e)
     {
         Utilities::print_error_message('<p>There was a problem connecting to Airavata.
             Please try again later or submit a bug report using the link in the Help menu.</p>' .
             '<p>' . $e->getMessage() . '</p>');
+        
     }
 }
 
