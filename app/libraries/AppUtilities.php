@@ -20,7 +20,7 @@ use Airavata\Model\AppCatalog\AppDeployment\SetEnvPaths;
 
 class AppUtilities{
 
-	public static function create_or_update_appModule( $inputs){
+	public static function create_or_update_appModule( $inputs, $update = false){
 
 		$airavataclient = Utilities::get_airavata_client();
 
@@ -30,9 +30,17 @@ class AppUtilities{
 												"appModuleDescription" => $inputs["appModuleDescription"]
 										));
 		
-		$result = $airavataclient->registerApplicationModule( $appModule);
+		if( $update)
+			return $airavataclient->updateApplicationModule( $inputs["appModuleId"], $appModule);
+		else
+			return $airavataclient->registerApplicationModule( $appModule);
+	}
 
-		print_r( $result);
+	public static function deleteAppModule( $appModuleId){
+
+		$airavataclient = Utilities::get_airavata_client();
+
+		return $airavataclient->deleteApplicationModule( $appModuleId);
 	}
 
 	public static function getAppInterfaceData(){
@@ -40,7 +48,7 @@ class AppUtilities{
 		$airavataclient = Utilities::get_airavata_client();
 
 		$dataType = new DataType();
-		$modules = $airavataclient->getAllModules();
+		$modules = AppUtilities::getAllModules();
 		//var_dump( $dataType::$__names);
 		//echo "<br/><br/>";
 		$InputDataObjectType = new InputDataObjectType();
@@ -95,7 +103,7 @@ class AppUtilities{
 		$airavataclient = Utilities::get_airavata_client();
 
 		$computeResources = $airavataclient->getAllComputeResourceNames();
-		$modules = $airavataclient->getAllModules();
+		$modules = AppUtilities::getAllModules();
 		$apt = new ApplicationParallelismType();
 
 		return array( 
@@ -141,5 +149,10 @@ class AppUtilities{
 
 		return;
 
+	}
+
+	public static function getAllModules(){
+		$airavataclient = Utilities::get_airavata_client();
+		return $airavataclient->getAllModules();
 	}
 }

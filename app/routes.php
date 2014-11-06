@@ -95,9 +95,13 @@ Route::post("cr/delete-dmi", "ComputeResource@deleteActions");
  * Application Catalog Routes
 */
 
-Route::get("app/module-create", "ApplicationController@createAppModuleView");
+Route::get("app/module", "ApplicationController@showAppModuleView");
 
-Route::post("app/module-create", "ApplicationController@createAppModuleSubmit");
+Route::post("app/module-create", "ApplicationController@modifyAppModuleSubmit");
+
+Route::post("app/module-edit", "ApplicationController@modifyAppModuleSubmit");
+
+Route::post("app/module-delete", "ApplicationController@deleteAppModule");
 
 Route::get("app/interface-create", "ApplicationController@createAppInterfaceView");
 

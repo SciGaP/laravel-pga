@@ -10,28 +10,196 @@
 <div class="container">
 	<div class="col-md-offset-2 col-md-8">
 
-		<h3 class="text-center">Create a new Application Module</h3>
+		<button class="btn btn-default" data-toggle="modal" data-target="#new-app-module-block">Create a new Application Module</button>
 
-		<form action="{{URL::to('/')}}/app/module-create" method="POST">
-			<div class="form-group required">
-				<label class="control-label">Application Module Name</label>
-				<input type="text" class="form-control" name="appModuleName" required/>
+	@if( count( $modules) )
+		@if( Session::has("message"))
+			<div class="row">
+				<div class="alert alert-success alert-dismissible" role="alert">
+					<button type="button" class="close" data-dismiss="alert"><span aria-hidden="true">&times;</span><span class="sr-only">Close</span></button>
+					{{ Session::get("message") }}
+				</div>
 			</div>
-			<div class="form-group">
-				<label class="control-label">Application Module Version</label>
-				<input type="text" class="form-control" name="appModuleVersion"/>
+			{{ Session::forget("message") }}
+		@endif
+		<div class="row">
+			<div class="col-md-6">
+				<h3>Existing Modules :</h3>
 			</div>
-			<div class="form-group">
-				<label class="control-label">Description</label>
-				<textarea class="form-control" name="appModuleDescription"></textarea>
+			<div class="col-md-6" style="margin-top:3.5%">
+				<input type="text" class="col-md-12 filterinput" placeholder="Search by Module Name" />
 			</div>
-			<div class="form-group">
-				<input type="submit" class="btn btn-primary" value="Save"/>
-				<input type="reset" class="btn btn-success" value ="Reset"/>
+		</div>
+		<div class="panel-group" id="accordion">
+		@foreach( $modules as $index => $module )
+			<div class="panel panel-default">
+				<div class="panel-heading">
+					<h4 class="panel-title">
+						<a class="accordion-toggle collapsed" data-toggle="collapse" data-parent="#accordion" href="#collapse-{{$index}}">
+						{{ $module->appModuleName }}
+						</a>
+						<div class="pull-right col-md-2">
+							<span class="glyphicon glyphicon-pencil edit-app-module" style="cursor:pointer;" data-toggle="modal" data-target="#edit-app-module-block" data-module-data="{{ htmlentities(json_encode( $module) ) }}"></span>
+							<span class="glyphicon glyphicon-trash delete-app-module" style="cursor:pointer;" data-toggle="modal" data-target="#delete-app-module-block" data-module-data="{{ htmlentities(json_encode( $module) ) }}"></span>
+						</div>
+					</h4>
+				</div>
+				<div id="collapse-{{$index}}" class="panel-collapse collapse">
+					<div class="panel-body">
+						{{ $module->appModuleDescription }}
+					</div>
+				</div>
 			</div>
-		</form>
+		@endforeach
+		</div>
+	@endif
 
+
+ 	<div class="modal fade" id="new-app-module-block" tabindex="-1" role="dialog" aria-labelledby="add-modal" aria-hidden="true">
+	    <div class="modal-dialog">
+
+			<form action="{{URL::to('/')}}/app/module-create" method="POST">
+
+		        <div class="modal-content">
+		            <div class="modal-header">
+		              	<h3 class="text-center">Create a new Application Module</h3>
+		            </div>
+		            <div class="modal-body">
+				 		<div id="new-app-module-block">
+							
+								<div class="form-group required">
+									<label class="control-label">Application Module Name</label>
+									<input type="text" class="form-control" name="appModuleName" required/>
+								</div>
+								<div class="form-group">
+									<label class="control-label">Application Module Version</label>
+									<input type="text" class="form-control" name="appModuleVersion"/>
+								</div>
+								<div class="form-group">
+									<label class="control-label">Description</label>
+									<textarea class="form-control" name="appModuleDescription"></textarea>
+								</div>
+								
+						</div>
+					</div>
+					<div class="modal-footer">
+						<div class="form-group">
+							<input type="submit" class="btn btn-primary" value="Save"/>
+							<input type="reset" class="btn btn-success" value ="Reset"/>
+						</div>
+					</div>
+				</div>
+
+			</form>
+
+
+		</div>
 	</div>
-</div>
+
+	<div class="modal fade" id="edit-app-module-block" tabindex="-1" role="dialog" aria-labelledby="add-modal" aria-hidden="true">
+	    <div class="modal-dialog">
+
+			<form action="{{URL::to('/')}}/app/module-edit" method="POST">
+
+		        <div class="modal-content">
+		            <div class="modal-header">
+		              	<h3 class="text-center">Edit Application Module</h3>
+		            </div>
+		            <div class="modal-body">
+				 		<div id="new-app-module-block">
+								<input type="hidden" class="form-control edit-moduleid" name="appModuleId"/>
+								
+								<div class="form-group required">
+									<label class="control-label">Application Module Name</label>
+									<input type="text" class="form-control edit-name" name="appModuleName" required/>
+								</div>
+								<div class="form-group">
+									<label class="control-label">Application Module Version</label>
+									<input type="text" class="form-control edit-version" name="appModuleVersion"/>
+								</div>
+								<div class="form-group">
+									<label class="control-label">Description</label>
+									<textarea class="form-control edit-desc" name="appModuleDescription"></textarea>
+								</div>
+								
+						</div>
+					</div>
+					<div class="modal-footer">
+						<div class="form-group">
+							<input type="submit" class="btn btn-primary" value="Update"/>
+							<input type="button" class="btn btn-default" data-dismiss="modal" value ="Cancel"/>
+						</div>
+					</div>
+				</div>
+
+			</form>
+
+
+		</div>
+	</div>
+
+	<div class="modal fade" id="delete-app-module-block" tabindex="-1" role="dialog" aria-labelledby="add-modal" aria-hidden="true">
+	    <div class="modal-dialog">
+
+			<form action="{{URL::to('/')}}/app/module-delete" method="POST">
+		        <div class="modal-content">
+		            <div class="modal-header">
+		              	<h3 class="text-center">Delete Confirmation Application Module</h3>
+		            </div>
+		            <div class="modal-body">
+						<input type="hidden" class="form-control delete-moduleid" name="appModuleId"/>
+
+				 		Do you really want to delete the Application Module - <span class="delete-module-name"></span>
+					</div>
+					<div class="modal-footer">
+						<div class="form-group">
+							<input type="submit" class="btn btn-danger" value="Delete"/>
+							<input type="button" class="btn btn-default" data-dismiss="modal" value ="Cancel"/>
+						</div>
+					</div>
+				</div>
+
+			</form>
+
+
+		</div>
+	</div>
+
+@stop
+
+@section('scripts')
+	@parent
+	<script type="text/javascript">
+
+    	$('.filterinput').keyup(function() {
+            var a = $(this).val();
+            if (a.length > 0) {
+                children = ($("#accordion").children());
+
+                var containing = children.filter(function () {
+                    var regex = new RegExp('\\b' + a, 'i');
+                    return regex.test($('a', this).text());
+                }).slideDown();
+                children.not(containing).slideUp();
+            } else {
+                children.slideDown();
+            }
+            return false;
+        });
+
+        $(".edit-app-module").click( function(){
+        	var module = $(this).data("module-data");
+        	$(".edit-name").val( module.appModuleName);
+        	$(".edit-desc").val( module.appModuleDescription);
+        	$(".edit-version").val( module.appModuleVersion);
+        	$(".edit-moduleid").val( module.appModuleId)
+        });
+
+        $(".delete-app-module").click( function(){
+        	var module = $(this).data("module-data");
+        	$(".delete-module-name").html( module.appModuleName);
+        	$(".delete-moduleid").val( module.appModuleId)
+        });
+    </script>
 
 @stop

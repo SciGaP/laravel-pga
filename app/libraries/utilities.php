@@ -284,7 +284,7 @@ public static function get_airavata_client()
         {
             $transport->setRecvTimeout(Utilities::AIRAVATA_TIMEOUT);
             $transport->setSendTimeout(Utilities::AIRAVATA_TIMEOUT);
-            
+
             $protocol = new TBinaryProtocol($transport);
             $transport->open();
 
@@ -1403,6 +1403,12 @@ public static function create_nav_bar()
         (
             array('label' => 'Register', 'url' => URL::to('/') . '/cr/create'),
             array('label' => 'Browse', 'url' => URL::to('/') . '/cr/browse')
+        ),
+        'App Catalog' => array
+        (
+            array('label' => 'Module', 'url' => URL::to('/') . '/app/module'),
+            array('label' => 'Interface', 'url' => URL::to('/') . '/app/interface-create'),
+            array('label' => 'Deployment', 'url' => URL::to('/') . '/app/deployment-create')
         ),
         'Help' => array
         (

@@ -2,15 +2,47 @@
 
 class ApplicationController extends BaseController {
 
-	public function createAppModuleView()
+	public function __construct()
 	{
-		return View::make('application/module');
+		$this->beforeFilter('verifyadmin');
 	}
 
-	public function createAppModuleSubmit()
+	public function showAppModuleView()
 	{
-		AppUtilities::create_or_update_appModule( Input::all() );
-		print_r( "Application Module has been Created.");
+		$data = array();
+		$data["modules"] = AppUtilities::getAllModules();
+		return View::make('application/module', $data);
+	}
+
+	public function modifyAppModuleSubmit()
+	{
+		$update = false;
+		if( Input::has("appModuleId") )
+			$update = true;
+			
+		if( AppUtilities::create_or_update_appModule( Input::all(), $update ) )
+		{
+			if( $update)
+				$message = "Module has been updated successfully!";
+			else
+				$message = "Module has been created successfully!";
+		}
+		else
+			$message = "An error has occurred. Please report the issue.";
+
+
+		return Redirect::to("app/module")->with("message", $message);
+	}
+
+	public function deleteAppModule()
+	{
+		if( AppUtilities::deleteAppModule( Input::get("appModuleId") ) )
+			$message = "Module has been deleted successfully!";
+		else
+			$message = "An error has occurred. Please report the issue.";
+
+		return Redirect::to("app/module")->with("message", $message);
+
 	}
 
 	public function createAppInterfaceView()
