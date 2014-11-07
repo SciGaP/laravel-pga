@@ -25,11 +25,6 @@ $(document).ready( function(){
   $('a[href="#' + openTab + '"]').click();
   //tab open code ends here.
 
-	// not letting users to add host names with no spaces.
-	$("body").on( "blur", ".form-control", function(){
-		$(this).val( $.trim( $(this).val() ) );
-	});
-
 	$(".add-queue").click( function(){
 		$(this).before( $(".queue-block").html() );
 	});
@@ -191,17 +186,6 @@ $(document).ready( function(){
   $("body").on("click", ".add-gridFTPEndPoint", function(){
         $(this).before( '<input class="form-control" maxlength="30" name="gridFTPEndPoints[]"/>');
   });
-
-  var highest = null;
-
-   $(".nav-tabs a").each(function(){  //find the height of your highest link
-       var h = $(this).height();
-       if(h > highest){
-          highest = $(this).height();  
-       }    
-    });
-
-   $(".nav-tabs a").height(highest);  //set all your links to that height.
 
    $(".delete-jsi").click( function(){
       $(".delete-jsi-confirm").data("jsi-id", $(this).data("jsi-id"));

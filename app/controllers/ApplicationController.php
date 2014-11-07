@@ -49,6 +49,7 @@ class ApplicationController extends BaseController {
 	{
 		$data = array();
 		$data = AppUtilities::getAppInterfaceData();
+		//var_dump( $data["appInterfaces"][0]); exit;
 		return View::make("application/interface", $data);
 	}
 

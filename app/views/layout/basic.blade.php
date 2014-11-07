@@ -77,6 +77,23 @@ Utilities::connect_to_id_store();
                 }
             }
         });
+
+        var highest = null;
+        $(".nav-tabs a").each(function(){  //find the height of your highest link
+            var h = $(this).height();
+            if(h > highest){
+                highest = $(this).height();  
+            }    
+        });
+
+        $(".nav-tabs a").height(highest);  //set all your links to that height.
+
+
+        // not letting users to add only spaces in text boxes.
+        $("body").on( "blur", ".form-control", function(){
+            $(this).val( $.trim( $(this).val() ) );
+        });
+
     </script>
 
 @show
