@@ -289,7 +289,10 @@ public static function get_airavata_client()
             $transport->open();
 
             $client = new AiravataClient($protocol);
-            return $client;
+            if( is_object( $client))
+                return $client;
+            else
+                return Redirect::to("airavata/down");
 
         }
     }
@@ -1407,8 +1410,8 @@ public static function create_nav_bar()
         'App Catalog' => array
         (
             array('label' => 'Module', 'url' => URL::to('/') . '/app/module'),
-            array('label' => 'Interface', 'url' => URL::to('/') . '/app/interface-create'),
-            array('label' => 'Deployment', 'url' => URL::to('/') . '/app/deployment-create')
+            array('label' => 'Interface', 'url' => URL::to('/') . '/app/interface'),
+            array('label' => 'Deployment', 'url' => URL::to('/') . '/app/deployment')
         ),
         'Help' => array
         (

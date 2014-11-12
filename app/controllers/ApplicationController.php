@@ -49,7 +49,7 @@ class ApplicationController extends BaseController {
 	{
 		$data = array();
 		$data = AppUtilities::getAppInterfaceData();
-		//var_dump( $data["appInterfaces"][0]); exit;
+		//var_dump( $data["appInterfaces"][13]); exit;
 		return View::make("application/interface", $data);
 	}
 
@@ -58,7 +58,39 @@ class ApplicationController extends BaseController {
 		$appInterfaceValues = Input::all();
 		//var_dump( $appInterfaceValues); exit;
 		AppUtilities::create_or_update_appInterface( $appInterfaceValues);
+
+		return Redirect::to( "app/interface")->with("message","Application Interface has been created");
 	}
+
+	public function editAppInterfaceSubmit()
+	{
+		if( Input::has("app-interface-id"))
+		{
+			$update = true;
+			$appInterfaceValues = Input::all();
+			//var_dump( $appInterfaceValues); exit;
+			AppUtilities::create_or_update_appInterface( $appInterfaceValues, $update);
+			$message = "Application Interface has been updated";
+		}
+		else
+		{
+			$message = "An error has occurred. Please report the issue.";
+		}
+		return Redirect::to( "app/interface")->with("message", $message);
+
+	}
+
+	public function deleteAppInterface()
+	{
+		if( AppUtilities::deleteAppInterface( Input::get("appInterfaceId") ) )
+			$message = "Interface has been deleted successfully!";
+		else
+			$message = "An error has occurred. Please report the issue.";
+
+		return Redirect::to("app/interface")->with("message", $message);
+
+	}
+
 
 	public function createAppDeploymentView()
 	{

@@ -62,53 +62,73 @@ class AppUtilities{
 					);
 	}
 
-	public static function create_or_update_appInterface( $appInterfaceValues){
+	public static function create_or_update_appInterface( $appInterfaceValues, $update = false){
 		
 		$airavataclient = Utilities::get_airavata_client();
-
+		//var_dump( $appInterfaceValues); exit;
 		$appInterface = new ApplicationInterfaceDescription( array(
 																"applicationName" => $appInterfaceValues["applicationName"],
 																"applicationDesription" => $appInterfaceValues["applicationDescription"],
-																"appModuleId" => $appInterfaceValues["appModuleId"],
+																"applicationModules" => $appInterfaceValues["applicationModules"]
 															) ); 
 
-		foreach ($appInterfaceValues["inputName"] as $index => $name) {
-			$inputDataObjectType = new InputDataObjectType( array(
-																"name" => $name,
-																"value" => $appInterfaceValues["inputValue"][ $index],
-																"type" => $appInterfaceValues["inputType"][ $index],
-																"applicationArgument" => $appInterfaceValues["applicationArgument"][$index],
-																"standardInput" => $appInterfaceValues["standardInput"],
-																"userFriendlyDescription" => $appInterfaceValues["userFriendlyDescription"][ $index],
-																"metaData" => $appInterfaceValues["metaData"][ $index]
-															) );
-			$appInterface->applicationInputs[] = $inputDataObjectType;
+		if( isset( $appInterfaceValues["inputName"]))
+		{
+			foreach ($appInterfaceValues["inputName"] as $index => $name) {
+				$inputDataObjectType = new InputDataObjectType( array(
+																	"name" => $name,
+																	"value" => $appInterfaceValues["inputValue"][ $index],
+																	"type" => $appInterfaceValues["inputType"][ $index],
+																	"applicationArgument" => $appInterfaceValues["applicationArgument"][$index],
+																	"standardInput" => $appInterfaceValues["standardInput"],
+																	"userFriendlyDescription" => $appInterfaceValues["userFriendlyDescription"][ $index],
+																	"metaData" => $appInterfaceValues["metaData"][ $index]
+																) );
+				$appInterface->applicationInputs[] = $inputDataObjectType;
+			}
 		}
 
-		foreach ( $appInterfaceValues["outputName"] as $index => $name) {
-			$outputDataObjectType = new OutputDataObjectType( array(
-																"name" => $name,
-																"value" => $appInterfaceValues["outputValue"][ $index],
-																"type" => $appInterfaceValues["outputType"][ $index]
-															));
-			$appInterface->applicationOutputs[] = $outputDataObjectType;
+		if( isset( $appInterfaceValues["outputName"]))
+		{
+			foreach ( $appInterfaceValues["outputName"] as $index => $name) {
+				$outputDataObjectType = new OutputDataObjectType( array(
+																	"name" => $name,
+																	"value" => $appInterfaceValues["outputValue"][ $index],
+																	"type" => $appInterfaceValues["outputType"][ $index]
+																));
+				$appInterface->applicationOutputs[] = $outputDataObjectType;
+			}
 		}
 
 		//var_dump( $appInterface); exit;
 
-		//var_dump( $airavataclient->getApplicationInterface ($airavataclient->registerApplicationInterface( $appInterface) ) );
-		print_r( "App interface has been created.");
+		if( $update)
+			$airavataclient->updateApplicationInterface( $appInterfaceValues["app-interface-id"], $appInterface);
+		else
+			$airavataclient->getApplicationInterface($airavataclient->registerApplicationInterface( $appInterface) );
+
+		//print_r( "App interface has been created.");
 	}
+
+	public static function deleteAppInterface( $appInterfaceId){
+
+		$airavataclient = Utilities::get_airavata_client();
+
+		return $airavataclient->deleteApplicationInterface( $appInterfaceId);
+	}
+
 
 	public static function getAppDeploymentData(){
 
 		$airavataclient = Utilities::get_airavata_client();
 
+		$appDeployments = array();//$airavataclient->getAllAppDeployments();
 		$computeResources = $airavataclient->getAllComputeResourceNames();
 		$modules = AppUtilities::getAllModules();
 		$apt = new ApplicationParallelismType();
 
 		return array( 
+						"appDeployments" 			  => $appDeployments,
 						"applicationParallelismTypes" => $apt::$__names,
 						"computeResources"            => $computeResources,
 						"modules"			          => $modules

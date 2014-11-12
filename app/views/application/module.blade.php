@@ -38,7 +38,7 @@
 						<a class="accordion-toggle collapsed" data-toggle="collapse" data-parent="#accordion" href="#collapse-{{$index}}">
 						{{ $module->appModuleName }}
 						</a>
-						<div class="pull-right col-md-2">
+						<div class="pull-right col-md-2 module-options fade">
 							<span class="glyphicon glyphicon-pencil edit-app-module" style="cursor:pointer;" data-toggle="modal" data-target="#edit-app-module-block" data-module-data="{{ htmlentities(json_encode( $module) ) }}"></span>
 							<span class="glyphicon glyphicon-trash delete-app-module" style="cursor:pointer;" data-toggle="modal" data-target="#delete-app-module-block" data-module-data="{{ htmlentities(json_encode( $module) ) }}"></span>
 						</div>
@@ -65,22 +65,7 @@
 		              	<h3 class="text-center">Create a new Application Module</h3>
 		            </div>
 		            <div class="modal-body">
-				 		<div id="new-app-module-block">
-							
-								<div class="form-group required">
-									<label class="control-label">Application Module Name</label>
-									<input type="text" class="form-control" name="appModuleName" required/>
-								</div>
-								<div class="form-group">
-									<label class="control-label">Application Module Version</label>
-									<input type="text" class="form-control" name="appModuleVersion"/>
-								</div>
-								<div class="form-group">
-									<label class="control-label">Description</label>
-									<textarea class="form-control" name="appModuleDescription"></textarea>
-								</div>
-								
-						</div>
+				 		@include('partials/module-block')
 					</div>
 					<div class="modal-footer">
 						<div class="form-group">
@@ -106,23 +91,7 @@
 		              	<h3 class="text-center">Edit Application Module</h3>
 		            </div>
 		            <div class="modal-body">
-				 		<div id="new-app-module-block">
-								<input type="hidden" class="form-control edit-moduleid" name="appModuleId"/>
-								
-								<div class="form-group required">
-									<label class="control-label">Application Module Name</label>
-									<input type="text" class="form-control edit-name" name="appModuleName" required/>
-								</div>
-								<div class="form-group">
-									<label class="control-label">Application Module Version</label>
-									<input type="text" class="form-control edit-version" name="appModuleVersion"/>
-								</div>
-								<div class="form-group">
-									<label class="control-label">Description</label>
-									<textarea class="form-control edit-desc" name="appModuleDescription"></textarea>
-								</div>
-								
-						</div>
+				 		@include('partials/module-block')
 					</div>
 					<div class="modal-footer">
 						<div class="form-group">
@@ -170,6 +139,15 @@
 @section('scripts')
 	@parent
 	<script type="text/javascript">
+
+		$(".panel-title").hover( 
+			function(){
+				$(this).find(".module-options").addClass("in");
+			},
+			function(){
+				$(this).find(".module-options").removeClass("in");
+			}
+		);
 
     	$('.filterinput').keyup(function() {
             var a = $(this).val();

@@ -234,8 +234,11 @@ public static function create_or_update_DMIObject( $inputs, $update = false){
                 "securityProtocol" => $inputs["securityProtocol"],
                 "gridFTPEndPoints" => $inputs["gridFTPEndPoints"]
             ));
-        $gridftpdmp = $airavataclient->addGridFTPDataMovementDetails( $computeResource->computeResourceId, 0, $gridFTPDataMovement);
-        
+        if( $update)
+            $gridftpdmp = $airavataclient->updateGridFTPDataMovementDetails( $inputs["dmiId"], $gridFTPDataMovement);
+        else
+            $gridftpdmp = $airavataclient->addGridFTPDataMovementDetails( $computeResource->computeResourceId, 0, $gridFTPDataMovement);
+
         if( $gridftpdmp)
             print_r( "The GridFTP Data Movement has been added. Edit UI for the Grid Data Movement Interface is yet to be made.
                 Please click <a href='" . URL::to('/') . "/cr/edit'>here</a> to go back to edit page for compute resource.");

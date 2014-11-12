@@ -97,26 +97,26 @@
 											</div>
 											<div class="form-group">
 												<label class="control-label">Queue Description</label>
-												<input class="form-control" value="{{ $queue->queueDescription }}" maxlength="30" name="qdesc" placeholder="Queue Description"/>
+												<textarea class="form-control" value="{{ $queue->queueDescription }}" maxlength="255" name="qdesc" placeholder="Queue Description"></textarea>
 											</div>
 											<div class="form-group">
 												<label class="control-label">Queue Max Run Time</label>
-												<input type="number" class="form-control" value="{{ $queue->maxRunTime }}" maxlength="30" name="qmaxruntime" placeholder="Queue Max Run Time"/>
+												<input type="number" min="0" class="form-control" value="{{ $queue->maxRunTime }}" maxlength="30" name="qmaxruntime" placeholder="Queue Max Run Time"/>
 											</div>
 											<div class="form-group">
 												<label class="control-label">Queue Max Nodes</label>
-												<input type="number" class="form-control" value="{{ $queue->maxNodes }}" maxlength="30" name="qmaxnodes" placeholder="Queue Max Nodes"/>
+												<input type="number" min="0" class="form-control" value="{{ $queue->maxNodes }}" maxlength="30" name="qmaxnodes" placeholder="Queue Max Nodes"/>
 											</div>
 											<div class="form-group">
 												<label class="control-label">Queue Max Processors</label>
-												<input type="number" class="form-control" value="{{ $queue->maxProcessors }}" maxlength="30" name="qmaxprocessors" placeholder="Queue Max Processors"/>
+												<input type="number" min="0" class="form-control" value="{{ $queue->maxProcessors }}" maxlength="30" name="qmaxprocessors" placeholder="Queue Max Processors"/>
 											</div>
 											<div class="form-group">
 												<label class="control-label">Max Jobs in Queue</label>
-												<input type="number" class="form-control" value="{{ $queue->maxJobsInQueue }}" maxlength="30" name="qmaxjobsinqueue" placeholder="Max Jobs In Queue"/>
+												<input type="number" min="0" class="form-control" value="{{ $queue->maxJobsInQueue }}" maxlength="30" name="qmaxjobsinqueue" placeholder="Max Jobs In Queue"/>
 						          			</div>
 						          			<div class="form-group">
-												<input type="submit" class="btn" name="step1" value="Update"/>
+												<input type="submit" min="0" class="btn" name="step1" value="Update"/>
 											</div>
 						          		</div>
 						      		</form>
@@ -138,23 +138,23 @@
 								</div>
 								<div class="form-group">
 									<label class="control-label">Queue Description</label>
-									<input class="form-control" maxlength="30" name="qdesc" placeholder="Queue Description"/>
+									<textarea class="form-control" maxlength="255" name="qdesc" placeholder="Queue Description"></textarea>
 								</div>
 								<div class="form-group">
 									<label class="control-label">Queue Max Run Time</label>
-									<input class="form-control" maxlength="30" name="qmaxruntime" placeholder="Queue Max Run Time"/>
+									<input class="form-control" type="number" min="0" maxlength="30" name="qmaxruntime" placeholder="Queue Max Run Time"/>
 								</div>
 								<div class="form-group">
 									<label class="control-label">Queue Max Nodes</label>
-									<input class="form-control" maxlength="30" name="qmaxnodes" placeholder="Queue Max Nodes"/>
+									<input class="form-control" type="number" min="0" maxlength="30" name="qmaxnodes" placeholder="Queue Max Nodes"/>
 								</div>
 								<div class="form-group">
 									<label class="control-label">Queue Max Processors</label>
-									<input class="form-control" maxlength="30" name="qmaxprocessors" placeholder="Queue Max Processors"/>
+									<input class="form-control" type="number" min="0" maxlength="30" name="qmaxprocessors" placeholder="Queue Max Processors"/>
 								</div>
 								<div class="form-group">
 									<label class="control-label">Max Jobs in Queue</label>
-									<input class="form-control" maxlength="30" name="qmaxjobsinqueue" placeholder="Max Jobs In Queue"/>
+									<input class="form-control" type="number" min="0" maxlength="30" name="qmaxjobsinqueue" placeholder="Max Jobs In Queue"/>
 			          			</div>
 			          		</div>
 		          			<div class="form-group">
@@ -212,7 +212,7 @@
 								<?php $selectedJspIndex = $computeResource->jobSubmissionInterfaces[ $index]->jobSubmissionProtocol; ?>
 
         						<h4>Job Submission Protocol : {{ $jobSubmissionProtocols[ $selectedJspIndex] }}
-									<button type='button' class='close'>
+									<button type='button' class='close delete-jsi' data-toggle="modal" data-target="#confirm-delete-jsi" data-jsi-id="{{ $JSI->jobSubmissionInterfaceId }}">
 										<span class="glyphicon glyphicon-trash delete-jsi" data-toggle="modal" data-target="#confirm-delete-jsi" data-jsi-id="{{ $JSI->jobSubmissionInterfaceId }}"></span>
 									</button>
 								</h4>
@@ -363,7 +363,7 @@
 								<?php $selectedDMIIndex = $computeResource->dataMovementInterfaces[ $index]->dataMovementProtocol; ?>
 
         						<h4>Data Movement Protocol : {{ $dataMovementProtocols[ $selectedDMIIndex] }}
-									<button type='button' class='close'>
+									<button type='button' class='close delete-dmi' data-toggle="modal" data-target="#confirm-delete-dmi" data-dmi-id="{{ $DMI->dataMovementInterfaceId }}">
 										<span class="glyphicon glyphicon-trash delete-dmi" data-toggle="modal" data-target="#confirm-delete-dmi" data-dmi-id="{{ $DMI->dataMovementInterfaceId }}"></span>
 									</button>
 								</h4>
@@ -610,7 +610,7 @@
 	        			</div>
 	    				<input type="hidden" name="jsi-id[]" maxlength="2" value="{{ $JSI->jobSubmissionInterfaceId }}"/>
 	    				<div class="col-md-4">
-	        				<input type="number" name="jsi-priority[]" value="{{ $JSI->priorityOrder }}" required/>
+	        				<input type="number" name="jsi-priority[]" min="0" value="{{ $JSI->priorityOrder }}" required/>
 						</div>
 	        		</div>
 	        		@endforeach
@@ -658,7 +658,7 @@
 	        			</div>
 	    				<input type="hidden" name="dmi-id[]" maxlength="2" value="{{ $DMI->dataMovementInterfaceId }}"/>
 	    				<div class="col-md-4">
-	        				<input type="text" name="dmi-priority[]" value="{{ $DMI->priorityOrder }}" required/>
+	        				<input type="number" min="0" name="dmi-priority[]" value="{{ $DMI->priorityOrder }}" required/>
 						</div>
 	        		</div>
 	        		@endforeach

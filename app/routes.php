@@ -103,15 +103,21 @@ Route::post("app/module-edit", "ApplicationController@modifyAppModuleSubmit");
 
 Route::post("app/module-delete", "ApplicationController@deleteAppModule");
 
-Route::get("app/interface-create", "ApplicationController@createAppInterfaceView");
+Route::get("app/interface", "ApplicationController@createAppInterfaceView");
 
 Route::post("app/interface-create", "ApplicationController@createAppInterfaceSubmit");
 
-Route::get("app/deployment-create", "ApplicationController@createAppDeploymentView");
+Route::post("app/interface-edit", "ApplicationController@editAppInterfaceSubmit");
+
+Route::post("app/interface-delete", "ApplicationController@deleteAppInterface");
+
+Route::get("app/deployment", "ApplicationController@createAppDeploymentView");
 
 Route::post("app/deployment-create", "ApplicationController@createAppDeploymentSubmit");
 
-
+Route::get("airavata/down", function(){
+	return View::make("server-down");
+});
 /*
  * Test Routes.
 */

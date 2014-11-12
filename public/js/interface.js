@@ -1,50 +1,49 @@
 $(document).ready( function(){
 
+	//show interface options on hovering on it
+	$(".panel-title").hover( 
+		function(){
+			$(this).find(".interface-options").addClass("in");
+		},
+		function(){
+			$(this).find(".interface-options").removeClass("in");
+		}
+	);
 	// add new input fields block.
-	$(".app-interface-form-content").on( "click", ".add-input", function(){
+	$("body").on( "click", ".add-input", function(){
 		var appInputDiv = $('<div></div>');
 		appInputDiv.html( $(".app-input-block").html() );
-		appInputDiv.find("input[type=text]").val("");
-		appInputDiv.find("textarea").html("");
-		appInputDiv.find("input").removeAttr("readonly");
-    	appInputDiv.find("textarea").removeAttr("readonly");
-    	appInputDiv.find("select").removeAttr("readonly");
-    	appInputDiv.find(".hide").removeClass("hide");
+		clearInputs( appInputDiv);
 		$(".app-inputs").append(  appInputDiv );
 	});
 
 	// add new output fields block.
-	$(".app-interface-form-content").on( "click", ".add-output", function(){
+	$("body").on( "click", ".add-output", function(){
 		var appOutputDiv = $('<div></div>');
 		appOutputDiv.html( $(".app-output-block").html() );
-		appOutputDiv.find("input[type=text]").val("");
-		appOutputDiv.find("textarea").html("");
-		appOutputDiv.find("input").removeAttr("readonly");
-    	appOutputDiv.find("textarea").removeAttr("readonly");
-    	appOutputDiv.find("select").removeAttr("readonly");
-    	appOutputDiv.find(".hide").removeClass("hide");
+		clearInputs( appOutputDiv);
 		$(".app-outputs").append( appOutputDiv );
 	});
 
 	// remove an input fields block
-	$(".app-interface-form-content").on("click", ".remove-input-space", function(){
+	$("body").on("click", ".remove-input-space", function(){
 		$(this).parent().remove();
 	});
 
-	$(".app-interface-form-content").on("click", ".remove-input-space", function(){
+	$("body").on("click", ".remove-input-space", function(){
 		$(this).parent().remove();
 	});
 
 	// remove an output fields block
-	$(".app-interface-form-content").on("click", ".remove-output-space", function(){
+	$("body").on("click", ".remove-output-space", function(){
 		$(this).parent().remove();
 	});
 
-	$(".app-interface-form-content").on("click", ".add-app-module", function(){
+	$("body").on("click", ".add-app-module", function(){
 		$(this).parent().children(".app-modules").append( $(".app-module-block").html() );
 	});
 
-	$(".app-interface-form-content").on("click", ".app-modules", function(){
+	$("body").on("click", ".remove-app-module", function(){
 		$(this).parent().remove();
 	});
 
@@ -67,11 +66,33 @@ $(document).ready( function(){
     $(".edit-app-interface").click( function(){
     	var appInterfaceContent = $("<div></div>");
     	appInterfaceContent.html( $(this).parent().parent().parent().parent().find(".app-interface-block").html());
-    	appInterfaceContent.find("input").removeAttr("readonly");
-    	appInterfaceContent.find("textarea").removeAttr("readonly");
-    	appInterfaceContent.find("select").removeAttr("readonly");
-    	appInterfaceContent.find(".hide").removeClass("hide");
+    	clearInputs( appInterfaceContent, true);
 
     	$(".app-interface-form-content").html( appInterfaceContent.html() );
     });
+
+    $(".create-app-interface").click( function(){
+    	clearInputs( $(".create-app-interface-block"));
+    	$("#create-app-interface-block").modal("show");
+
+    });
+
+    $(".delete-app-interface").click( function(){
+        	var interfaceId = $(this).data("interface-id");
+        	$(".delete-interface-name").html( $(this).parent().parent().find(".interface-name").html() );
+        	$(".delete-interfaceid").val( interfaceId )
+        });
 });
+
+function clearInputs( elem, removeJustReadOnly){
+
+	if( !removeJustReadOnly)
+	{
+		elem.find("input").val("");
+		elem.find("textarea").html("");
+	}
+	elem.find("input").removeAttr("readonly");
+	elem.find("textarea").removeAttr("readonly");
+	elem.find("select").removeAttr("readonly");
+	elem.find(".hide").removeClass("hide");
+}

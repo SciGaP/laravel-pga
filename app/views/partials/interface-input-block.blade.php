@@ -3,11 +3,11 @@
 	<h4>App Input Fields</h4>
 	<div class="form-group required">
 		<label class="control-label">Name</label>
-		<input type="text" readonly class="form-control" name="inputName[]" required value="@if( isset( $appInputs) ) {{ $appInputs->name }} @endif"/>
+		<input type="text" readonly class="form-control" name="inputName[]" required value="@if( isset( $appInputs) ){{$appInputs->name}}@endif"/>
 	</div>
 	<div class="form-group">
 		<label class="control-label">Value</label>
-		<input type="text" readonly class="form-control" name="inputValue[]" value="@if( isset( $appInputs) ) {{ $appInputs->value }} @endif"/>
+		<input type="text" readonly class="form-control" name="inputValue[]" value="@if( isset( $appInputs)){{$appInputs->value}}@endif"/>
 	</div>
 	<div class="form-group">
 		<label class="control-label">Type</label>
@@ -19,7 +19,7 @@
 	</div>
 	<div class="form-group">
 		<label class="control-label">Application Argument</label>
-		<input type="text" readonly class="form-control" name="applicationArgument[]" value="@if( isset( $appInputs) ){{ $appInputs->applicationArgument }} @endif"/>
+		<input type="text" readonly class="form-control" name="applicationArgument[]" value="@if( isset( $appInputs) ){{$appInputs->applicationArgument }}@endif"/>
 	</div>
 	<div class="form-group">
 		<label class="control-label">Standard Input</label>
@@ -30,10 +30,10 @@
 	</div>
 	<div class="form-group">
 		<label class="control-label">User Friendly Description</label>
-		<textarea readonly class="form-control" name="userFriendlyDescription[]">@if( isset( $appInputs) ) {{ $appInputs->userFriendlyDescription }} @endif</textarea>
+		<textarea readonly class="form-control" name="userFriendlyDescription[]">@if( isset( $appInputs) ){{$appInputs->userFriendlyDescription}}@endif</textarea>
 	</div>
 	<div class="form-group">
 		<label class="control-label">Meta Data</label>
-		<textarea readonly class="form-control" name="metaData[]">@if( isset( $appInputs) ) {{ $appInputs->metaData }} @endif</textarea>
+		<textarea readonly class="form-control" name="metaData[]">@if( isset( $appInputs) ){{$appInputs->metaData}}@endif</textarea>
 	</div>
 </div>
