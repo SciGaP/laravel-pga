@@ -70,7 +70,7 @@ private static $experimentPath;
 function __construct(){
 	$this->sshUser = "root";
 	$this->hostName = $_SERVER['SERVER_NAME'];
-	self::$pathConstant = 'file://'.$this->sshUser.'@'.$this->hostName.'://var/www/html/experimentData/';
+	self::$pathConstant = 'file://'.$this->sshUser.'@'.$this->hostName.':/home/pga/production/experimentData/';
 	self::$experimentPath = null;
 }
 
