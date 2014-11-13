@@ -203,6 +203,21 @@ final class CorrectiveAction {
   );
 }
 
+final class DataType {
+  const STRING = 0;
+  const INTEGER = 1;
+  const URI = 2;
+  const STDOUT = 3;
+  const STDERR = 4;
+  static public $__names = array(
+    0 => 'STRING',
+    1 => 'INTEGER',
+    2 => 'URI',
+    3 => 'STDOUT',
+    4 => 'STDERR',
+  );
+}
+
 final class ExecutionUnit {
   const INPUT = 0;
   const APPLICATION = 1;
@@ -759,6 +774,138 @@ class ApplicationStatus {
     if ($this->timeOfStateChange !== null) {
       $xfer += $output->writeFieldBegin('timeOfStateChange', TType::I64, 2);
       $xfer += $output->writeI64($this->timeOfStateChange);
+      $xfer += $output->writeFieldEnd();
+    }
+    $xfer += $output->writeFieldStop();
+    $xfer += $output->writeStructEnd();
+    return $xfer;
+  }
+
+}
+
+class DataObjectType {
+  static $_TSPEC;
+
+  public $key = null;
+  public $value = null;
+  public $type = null;
+  public $metaData = null;
+
+  public function __construct($vals=null) {
+    if (!isset(self::$_TSPEC)) {
+      self::$_TSPEC = array(
+        1 => array(
+          'var' => 'key',
+          'type' => TType::STRING,
+          ),
+        2 => array(
+          'var' => 'value',
+          'type' => TType::STRING,
+          ),
+        3 => array(
+          'var' => 'type',
+          'type' => TType::I32,
+          ),
+        4 => array(
+          'var' => 'metaData',
+          'type' => TType::STRING,
+          ),
+        );
+    }
+    if (is_array($vals)) {
+      if (isset($vals['key'])) {
+        $this->key = $vals['key'];
+      }
+      if (isset($vals['value'])) {
+        $this->value = $vals['value'];
+      }
+      if (isset($vals['type'])) {
+        $this->type = $vals['type'];
+      }
+      if (isset($vals['metaData'])) {
+        $this->metaData = $vals['metaData'];
+      }
+    }
+  }
+
+  public function getName() {
+    return 'DataObjectType';
+  }
+
+  public function read($input)
+  {
+    $xfer = 0;
+    $fname = null;
+    $ftype = 0;
+    $fid = 0;
+    $xfer += $input->readStructBegin($fname);
+    while (true)
+    {
+      $xfer += $input->readFieldBegin($fname, $ftype, $fid);
+      if ($ftype == TType::STOP) {
+        break;
+      }
+      switch ($fid)
+      {
+        case 1:
+          if ($ftype == TType::STRING) {
+            $xfer += $input->readString($this->key);
+          } else {
+            $xfer += $input->skip($ftype);
+          }
+          break;
+        case 2:
+          if ($ftype == TType::STRING) {
+            $xfer += $input->readString($this->value);
+          } else {
+            $xfer += $input->skip($ftype);
+          }
+          break;
+        case 3:
+          if ($ftype == TType::I32) {
+            $xfer += $input->readI32($this->type);
+          } else {
+            $xfer += $input->skip($ftype);
+          }
+          break;
+        case 4:
+          if ($ftype == TType::STRING) {
+            $xfer += $input->readString($this->metaData);
+          } else {
+            $xfer += $input->skip($ftype);
+          }
+          break;
+        default:
+          $xfer += $input->skip($ftype);
+          break;
+      }
+      $xfer += $input->readFieldEnd();
+    }
+    $xfer += $input->readStructEnd();
+    return $xfer;
+  }
+
+  public function write($output) {
+    $xfer = 0;
+    $xfer += $output->writeStructBegin('DataObjectType');
+    if ($this->key !== null) {
+      $xfer += $output->writeFieldBegin('key', TType::STRING, 1);
+      $xfer += $output->writeString($this->key);
+      $xfer += $output->writeFieldEnd();
+    }
+    if ($this->value !== null) {
+      $xfer += $output->writeFieldBegin('value', TType::STRING, 2);
+      $xfer += $output->writeString($this->value);
+      $xfer += $output->writeFieldEnd();
+    }
+    if ($this->type !== null) {
+      $xfer += $output->writeFieldBegin('type', TType::I32, 3);
+      $xfer += $output->writeI32($this->type);
+      $xfer += $output->writeFieldEnd();
+    }
+    if ($this->metaData !== null) {
+      $xfer += $output->writeFieldBegin('metaData', TType::STRING, 4);
+      $xfer += $output->writeString($this->metaData);
       $xfer += $output->writeFieldEnd();
     }
     $xfer += $output->writeFieldStop();
@@ -2280,7 +2427,7 @@ class TaskDetails {
           'etype' => TType::STRUCT,
           'elem' => array(
             'type' => TType::STRUCT,
-            'class' => '\Airavata\Model\AppCatalog\AppInterface\InputDataObjectType',
+            'class' => '\Airavata\Model\Workspace\Experiment\DataObjectType',
             ),
           ),
         7 => array(
@@ -2289,7 +2436,7 @@ class TaskDetails {
           'etype' => TType::STRUCT,
           'elem' => array(
             'type' => TType::STRUCT,
-            'class' => '\Airavata\Model\AppCatalog\AppInterface\OutputDataObjectType',
+            'class' => '\Airavata\Model\Workspace\Experiment\DataObjectType',
             ),
           ),
         8 => array(
@@ -2450,7 +2597,7 @@ class TaskDetails {
             for ($_i18 = 0; $_i18 < $_size14; ++$_i18)
             {
               $elem19 = null;
-              $elem19 = new \Airavata\Model\AppCatalog\AppInterface\InputDataObjectType();
+              $elem19 = new \Airavata\Model\Workspace\Experiment\DataObjectType();
               $xfer += $elem19->read($input);
               $this->applicationInputs []= $elem19;
             }
@@ -2468,7 +2615,7 @@ class TaskDetails {
             for ($_i24 = 0; $_i24 < $_size20; ++$_i24)
             {
               $elem25 = null;
-              $elem25 = new \Airavata\Model\AppCatalog\AppInterface\OutputDataObjectType();
+              $elem25 = new \Airavata\Model\Workspace\Experiment\DataObjectType();
               $xfer += $elem25->read($input);
               $this->applicationOutputs []= $elem25;
             }
@@ -2768,7 +2915,7 @@ class WorkflowNodeDetails {
           'etype' => TType::STRUCT,
           'elem' => array(
             'type' => TType::STRUCT,
-            'class' => '\Airavata\Model\AppCatalog\AppInterface\InputDataObjectType',
+            'class' => '\Airavata\Model\Workspace\Experiment\DataObjectType',
             ),
           ),
         7 => array(
@@ -2777,7 +2924,7 @@ class WorkflowNodeDetails {
           'etype' => TType::STRUCT,
           'elem' => array(
             'type' => TType::STRUCT,
-            'class' => '\Airavata\Model\AppCatalog\AppInterface\OutputDataObjectType',
+            'class' => '\Airavata\Model\Workspace\Experiment\DataObjectType',
             ),
           ),
         8 => array(
@@ -2902,7 +3049,7 @@ class WorkflowNodeDetails {
             for ($_i53 = 0; $_i53 < $_size49; ++$_i53)
             {
               $elem54 = null;
-              $elem54 = new \Airavata\Model\AppCatalog\AppInterface\InputDataObjectType();
+              $elem54 = new \Airavata\Model\Workspace\Experiment\DataObjectType();
               $xfer += $elem54->read($input);
               $this->nodeInputs []= $elem54;
             }
@@ -2920,7 +3067,7 @@ class WorkflowNodeDetails {
             for ($_i59 = 0; $_i59 < $_size55; ++$_i59)
             {
               $elem60 = null;
-              $elem60 = new \Airavata\Model\AppCatalog\AppInterface\OutputDataObjectType();
+              $elem60 = new \Airavata\Model\Workspace\Experiment\DataObjectType();
               $xfer += $elem60->read($input);
               $this->nodeOutputs []= $elem60;
             }
@@ -3386,7 +3533,7 @@ class Experiment {
           'etype' => TType::STRUCT,
           'elem' => array(
             'type' => TType::STRUCT,
-            'class' => '\Airavata\Model\AppCatalog\AppInterface\InputDataObjectType',
+            'class' => '\Airavata\Model\Workspace\Experiment\DataObjectType',
             ),
           ),
         14 => array(
@@ -3395,7 +3542,7 @@ class Experiment {
           'etype' => TType::STRUCT,
           'elem' => array(
             'type' => TType::STRUCT,
-            'class' => '\Airavata\Model\AppCatalog\AppInterface\OutputDataObjectType',
+            'class' => '\Airavata\Model\Workspace\Experiment\DataObjectType',
             ),
           ),
         15 => array(
@@ -3603,7 +3750,7 @@ class Experiment {
             for ($_i88 = 0; $_i88 < $_size84; ++$_i88)
             {
               $elem89 = null;
-              $elem89 = new \Airavata\Model\AppCatalog\AppInterface\InputDataObjectType();
+              $elem89 = new \Airavata\Model\Workspace\Experiment\DataObjectType();
               $xfer += $elem89->read($input);
               $this->experimentInputs []= $elem89;
             }
@@ -3621,7 +3768,7 @@ class Experiment {
             for ($_i94 = 0; $_i94 < $_size90; ++$_i94)
             {
               $elem95 = null;
-              $elem95 = new \Airavata\Model\AppCatalog\AppInterface\OutputDataObjectType();
+              $elem95 = new \Airavata\Model\Workspace\Experiment\DataObjectType();
               $xfer += $elem95->read($input);
               $this->experimentOutputs []= $elem95;
             }
