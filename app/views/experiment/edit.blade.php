@@ -14,7 +14,7 @@
 ?>
 
 
-<div class="container" style="max-width: 750px;">
+<div class="container">
 
 <h1>Edit Experiment</h1>
 
@@ -132,7 +132,6 @@
             <input name="save" type="submit" class="btn btn-primary" value="Save" <?php if(!$expVal['editable']) echo 'disabled'  ?>>
             <input name="launch" type="submit" class="btn btn-success" value="Save and launch" <?php if(!$expVal['editable']) echo 'disabled'  ?>>
         </div>
-        <input name="clear" type="reset" class="btn btn-default" value="Reset values">
     </div>
 
 

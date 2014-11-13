@@ -799,12 +799,8 @@ public static function assemble_experiment()
     //$scheduling->totalPhysicalMemory = $_POST['memory'];
     $scheduling->resourceHostId = $_POST['compute-resource'];
 
-
-
     $userConfigData = new UserConfigurationData();
     $userConfigData->computationalResourceScheduling = $scheduling;
-
-
 
     $applicationInputs = Utilities::get_application_inputs($_POST['application']);
     $experimentInputs = Utilities::process_inputs($applicationInputs, $experimentInputs);
@@ -835,16 +831,6 @@ public static function assemble_experiment()
         $experimentOutputs[] = $experimentOutput;
     }
     */
-
-
-
-
-
-
-
-
-
-
     $experiment = new Experiment();
 
     // required

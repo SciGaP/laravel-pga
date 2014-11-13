@@ -175,6 +175,6 @@ class AppUtilities{
 
 	public static function getAllModules(){
 		$airavataclient = Utilities::get_airavata_client();
-		return $airavataclient->getAllModules();
+		return $airavataclient->getAllAppModules();
 	}
 }
