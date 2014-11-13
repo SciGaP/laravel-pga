@@ -19,7 +19,7 @@ use Airavata\Model\Workspace\Experiment\DataObjectType;
 use Airavata\Model\Workspace\Experiment\UserConfigurationData;
 use Airavata\Model\Workspace\Experiment\AdvancedOutputDataHandling;
 use Airavata\Model\Workspace\Experiment\Experiment;
-use Airavata\Model\AppCatalog\AppInterface\DataType;
+use Airavata\Model\Workspace\Experiment\DataType;
 use Airavata\Model\Workspace\Project;
 use Airavata\Model\Workspace\Experiment\ExperimentState;
 use Airavata\Model\Workspace\Experiment\JobState;
@@ -1817,7 +1817,6 @@ public static function create_experiment()
 public static function list_output_files($experiment)
 {
     $experimentOutputs = $experiment->experimentOutputs;
-    //var_dump($experimentOutputs);
 
     foreach ($experimentOutputs as $output)
     {
@@ -1825,7 +1824,7 @@ public static function list_output_files($experiment)
         {
             //echo '<p>' . $output->key .  ': <a href="' . $output->value . '">' . $output->value . '</a></p>';
             echo '<p><a target="_blank"
-                        href="' . str_replace(EXPERIMENT_DATA_ROOT_ABSOLUTE, base_path() . EXPERIMENT_DATA_ROOT, $output->value) . '">' .
+                        href="' . str_replace(Utilities::EXPERIMENT_DATA_ROOT_ABSOLUTE, base_path() . Utilities::EXPERIMENT_DATA_ROOT, $output->value) . '">' .
                         $output->key . ' <span class="glyphicon glyphicon-new-window"></span></a></p>';
         }
         elseif ($output->type == DataType::STRING)
