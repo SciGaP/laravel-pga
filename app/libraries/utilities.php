@@ -1390,35 +1390,77 @@ public static function create_inputs($id, $isRequired)
  */
 public static function create_nav_bar()
 {
-    $menus = array
-    (
-        'Project' => array
-        (
-            array('label' => 'Create Project', 'url' => URL::to('/') . '/project/create'),
-            array('label' => 'Search Projects', 'url' => URL::to('/') . '/project/search')
-        ),
-        'Experiment' => array
-        (
-            array('label' => 'Create Experiment', 'url' => URL::to('/') . '/experiment/create'),
-            array('label' => 'Search Experiments', 'url' => URL::to('/') . '/experiment/search')
-        ),
-        'Compute Resource' => array
-        (
-            array('label' => 'Register', 'url' => URL::to('/') . '/cr/create'),
-            array('label' => 'Browse', 'url' => URL::to('/') . '/cr/browse')
-        ),
-        'App Catalog' => array
-        (
-            array('label' => 'Module', 'url' => URL::to('/') . '/app/module'),
-            array('label' => 'Interface', 'url' => URL::to('/') . '/app/interface'),
-            array('label' => 'Deployment', 'url' => URL::to('/') . '/app/deployment')
-        ),
-        'Help' => array
-        (
-            array('label' => 'Report Issue', 'url' => '#'),
-            array('label' => 'Request Feature', 'url' => '#')
-        )
-    );
+	$menus = array();
+/*
+	if( Session::has('loggedin'))
+	{
+	    $menus = array
+	    (
+	        'Project' => array
+	        (
+	            array('label' => 'Create Project', 'url' => URL::to('/') . '/project/create'),
+	            array('label' => 'Search Projects', 'url' => URL::to('/') . '/project/search')
+	        ),
+	        'Experiment' => array
+	        (
+	            array('label' => 'Create Experiment', 'url' => URL::to('/') . '/experiment/create'),
+	            array('label' => 'Search Experiments', 'url' => URL::to('/') . '/experiment/search')
+	        ),
+	        'Compute Resource' => array
+	        (
+	            array('label' => 'Register', 'url' => URL::to('/') . '/cr/create'),
+	            array('label' => 'Browse', 'url' => URL::to('/') . '/cr/browse')
+	        ),
+	        'App Catalog' => array
+	        (
+	            array('label' => 'Module', 'url' => URL::to('/') . '/app/module'),
+	            array('label' => 'Interface', 'url' => URL::to('/') . '/app/interface'),
+	            array('label' => 'Deployment', 'url' => URL::to('/') . '/app/deployment')
+	        ),
+	        'Help' => array
+	        (
+	            array('label' => 'Report Issue', 'url' => '#'),
+	            array('label' => 'Request Feature', 'url' => '#')
+	        )
+	    );
+	}
+*/
+	if( Session::has('loggedin'))
+	{
+	    $menus = array
+	    (
+	        'Project' => array
+	        (
+	            array('label' => 'Create Project', 'url' => URL::to('/') . '/project/create'),
+	            array('label' => 'Search Projects', 'url' => URL::to('/') . '/project/search')
+	        ),
+	        'Experiment' => array
+	        (
+	            array('label' => 'Create Experiment', 'url' => URL::to('/') . '/experiment/create'),
+	            array('label' => 'Search Experiments', 'url' => URL::to('/') . '/experiment/search')
+	        )
+	    );
+
+	    if( Session::get("username") == USER::ADMIN_USERNAME)
+	    {
+	    	$menus['Compute Resource'] = array
+	        (
+	            array('label' => 'Register', 'url' => URL::to('/') . '/cr/create'),
+	            array('label' => 'Browse', 'url' => URL::to('/') . '/cr/browse')
+	        );
+	        $menus['App Catalog'] = array
+	        (
+	            array('label' => 'Module', 'url' => URL::to('/') . '/app/module'),
+	            array('label' => 'Interface', 'url' => URL::to('/') . '/app/interface'),
+	            array('label' => 'Deployment', 'url' => URL::to('/') . '/app/deployment')
+	        );
+	        $menus['Help'] = array
+	        (
+	            array('label' => 'Report Issue', 'url' => '#'),
+	            array('label' => 'Request Feature', 'url' => '#')
+	        );
+	    }
+	}
 
     $selfExplode = explode('/', $_SERVER['PHP_SELF']);
 
@@ -1452,14 +1494,17 @@ public static function create_nav_bar()
                 <a href="#" class="dropdown-toggle" data-toggle="dropdown">' . $label . '<span class="caret"></span></a>
                 <ul class="dropdown-menu" role="menu">';
 
-        foreach ($options as $option)
+        if( Session::has('loggedin'))
         {
-            $id = strtolower(str_replace(' ', '-', $option['label']));
+	        foreach ($options as $option)
+	        {
+	            $id = strtolower(str_replace(' ', '-', $option['label']));
 
-            $option['url'] == $selfExplode[2]? $active = ' class="active"' : $active = '';
+	            $option['url'] == $selfExplode[2]? $active = ' class="active"' : $active = '';
 
-            echo '<li' . $active . $disabled . '><a href="' . $option['url'] . '" id=' . $id . '>' . $option['label'] . '</a></li>';
-        }
+	            echo '<li' . $active . $disabled . '><a href="' . $option['url'] . '" id=' . $id . '>' . $option['label'] . '</a></li>';
+	        }
+	    }
 
         echo '</ul>
         </li>';
