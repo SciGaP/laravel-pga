@@ -1431,33 +1431,33 @@ public static function create_nav_bar()
 	    (
 	        'Project' => array
 	        (
-	            array('label' => 'Create Project', 'url' => URL::to('/') . '/project/create'),
-	            array('label' => 'Search Projects', 'url' => URL::to('/') . '/project/search')
+	            array('label' => 'Create Project', 'url' => URL::to('/') . '/project/create', "nav-active" => "project"),
+	            array('label' => 'Search Projects', 'url' => URL::to('/') . '/project/search', "nav-active"=> "project")
 	        ),
 	        'Experiment' => array
 	        (
-	            array('label' => 'Create Experiment', 'url' => URL::to('/') . '/experiment/create'),
-	            array('label' => 'Search Experiments', 'url' => URL::to('/') . '/experiment/search')
+	            array('label' => 'Create Experiment', 'url' => URL::to('/') . '/experiment/create', "nav-active" => "experiment"),
+	            array('label' => 'Search Experiments', 'url' => URL::to('/') . '/experiment/search', "nav-active" => "experiment")
 	        )
 	    );
 
-	    if( Session::get("username") == USER::ADMIN_USERNAME)
+	    if( Session::get("username") == User::ADMIN_USERNAME)
 	    {
 	    	$menus['Compute Resource'] = array
 	        (
-	            array('label' => 'Register', 'url' => URL::to('/') . '/cr/create'),
-	            array('label' => 'Browse', 'url' => URL::to('/') . '/cr/browse')
+	            array('label' => 'Register', 'url' => URL::to('/') . '/cr/create', "nav-active" => "compute-resource"),
+	            array('label' => 'Browse', 'url' => URL::to('/') . '/cr/browse', "nav-active" => "compute-resource")
 	        );
 	        $menus['App Catalog'] = array
 	        (
-	            array('label' => 'Module', 'url' => URL::to('/') . '/app/module'),
-	            array('label' => 'Interface', 'url' => URL::to('/') . '/app/interface'),
-	            array('label' => 'Deployment', 'url' => URL::to('/') . '/app/deployment')
+	            array('label' => 'Module', 'url' => URL::to('/') . '/app/module', "nav-active" => "app-catalog"),
+	            array('label' => 'Interface', 'url' => URL::to('/') . '/app/interface', "nav-active" => "app-catalog"),
+	            array('label' => 'Deployment', 'url' => URL::to('/') . '/app/deployment', "nav-active" => "app-catalog")
 	        );
 	        $menus['Help'] = array
 	        (
-	            array('label' => 'Report Issue', 'url' => '#'),
-	            array('label' => 'Request Feature', 'url' => '#')
+	            array('label' => 'Report Issue', 'url' => '#', "nav-active", ""),
+	            array('label' => 'Request Feature', 'url' => '#', "nav-active", "")
 	        );
 	    }
 	}
@@ -1490,7 +1490,13 @@ public static function create_nav_bar()
     {
         Session::has('loggedin') ? $disabled = '' : $disabled = ' class="disabled"';
 
-        echo '<li class="dropdown">
+        $active = "";
+        if( Session::has("nav-active") && isset( $options[0]['nav-active'] ) )
+        {
+	        if( $options[0]['nav-active'] == Session::get("nav-active"))
+	        	$active = " active ";
+        }
+        echo '<li class="dropdown ' . $active . '">
                 <a href="#" class="dropdown-toggle" data-toggle="dropdown">' . $label . '<span class="caret"></span></a>
                 <ul class="dropdown-menu" role="menu">';
 
@@ -1500,9 +1506,7 @@ public static function create_nav_bar()
 	        {
 	            $id = strtolower(str_replace(' ', '-', $option['label']));
 
-	            $option['url'] == $selfExplode[2]? $active = ' class="active"' : $active = '';
-
-	            echo '<li' . $active . $disabled . '><a href="' . $option['url'] . '" id=' . $id . '>' . $option['label'] . '</a></li>';
+	            echo '<li' . $disabled . '><a href="' . $option['url'] . '" id=' . $id . '>' . $option['label'] . '</a></li>';
 	        }
 	    }
 

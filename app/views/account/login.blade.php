@@ -6,7 +6,7 @@
 
 @section('content')
 
-    <div class="container" style="max-width: 330px;">
+    <div class="col-md-offset-4 col-md-4">
 
         <h3>
             Login

@@ -5,6 +5,7 @@ class ApplicationController extends BaseController {
 	public function __construct()
 	{
 		$this->beforeFilter('verifyadmin');
+		Session::put("nav-active", "app-catalog");
 	}
 
 	public function showAppModuleView()

@@ -9,6 +9,8 @@ class ProjectController extends BaseController {
 	public function __construct()
 	{
 		$this->beforeFilter('verifylogin');
+		Session::put("nav-active", "project");
+
 	}
 
 	public function createView()

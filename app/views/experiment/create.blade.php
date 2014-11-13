@@ -5,7 +5,7 @@
 @stop
 
 @section('content')
-<div class="container" style="max-width: 750px;">
+<div class="col-md-offset-3 col-md-6">
     
 <h1>Create a new experiment</h1>
 

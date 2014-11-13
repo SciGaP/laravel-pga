@@ -6,7 +6,7 @@
 
 @section('content')
 
-<div class="container" style="width: 500px">
+<div class="col-md-offset-4 col-md-4">
     <div class="page-header">
         <h3>Create New Account
             <small>

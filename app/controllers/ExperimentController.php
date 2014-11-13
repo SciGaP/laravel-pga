@@ -9,6 +9,7 @@ class ExperimentController extends BaseController {
 	public function __construct()
 	{
 		$this->beforeFilter('verifylogin');
+		Session::put("nav-active", "experiment");
 	}
 
 	public function createView()
