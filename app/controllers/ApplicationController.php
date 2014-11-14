@@ -71,7 +71,7 @@ class ApplicationController extends BaseController {
 			$appInterfaceValues = Input::all();
 			//var_dump( $appInterfaceValues); exit;
 			AppUtilities::create_or_update_appInterface( $appInterfaceValues, $update);
-			$message = "Application Interface has been updated";
+			$message = "Application Interface has been updated!";
 		}
 		else
 		{
@@ -92,7 +92,6 @@ class ApplicationController extends BaseController {
 
 	}
 
-
 	public function createAppDeploymentView()
 	{
 		$data = array();
@@ -104,10 +103,36 @@ class ApplicationController extends BaseController {
 	{
 		$appDeploymentValues = Input::all();
 		AppUtilities::create_or_update_appDeployment( $appDeploymentValues );
-		print_r( "Object has been created");
-
+		return Redirect::to("app/deployment")->with("message", "App Deployment was created successfully!");
 	}
 
+	public function editAppDeploymentSubmit()
+	{
+		if( Input::has("app-deployment-id"))
+		{
+			$update = true;
+			$appDeploymentValues = Input::all();
+
+			AppUtilities::create_or_update_appDeployment( $appDeploymentValues, $update);
+			$messafe = "Application Deployment has been updated!";
+		}
+		else
+		{
+			$message = "An error has occurred. Please report the issue.";
+		}
+		return Redirect::to( "app/deployment")->with("message", $message);
+	}
+
+	public function deleteAppDeployment()
+	{
+		if( AppUtilities::deleteAppDeployment( Input::get("appDeploymentId") ) )
+			$message = "Deployment has been deleted successfully!";
+		else
+			$message = "An error has occurred. Please report the issue.";
+
+		return Redirect::to("app/deployment")->with("message", $message);
+
+	}
 
 }
 

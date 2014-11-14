@@ -1,4 +1,6 @@
-<input type="hidden" name="app-interface-id" value="@if( isset( $interface) ){{$interface->applicationInterfaceId}}@endif"/>
+@if( isset( $interface) )
+	<input type="hidden" name="app-interface-id" value="{{$interface->applicationInterfaceId}}"/>
+@endif
 <div class="appInterfaceInputs">
 	<div class="form-group required">
 		<label class="control-label">Application Name</label>
@@ -34,7 +36,7 @@
 			@endforeach
 		@endif
 		@endif
-		<input type="button" readonly class=" hide btn btn-default add-input" value="Add Application Input"/>
+		<button type="button" readonly class=" hide btn btn-default add-input">Add Application Input</button>
 		<div class="app-inputs"></div>
 	</div>
 	<div class="form-group">
@@ -45,7 +47,7 @@
 			@endforeach
 		@endif
 		@endif
-		<input type="button" class=" hide btn btn-default add-output" value="Add Application Output"/>
+		<button type="button" class=" hide btn btn-default add-output">Add Application Output</button>
 		<div class="app-outputs"></div>
 	</div>
 </div>

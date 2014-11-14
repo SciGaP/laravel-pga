@@ -7,7 +7,7 @@
 		<label class="control-label">Name</label>
 		<input type="text" readonly class="form-control" name="outputName[]" required value="@if( isset( $appOutputs) ) {{ $appOutputs->name }} @endif"/>
 	</div>
-	<div class="form-group required">
+	<div class="form-group">
 		<label class="control-label">Value</label>
 		<input type="text" readonly class="form-control" name="outputValue[]" value="@if( isset( $appOutputs) ) {{ $appOutputs->value }} @endif"/>
 	</div>

@@ -115,6 +115,10 @@ Route::get("app/deployment", "ApplicationController@createAppDeploymentView");
 
 Route::post("app/deployment-create", "ApplicationController@createAppDeploymentSubmit");
 
+Route::post("app/deployment-edit", "ApplicationController@editAppDeploymentSubmit");
+
+Route::post("app/deployment-delete", "ApplicationController@deleteAppDeployment");
+
 Route::get("airavata/down", function(){
 	return View::make("server-down");
 });

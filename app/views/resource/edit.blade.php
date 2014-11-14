@@ -525,7 +525,7 @@
 		<div class="dm-gridftp hide">
 			<div class="form-group required">
 				<label class="control-label">Grid FTP End Points</label>
-				<input class="form-control" maxlength="30" name="gridFTPEndPoints[]"/>
+				<input class="form-control" maxlength="30" name="gridFTPEndPoints[]" required/>
 				<button type="button" class="btn btn-sm btn-default add-gridFTPEndPoint">Add More Grid FTP End Points</button>
 			</div>
 		</div>

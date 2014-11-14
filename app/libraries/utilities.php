@@ -15,11 +15,11 @@ use Airavata\API\Error\AiravataClientException;
 use Airavata\API\Error\AiravataSystemException;
 use Airavata\API\Error\ExperimentNotFoundException;
 use Airavata\Model\Workspace\Experiment\ComputationalResourceScheduling;
-use Airavata\Model\Workspace\Experiment\DataObjectType;
+use Airavata\Model\AppCatalog\AppInterface\InputDataObjectType;
 use Airavata\Model\Workspace\Experiment\UserConfigurationData;
 use Airavata\Model\Workspace\Experiment\AdvancedOutputDataHandling;
 use Airavata\Model\Workspace\Experiment\Experiment;
-use Airavata\Model\Workspace\Experiment\DataType;
+use Airavata\Model\AppCatalog\AppInterface\DataType;
 use Airavata\Model\Workspace\Project;
 use Airavata\Model\Workspace\Experiment\ExperimentState;
 use Airavata\Model\Workspace\Experiment\JobState;
@@ -49,7 +49,7 @@ const EXPERIMENT_DATA_ROOT = '/../experimentData/';
 const SSH_USER = 'root';
 const DATA_PATH = 'file://home/pga/production/experimentData/';
 
-const EXPERIMENT_DATA_ROOT_ABSOLUTE = 'file://home/pga/production/experimentData/';
+const EXPERIMENT_DATA_ROOT_ABSOLUTE = '/home/pga/production/experimentData/';
 //const EXPERIMENT_DATA_ROOT_ABSOLUTE = 'C:/wamp/www/experimentData/';
 
 //const USER_STORE = 'WSO2','XML','USER_API';
@@ -584,7 +584,7 @@ public static function list_input_files($experiment)
         $matchingAppInput = null;
         foreach($applicationInputs as $applicationInput)
         {
-            if ($input->key == $applicationInput->name)
+            if ($input->name == $applicationInput->name)
             {
                 $matchingAppInput = $applicationInput;
             }
@@ -597,7 +597,7 @@ public static function list_input_files($experiment)
             //echo '<p><a href="' . $input->value . '">' . $input->key . '</a></p>';
             echo '<p><a target="_blank"
                         href="' . URL::to("/") . "/../.." . Utilities::EXPERIMENT_DATA_ROOT . $explode[sizeof($explode)-2] . '/' . $explode[sizeof($explode)-1] . '">' .
-                $input->key . '
+                $input->name . '
                 <span class="glyphicon glyphicon-new-window"></span></a></p>';
             //echo $input->value . '<br>';
             //echo str_replace(Utilities::EXPERIMENT_DATA_ROOT_ABSOLUTE, Utilities::EXPERIMENT_DATA_ROOT, $input->value) . '<br>';
@@ -893,8 +893,8 @@ public static function process_inputs($applicationInputs, $experimentInputs)
 
     foreach ($applicationInputs as $applicationInput)
     {
-        $experimentInput = new DataObjectType();
-        $experimentInput->key = $applicationInput->name;
+        $experimentInput = new InputDataObjectType();
+        $experimentInput->name = $applicationInput->name;
         $experimentInput->metaData = $applicationInput->metaData;
 
 
@@ -1817,8 +1817,6 @@ public static function create_experiment()
 public static function list_output_files($experiment)
 {
     $experimentOutputs = $experiment->experimentOutputs;
-    //var_dump( Utilities::EXPERIMENT_DATA_ROOT_ABSOLUTE); echo "<br/>";
-    //var_dump( $experimentOutputs); exit;
     foreach ($experimentOutputs as $output)
     {
         if ($output->type == DataType::URI)

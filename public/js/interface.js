@@ -77,6 +77,16 @@ $(document).ready( function(){
 
     });
 
+    $(".submit-create-app-interface-form, ").click( function(){
+    	console.log( $(this).parent().parent().find(".app-module-select").length);
+    	if( $(this).parent().find(".app-module-select").length)
+    	{
+    		$("#create-app-interface-form").submit();
+    	}
+    	else
+    		alert("An Application Interface requires minimum one Application Module.");
+    });
+
     $(".delete-app-interface").click( function(){
         	var interfaceId = $(this).data("interface-id");
         	$(".delete-interface-name").html( $(this).parent().parent().find(".interface-name").html() );

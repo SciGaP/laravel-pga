@@ -122,7 +122,8 @@ class AppUtilities{
 
 		$airavataclient = Utilities::get_airavata_client();
 
-		$appDeployments = array();//$airavataclient->getAllAppDeployments();
+		$appDeployments = $airavataclient->getAllApplicationDeployments();
+		//var_dump( $appDeployments); exit;
 		$computeResources = $airavataclient->getAllComputeResourceNames();
 		$modules = AppUtilities::getAllModules();
 		$apt = new ApplicationParallelismType();
@@ -135,7 +136,7 @@ class AppUtilities{
 					);
 	}
 
-	public static function create_or_update_appDeployment( $inputs){
+	public static function create_or_update_appDeployment( $inputs, $update = false){
 
 		$appDeploymentValues = $inputs;
 
@@ -167,10 +168,21 @@ class AppUtilities{
 		}
 
 		$appDeployment = new ApplicationDeploymentDescription(  $appDeploymentValues);
-		$appDeploymentId = $airavataclient->registerApplicationDeployment( $appDeployment);
+		if( $update)
+			$airavataclient->updateapplicationdeployment( $inputs["app-deployment-id"], $appDeployment);
+		else
+			$appDeploymentId = $airavataclient->registerApplicationDeployment( $appDeployment);
 
 		return;
 
+	}
+
+	public static function deleteAppDeployment( $appDeploymentId )
+	{
+
+		$airavataclient = Utilities::get_airavata_client();
+
+		return $airavataclient->deleteApplicationDeployment( $appDeploymentId);
 	}
 
 	public static function getAllModules(){
