@@ -6,7 +6,7 @@
 	</div>
 	<div class="form-group">
 		<label class="control-label">Application Description</label>
-		<input type="text" readonly class="form-control" name="applicationDescription" value="@if( isset( $interface) ){{ $interface->applicationDesription }} @endif" />
+		<input type="text" readonly class="form-control" name="applicationDescription" value="@if( isset( $interface) ){{ $interface->applicationDescription }} @endif" />
 	</div>
 	<div class="form-group">
 		<label class="control-label">Application Modules</label>

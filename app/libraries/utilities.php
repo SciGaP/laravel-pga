@@ -49,7 +49,7 @@ const EXPERIMENT_DATA_ROOT = '/../experimentData/';
 const SSH_USER = 'root';
 const DATA_PATH = 'file://home/pga/production/experimentData/';
 
-const EXPERIMENT_DATA_ROOT_ABSOLUTE = '/home/pga/production/experimentData/';
+const EXPERIMENT_DATA_ROOT_ABSOLUTE = 'file://home/pga/production/experimentData/';
 //const EXPERIMENT_DATA_ROOT_ABSOLUTE = 'C:/wamp/www/experimentData/';
 
 //const USER_STORE = 'WSO2','XML','USER_API';
@@ -1817,7 +1817,8 @@ public static function create_experiment()
 public static function list_output_files($experiment)
 {
     $experimentOutputs = $experiment->experimentOutputs;
-
+    //var_dump( Utilities::EXPERIMENT_DATA_ROOT_ABSOLUTE); echo "<br/>";
+    //var_dump( $experimentOutputs); exit;
     foreach ($experimentOutputs as $output)
     {
         if ($output->type == DataType::URI)

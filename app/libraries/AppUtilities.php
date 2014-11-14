@@ -68,7 +68,7 @@ class AppUtilities{
 		//var_dump( $appInterfaceValues); exit;
 		$appInterface = new ApplicationInterfaceDescription( array(
 																"applicationName" => $appInterfaceValues["applicationName"],
-																"applicationDesription" => $appInterfaceValues["applicationDescription"],
+																"applicationDescription" => $appInterfaceValues["applicationDescription"],
 																"applicationModules" => $appInterfaceValues["applicationModules"]
 															) ); 
 
