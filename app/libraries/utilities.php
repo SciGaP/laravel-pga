@@ -924,6 +924,7 @@ public static function process_inputs($applicationInputs, $experimentInputs)
                 if ($index >= 0)
                 {
                     $experimentInput->value = $experimentInputs[$index]->value;
+                    $experimentInput->type = $applicationInput->type;
                 }
             }
         }
