@@ -142,9 +142,9 @@ class AppUtilities{
 
 		$airavataclient = Utilities::get_airavata_client();
 
-		$appDeploymentValues["moduleLoadCmds"] = array_unique( array_filter( $appDeploymentValues["moduleLoadCmds"]));
+		if( isset( $appDeploymentValues["moduleLoadCmds"]))
+			$appDeploymentValues["moduleLoadCmds"] = array_unique( array_filter( $appDeploymentValues["moduleLoadCmds"]));
 
-		//var_dump( $appDeploymentValues); exit;
 		if( isset( $appDeploymentValues["libraryPrependPathName"] )) 
 		{	
 			$libPrependPathNames = array_unique( array_filter( $appDeploymentValues["libraryPrependPathName"],"trim" ));
