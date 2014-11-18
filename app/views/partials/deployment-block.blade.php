@@ -5,6 +5,7 @@
 </div>
 -->
 @if( isset( $deploymentObject) )
+	{{var_dump( $deploymentObject->executablePath) }}
 	<input type="hidden" name="app-deployment-id" value="{{$deploymentObject->appDeploymentId}}"/>
 @endif
 <div class="form-group required">
@@ -25,7 +26,7 @@
 </div>
 <div class="form-group required">
 	<label class="control-label">Application Executable Path</label>
-	<input type="text" class="form-control" name="executablePath" value="@if( isset( $deplyoment)){{$deploymentObject->executablePath}}@endif" required readonly/>
+	<input type="text" class="form-control" name="executablePath" value="@if( isset( $deploymentObject)){{$deploymentObject->executablePath}}@endif" required readonly/>
 </div>
 <div class="form-group required">
 	<label class="control-label">Application Parallelism Type</label>
