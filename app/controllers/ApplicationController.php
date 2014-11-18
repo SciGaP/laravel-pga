@@ -114,7 +114,7 @@ class ApplicationController extends BaseController {
 			$appDeploymentValues = Input::all();
 
 			AppUtilities::create_or_update_appDeployment( $appDeploymentValues, $update);
-			$messafe = "Application Deployment has been updated!";
+			$message = "Application Deployment has been updated!";
 		}
 		else
 		{
