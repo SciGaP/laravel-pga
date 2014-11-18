@@ -142,40 +142,53 @@ class AppUtilities{
 
 		$airavataclient = Utilities::get_airavata_client();
 
-		$libPrependPathNames = array_unique( array_filter( $appDeploymentValues["libraryPrependPathName"],"trim" ));
-		//print_r( $libPrependPathNames); exit;
-		foreach( $libPrependPathNames as $index => $prependName)
-		{
-			$envPath = new SetEnvPaths(array(
-											"name" => $prependName,
-											"value" => $appDeploymentValues["libraryPrependPathValue"][ $index]
-										));
-			$appDeploymentValues["libPrependPaths"][] = $envPath;
-		}
-		$libAppendPathNames = array_unique( array_filter( $appDeploymentValues["libraryAppendPathName"],"trim" ));
-		foreach( $libAppendPathNames as $index => $appendName)
-		{
-			$envPath = new SetEnvPaths(array(
-											"name" => $appendName,
-											"value" => $appDeploymentValues["libraryAppendPathValue"][ $index]
-										));
-			$appDeploymentValues["libAppendPaths"][] = $envPath;
+		$appDeploymentValues["moduleLoadCmds"] = array_unique( array_filter( $appDeploymentValues["moduleLoadCmds"]));
+
+		//var_dump( $appDeploymentValues); exit;
+		if( isset( $appDeploymentValues["libraryPrependPathName"] )) 
+		{	
+			$libPrependPathNames = array_unique( array_filter( $appDeploymentValues["libraryPrependPathName"],"trim" ));
+		
+			foreach( $libPrependPathNames as $index => $prependName)
+			{
+				$envPath = new SetEnvPaths(array(
+												"name" => $prependName,
+												"value" => $appDeploymentValues["libraryPrependPathValue"][ $index]
+											));
+				$appDeploymentValues["libPrependPaths"][] = $envPath;
+			}
 		}
 
-		$environmentNames = array_unique( array_filter( $appDeploymentValues["environmentName"], "trim"));
-		foreach( $environmentNames as $index => $envName)
+		if( isset( $appDeploymentValues["libraryAppendPathName"] )) 
 		{
-			$envPath = new SetEnvPaths(array(
-											"name" => $envName,
-											"value" => $appDeploymentValues["environmentValue"][$index]
-										));
-			$appDeploymentValues["setEnvironment"][] = $envPath;
+			$libAppendPathNames = array_unique( array_filter( $appDeploymentValues["libraryAppendPathName"],"trim" ));
+			foreach( $libAppendPathNames as $index => $appendName)
+			{
+				$envPath = new SetEnvPaths(array(
+												"name" => $appendName,
+												"value" => $appDeploymentValues["libraryAppendPathValue"][ $index]
+											));
+				$appDeploymentValues["libAppendPaths"][] = $envPath;
+			}
+		}
+
+		if( isset( $appDeploymentValues["environmentName"] )) 
+		{
+			$environmentNames = array_unique( array_filter( $appDeploymentValues["environmentName"], "trim"));
+			foreach( $environmentNames as $index => $envName)
+			{
+				$envPath = new SetEnvPaths(array(
+												"name" => $envName,
+												"value" => $appDeploymentValues["environmentValue"][$index]
+											));
+				$appDeploymentValues["setEnvironment"][] = $envPath;
+			}
 		}
 
 		//var_dump( $appDeploymentValues); exit;
 		$appDeployment = new ApplicationDeploymentDescription(  $appDeploymentValues);
 		if( $update)
-			$airavataclient->updateapplicationdeployment( $inputs["app-deployment-id"], $appDeployment);
+			$airavataclient->updateApplicationDeployment( $inputs["app-deployment-id"], $appDeployment);
 		else
 			$appDeploymentId = $airavataclient->registerApplicationDeployment( $appDeployment);
 

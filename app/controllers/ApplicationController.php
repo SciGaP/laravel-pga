@@ -96,6 +96,8 @@ class ApplicationController extends BaseController {
 	{
 		$data = array();
 		$data = AppUtilities::getAppDeploymentData();
+		//var_dump( $data); exit;
+
 		return View::make("application/deployment", $data);
 	}
 

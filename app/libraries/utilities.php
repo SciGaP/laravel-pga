@@ -611,7 +611,7 @@ public static function list_input_files($experiment)
         elseif ($matchingAppInput->type == DataType::STRING)
         {
             //$valueExplode = explode('=', $input->value);
-            echo '<p>' . $input->key . ': ' . $input->value . '</p>';
+            echo '<p>' . $input->name . ': ' . $input->value . '</p>';
         }
     }
 }
