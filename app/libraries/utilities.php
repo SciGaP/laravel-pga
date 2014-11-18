@@ -909,6 +909,8 @@ public static function process_inputs($applicationInputs, $experimentInputs)
             if (isset($_POST[$applicationInput->name]) && (trim($_POST[$applicationInput->name]) != ''))
             {
                 $experimentInput->value = $_POST[$applicationInput->name];
+                $experimentInput->type = $applicationInput->type;
+
             }
             else // use previous value
             {
@@ -966,6 +968,8 @@ public static function process_inputs($applicationInputs, $experimentInputs)
                 }
 
                 $experimentInput->value = str_replace(base_path() . Utilities::EXPERIMENT_DATA_ROOT, Utilities::$pathConstant , $filePath);
+                $experimentInput->type = $applicationInput->type;
+                
             }
             else
             {
@@ -981,6 +985,7 @@ public static function process_inputs($applicationInputs, $experimentInputs)
                 if ($index >= 0)
                 {
                     $experimentInput->value = $experimentInputs[$index]->value;
+                    $experimentInput->type = $applicationInput->type;
                 }
             }
 
