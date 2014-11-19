@@ -71,7 +71,7 @@ private static $experimentDataPathAbsolute;
 function __construct(){
 	$this->sshUser = "root";
 	$this->hostName = $_SERVER['SERVER_NAME'];
-    self::$experimentDataPathAbsolute = base_path() . "/experimentData/";
+    self::$experimentDataPathAbsolute = base_path() . Utilities::EXPERIMENT_DATA_ROOT;
 	self::$pathConstant = 'file://'.$this->sshUser.'@'.$this->hostName.':' . self::$experimentDataPathAbsolute;
 	self::$experimentPath = null;
 }
