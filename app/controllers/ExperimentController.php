@@ -66,7 +66,6 @@ class ExperimentController extends BaseController {
 		$project = Utilities::get_project($experiment->projectID);
 
 		$expVal = Utilities::get_experiment_values( $experiment, $project);
-
 		// User should not clone or edit a failed experiment. Only create clones of it.
 		if( $expVal["experimentStatusString"] == "FAILED")
 			$expVal["editable"] = false;

@@ -47,9 +47,9 @@ const AIRAVATA_TIMEOUT = 100000;
 const EXPERIMENT_DATA_ROOT = '/../experimentData/';
 
 const SSH_USER = 'root';
-const DATA_PATH = 'file://home/pga/production/experimentData/';
+//const DATA_PATH = 'file://home/pga/production/experimentData/';
 
-const EXPERIMENT_DATA_ROOT_ABSOLUTE = '/home/pga/production/experimentData/';
+const EXPERIMENT_DATA_ROOT_ABSOLUTE = '/var/www/experimentData/';
 //const EXPERIMENT_DATA_ROOT_ABSOLUTE = 'C:/wamp/www/experimentData/';
 
 //const USER_STORE = 'WSO2','XML','USER_API';
@@ -66,11 +66,13 @@ private $sshUser;
 private $hostName;
 private static $pathConstant;
 private static $experimentPath;
+private static $experimentDataPathAbsolute;
 
 function __construct(){
 	$this->sshUser = "root";
 	$this->hostName = $_SERVER['SERVER_NAME'];
-	self::$pathConstant = 'file://'.$this->sshUser.'@'.$this->hostName.':/home/pga/production/experimentData/';
+    self::$experimentDataPathAbsolute = base_path() . "/experimentData/";
+	self::$pathConstant = 'file://'.$this->sshUser.'@'.$this->hostName.':' . self::$experimentDataPathAbsolute;
 	self::$experimentPath = null;
 }
 
@@ -1824,8 +1826,8 @@ public static function list_output_files($experiment)
         {
             //echo '<p>' . $output->key .  ': <a href="' . $output->value . '">' . $output->value . '</a></p>';
             echo '<p><a target="_blank"
-                        href="' . str_replace(Utilities::EXPERIMENT_DATA_ROOT_ABSOLUTE, base_path() . Utilities::EXPERIMENT_DATA_ROOT, $output->value) . '">' .
-                        $output->key . ' <span class="glyphicon glyphicon-new-window"></span></a></p>';
+                        href="' . str_replace(Utilities::$experimentDataPathAbsolute, Utilities::EXPERIMENT_DATA_ROOT, $output->value) . '">' .
+                        $output->name . ' <span class="glyphicon glyphicon-new-window"></span></a></p>';
         }
         elseif ($output->type == DataType::STRING)
         {
