@@ -279,22 +279,17 @@ public static function get_airavata_client()
     try
     {
         $transport = new TSocket(Utilities::AIRAVATA_SERVER, Utilities::AIRAVATA_PORT);
+        $transport->setRecvTimeout(Utilities::AIRAVATA_TIMEOUT);
+        $transport->setSendTimeout(Utilities::AIRAVATA_TIMEOUT);
 
-        if( $transport != null )
-        {
-            $transport->setRecvTimeout(Utilities::AIRAVATA_TIMEOUT);
-            $transport->setSendTimeout(Utilities::AIRAVATA_TIMEOUT);
+        $protocol = new TBinaryProtocol($transport);
+        $transport->open();
 
-            $protocol = new TBinaryProtocol($transport);
-            $transport->open();
-
-            $client = new AiravataClient($protocol);
-            if( is_object( $client))
-                return $client;
-            else
-                return Redirect::to("airavata/down");
-
-        }
+        $client = new AiravataClient($protocol);
+        if( is_object( $client))
+            return $client;
+        else
+            return Redirect::to("airavata/down");
     }
     catch (Exception $e)
     {

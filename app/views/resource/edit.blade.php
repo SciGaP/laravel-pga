@@ -92,7 +92,7 @@
 										<div class="queue">
 											<input type="hidden" name="cr-edit" value="queue"/>
 											<div class="form-group required">
-												<label class="control-label">Queue Name</label>
+												<label class="control-label">Queue Name <small> ( cannot be changed.) </small></label>
 												<input class="form-control" value="{{ $queue->queueName }}" maxlength="30" name="qname" placeholder="Queue Name" readonly />
 											</div>
 											<div class="form-group">
@@ -100,7 +100,7 @@
 												<textarea class="form-control" value="{{ $queue->queueDescription }}" maxlength="255" name="qdesc" placeholder="Queue Description"></textarea>
 											</div>
 											<div class="form-group">
-												<label class="control-label">Queue Max Run Time</label>
+												<label class="control-label">Queue Max Run Time<small> ( In Minutes) </small></label>
 												<input type="number" min="0" class="form-control" value="{{ $queue->maxRunTime }}" maxlength="30" name="qmaxruntime" placeholder="Queue Max Run Time"/>
 											</div>
 											<div class="form-group">
@@ -133,7 +133,7 @@
 							<div class="queue">
 								<input type="hidden" name="cr-edit" value="queue"/>
 								<div class="form-group required">
-									<label class="control-label">Queue Name</label>
+									<label class="control-label">Queue Name<small> ( A queue name is unique and cannot be changed later.)</small></label>
 									<input class="form-control" maxlength="30" name="qname" placeholder="Queue Name" required="required"/>
 								</div>
 								<div class="form-group">
@@ -141,7 +141,7 @@
 									<textarea class="form-control" maxlength="255" name="qdesc" placeholder="Queue Description"></textarea>
 								</div>
 								<div class="form-group">
-									<label class="control-label">Queue Max Run Time</label>
+									<label class="control-label">Queue Max Run Time<small> ( In Minutes)</small> </label>
 									<input class="form-control" type="number" min="0" maxlength="30" name="qmaxruntime" placeholder="Queue Max Run Time"/>
 								</div>
 								<div class="form-group">
@@ -610,7 +610,7 @@
 	        			</div>
 	    				<input type="hidden" name="jsi-id[]" maxlength="2" value="{{ $JSI->jobSubmissionInterfaceId }}"/>
 	    				<div class="col-md-4">
-	        				<input type="number" name="jsi-priority[]" min="0" value="{{ $JSI->priorityOrder }}" required/>
+	        				<input type="number" name="jsi-priority[]" min="0" max="{{ count( $jobSubmissionInterfaces) }}" value="{{ $JSI->priorityOrder }}" required/>
 						</div>
 	        		</div>
 	        		@endforeach

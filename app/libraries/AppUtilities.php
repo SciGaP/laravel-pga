@@ -49,11 +49,9 @@ class AppUtilities{
 
 		$dataType = new DataType();
 		$modules = AppUtilities::getAllModules();
-		$appInterfaces = $airavataclient->getallapplicationinterfaces();
-		//var_dump( $dataType::$__names);
-		//echo "<br/><br/>";
+		$appInterfaces = $airavataclient->getAllApplicationInterfaces();
+
 		$InputDataObjectType = new InputDataObjectType();
-		//var_dump( $InputDataObjectType);
 
 		return array(
 						"appInterfaces" => $appInterfaces,
