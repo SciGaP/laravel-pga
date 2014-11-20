@@ -2,6 +2,8 @@
 
 @section('page-header')
     @parent
+    {{ HTML::style('css/datetimepicker.css')}}            
+
 @stop
 
 @section('content')
@@ -16,9 +18,9 @@
             <?php
 
             // set up options for select input
-            $values = array('experiment-name', 'experiment-description', 'application');
-            $labels = array('Experiment Name', 'Experiment Description', 'Application');
-            $disabled = array('', '', '');
+            $values = array('experiment-name', 'experiment-description', 'application', 'creation-time');
+            $labels = array('Experiment Name', 'Experiment Description', 'Application', 'Creation Time');
+            $disabled = array('', '', '', '');
 
             Utilities::create_options($values, $labels, $disabled);
 
@@ -26,10 +28,36 @@
         </select>
     </div>
 
-    <div class="form-group">
+    <div class="form-group search-text-block">
         <label for="search-value">for</label>
         <input type="search" class="form-control" name="search-value" id="search-value" placeholder="value" required
                value="<?php if (isset($_POST['search-value'])) echo $_POST['search-value'] ?>">
+    </div>
+
+    <div class="container select-dates hide">
+        <div class="col-md-12">
+            Select dates between which you want to search for experiments.
+        </div>
+        <div class="col-sm-8" style="height:75px;">
+           <div class='col-md-6'>
+                <div class="form-group">
+                    <div class='input-group date' id='datetimepicker9'>
+                        <input type='text' class="form-control" placeholder="From Date" name="from-date" value="<?php if (isset($_POST['from-date'])) echo $_POST['from-date'] ?>"/>
+                        <span class="input-group-addon"><span class="glyphicon glyphicon-calendar"></span>
+                        </span>
+                    </div>
+                </div>
+            </div>
+            <div class='col-md-6'>
+                <div class="form-group">
+                    <div class='input-group date' id='datetimepicker10'>
+                        <input type='text' class="form-control"  placeholder="To Date" name="to-date" value="<?php if (isset($_POST['to-date'])) echo $_POST['to-date'] ?>"/>
+                        <span class="input-group-addon"><span class="glyphicon glyphicon-calendar"></span>
+                        </span>
+                    </div>
+                </div>
+            </div>
+        </div>
     </div>
 
     <button name="search" type="submit" class="btn btn-primary" value="Search"><span class="glyphicon glyphicon-search"></span> Search</button>
@@ -60,7 +88,14 @@ if (isset( $expContainer))
                 <th>Description</th>
                 <!--<th>Resource</th>-->
                 <th>Creation Time</th>
-                <th>Status</th>
+                <th>
+                    <select class="form-control select-status">
+                        <option value="ALL">Status</option>
+                    @foreach( $expStates as $index => $state)
+                        <option value="{{ $state }}">{{ $state }}</option>
+                    @endforeach
+                    </select>
+                </th>
             </tr>
     
 
@@ -75,7 +110,7 @@ if (isset( $expContainer))
 
             echo '<tr>';
             $addEditOption="";
-            if( $experiment['expValue']['editable'] )
+            if( $experiment['expValue']['editable'])
                 $addEditOption = '<a href="'. URL::to('/') . '/experiment/edit?expId=' . $experiment['experiment']->experimentID . '" title="Edit"><span class="glyphicon glyphicon-pencil"></span></a>';
 
             echo '<td>' . $experiment['experiment']->name .  $addEditOption . '</td>';
@@ -131,4 +166,100 @@ if (isset( $expContainer))
 
 </div>
 
+@stop
+
+@section('scripts')
+    @parent
+    {{ HTML::script('js/moment.js')}}            
+    {{ HTML::script('js/datetimepicker.js')}}            
+
+    <script type="text/javascript">
+
+        $(document).ready( function(){
+
+            /* script to make status select work on the UI side itself. */
+
+            $(".select-status").on("change", function(){
+                selectedStatus = this.value;
+
+                if( selectedStatus == "ALL")
+                {
+                    $("table tr").slideDown();
+                }
+                else
+                {
+                    $("table tr").each(function(index) {
+                        if (index != 0) {
+
+                            $row = $(this);
+
+                            var status = $.trim( $row.find("td:last").text() );
+                            if (status == selectedStatus )
+                            {
+                                $(this).slideDown();
+                            }
+                            else {
+                                $(this).slideUp();
+                            }
+                        }
+                    });
+                }
+            });
+
+            /* making datetimepicker work for exp search */
+
+            $('#datetimepicker9').datetimepicker({
+                pick12HourFormat: false
+            });
+            $('#datetimepicker10').datetimepicker({
+                pick12HourFormat: false
+            });
+            $("#datetimepicker9").on("dp.change",function (e) {
+               $('#datetimepicker10').data("DateTimePicker").setMinDate(e.date);
+            });
+            $("#datetimepicker10").on("dp.change",function (e) {
+               $('#datetimepicker9').data("DateTimePicker").setMaxDate(e.date);
+            });
+
+            /* selecting creation time */
+            $("#search-key").on("change", function(){
+                if( this.value == "creation-time")
+                {
+                    $(".search-text-block").addClass("hide");
+                    $(".select-dates").removeClass("hide");
+                    $("#search-value").removeAttr("required");
+
+                }
+                else
+                {
+                    $(".search-text-block").removeClass("hide");
+                    $(".select-dates").addClass("hide");
+                    $("#search-value").attr("required");
+                }
+            });
+
+            changeInputVisibility( $("#search-key").val() );
+
+        });
+
+    function changeInputVisibility( selectedStatus)
+    {
+        if( selectedStatus == "creation-time")
+        {
+            $(".search-text-block").addClass("hide");
+            $(".select-dates").removeClass("hide");
+            $("#search-value").removeAttr("required");
+
+        }
+        else
+        {
+            $(".search-text-block").removeClass("hide");
+            $(".select-dates").addClass("hide");
+            $("#search-value").attr("required");
+        }
+    }
+
+        
+
+    </script>
 @stop

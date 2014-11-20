@@ -66,7 +66,7 @@
     $('.filterinput').keyup(function() {
         var value = $(this).val();
         if (value.length > 0) {
-             $("table tr").each(function(index) {
+            $("table tr").each(function(index) {
                 if (index != 0) {
 
                     $row = $(this);

@@ -1983,25 +1983,28 @@ public static function create_options($values, $labels, $disabled)
  * Get results of the user's search of experiments
  * @return array|null
  */
-public static function get_expsearch_results( $searchKey, $searchValue)
+public static function get_expsearch_results( $inputs)
 {
     $airavataclient = Utilities::get_airavata_client();
-
     $experiments = array();
 
     try
     {
-        switch ( $searchKey)
+        switch ( $inputs["search-key"])
         {
             case 'experiment-name':
-                $experiments = $airavataclient->searchExperimentsByName(Session::get('username'), $searchValue);
+                $experiments = $airavataclient->searchExperimentsByName(Session::get('username'), $inputs["search-value"]);
                 break;
             case 'experiment-description':
-                $experiments = $airavataclient->searchExperimentsByDesc(Session::get('username'), $searchValue);
+                $experiments = $airavataclient->searchExperimentsByDesc(Session::get('username'), $inputs["search-value"]);
                 break;
             case 'application':
-                $experiments = $airavataclient->searchExperimentsByApplication(Session::get('username'), $searchValue);
+                $experiments = $airavataclient->searchExperimentsByApplication(Session::get('username'), $inputs["search-value"]);
                 break;
+            case 'creation-time':
+                $experiments = $airavataclient->searchExperimentsByCreationTime(Session::get('username'), strtotime( $inputs["from-date"])*1000, strtotime( $inputs["to-date"])*1000 );
+                break;
+            case '':
         }
     }
     catch (InvalidRequestException $ire)
@@ -2043,6 +2046,10 @@ public static function get_expsearch_results( $searchKey, $searchValue)
     }
 
     return $expContainer;
+}
+
+public static function getExpStates(){
+    return ExperimentState::$__names;
 }
 
 

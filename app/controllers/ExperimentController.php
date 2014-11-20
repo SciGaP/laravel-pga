@@ -163,14 +163,19 @@ class ExperimentController extends BaseController {
 
 	public function searchView()
 	{
-		return View::make("experiment/search");
+		$experimentStates = Utilities::getExpStates();
+		return View::make("experiment/search", array( "expStates" => $experimentStates ) );
 	}
 
 	public function searchSubmit()
 	{
-		$expContainer = Utilities::get_expsearch_results( Input::get('search-key'), Input::get('search-value'));
+		$expContainer = Utilities::get_expsearch_results( Input::all() );
 
-		return View::make('experiment/search', array('expContainer' => $expContainer ));
+		$experimentStates = Utilities::getExpStates();
+		return View::make('experiment/search', array(
+													'expStates' => $experimentStates,
+													'expContainer' => $expContainer 
+												));
 	}
 
 }
