@@ -973,7 +973,7 @@ public static function process_inputs($applicationInputs, $experimentInputs)
                 $index = -1;
                 for ($i = 0; $i < sizeof($experimentInputs); $i++)
                 {
-                    if ($experimentInputs[$i]->key == $applicationInput->name)
+                    if ($experimentInputs[$i]->name == $applicationInput->name)
                     {
                         $index = $i;
                     }
