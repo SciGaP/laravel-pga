@@ -1819,6 +1819,7 @@ public static function create_experiment()
 
 public static function list_output_files($experiment)
 {
+    $utility = new Utilities();
     $experimentOutputs = $experiment->experimentOutputs;
     foreach ($experimentOutputs as $output)
     {
