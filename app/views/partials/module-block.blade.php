@@ -2,7 +2,7 @@
 	
 	<div class="form-group required">
 		<label class="control-label">Application Module Name</label>
-		<input type="text" class="form-control edit-name" name="appModuleName" maxlength="255" required/>
+		<input type="text" class="form-control edit-name" name="appModuleName" maxlength="150" required/>
 	</div>
 	<div class="form-group">
 		<label class="control-label">Application Module Version</label>
