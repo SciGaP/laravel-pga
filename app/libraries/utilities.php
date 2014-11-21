@@ -38,11 +38,11 @@ class Utilities{
 /**
  * Define configuration constants
  */
-const AIRAVATA_SERVER = 'gw88.iu.xsede.org';
+const AIRAVATA_SERVER = 'gw111.iu.xsede.org';
 //const AIRAVATA_SERVER = 'gw127.iu.xsede.org';
 //const AIRAVATA_SERVER = 'gw56.iu.xsede.org'; //Mirror
 //const AIRAVATA_PORT = 8930; //development
-const AIRAVATA_PORT = 8930; //production
+const AIRAVATA_PORT = 9930; //production
 const AIRAVATA_TIMEOUT = 100000;
 const EXPERIMENT_DATA_ROOT = '/../experimentData/';
 
@@ -56,7 +56,7 @@ const EXPERIMENT_DATA_ROOT_ABSOLUTE = '/var/www/experimentData/';
 const USER_STORE = 'WSO2';
 
 
-const REQ_URL = 'https://gw88.iu.xsede.org:8443/credential-store/acs-start-servlet';
+const REQ_URL = 'https://gw111.iu.xsede.org:8443/credential-store/acs-start-servlet';
 const GATEWAY_NAME = 'PHP-Reference-Gateway';
 const EMAIL = 'admin@gw120.iu.xsede.org';
 private $tokenFilePath = 'tokens.xml';
@@ -295,9 +295,10 @@ public static function get_airavata_client()
     }
     catch (Exception $e)
     {
-        Utilities::print_error_message('<p>There was a problem connecting to Airavata.
+        /*Utilities::print_error_message('<p>There was a problem connecting to Airavata.
             Please try again later or submit a bug report using the link in the Help menu.</p>' .
             '<p>' . $e->getMessage() . '</p>');
+        */
         
     }
 }

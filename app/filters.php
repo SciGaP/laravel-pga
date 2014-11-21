@@ -13,7 +13,8 @@
 
 App::before(function($request)
 {
-	//
+	if( ! is_object( Utilities::get_airavata_client()))
+		return View::make("server-down");
 });
 
 
