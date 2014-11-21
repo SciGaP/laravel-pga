@@ -10,7 +10,7 @@
 <div class="container">
 	<div class="col-md-offset-2 col-md-8">
 
-		<button class="btn btn-default" data-toggle="modal" data-target="#new-app-module-block">Create a new Application Module</button>
+		<button class="btn btn-default create-app-module" data-toggle="modal" data-target="#new-app-module-block">Create a new Application Module</button>
 
 	@if( count( $modules) )
 		@if( Session::has("message"))
@@ -70,7 +70,7 @@
 					<div class="modal-footer">
 						<div class="form-group">
 							<input type="submit" class="btn btn-primary" value="Save"/>
-							<input type="reset" class="btn btn-success" value ="Reset"/>
+							<input type="reset" class="reset-create-form btn btn-success" value ="Reset"/>
 						</div>
 					</div>
 				</div>
@@ -85,12 +85,12 @@
 	    <div class="modal-dialog">
 
 			<form action="{{URL::to('/')}}/app/module-edit" method="POST">
-
 		        <div class="modal-content">
 		            <div class="modal-header">
 		              	<h3 class="text-center">Edit Application Module</h3>
 		            </div>
 		            <div class="modal-body">
+						<input type="hidden" class="form-control edit-moduleid" name="appModuleId"/>
 				 		@include('partials/module-block')
 					</div>
 					<div class="modal-footer">
@@ -165,18 +165,24 @@
             return false;
         });
 
+        $(".create-app-module").click( function(){
+        	//reset form to clear it out if it got filled by edit modules
+        	$(".reset-create-form").click();
+        })
+
         $(".edit-app-module").click( function(){
-        	var module = $(this).data("module-data");
-        	$(".edit-name").val( module.appModuleName);
-        	$(".edit-desc").val( module.appModuleDescription);
-        	$(".edit-version").val( module.appModuleVersion);
-        	$(".edit-moduleid").val( module.appModuleId)
+        	var moduleData = $(this).data("module-data");
+        	console.log( moduleData);
+        	$(".edit-name").val( moduleData.appModuleName);
+        	$(".edit-desc").val( moduleData.appModuleDescription);
+        	$(".edit-version").val( moduleData.appModuleVersion);
+        	$(".edit-moduleid").val( moduleData.appModuleId)
         });
 
         $(".delete-app-module").click( function(){
-        	var module = $(this).data("module-data");
-        	$(".delete-module-name").html( module.appModuleName);
-        	$(".delete-moduleid").val( module.appModuleId)
+        	var moduleData = $(this).data("module-data");
+        	$(".delete-module-name").html( moduleData.appModuleName);
+        	$(".delete-moduleid").val( moduleData.appModuleId)
         });
     </script>
 

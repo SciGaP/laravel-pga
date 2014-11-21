@@ -77,11 +77,21 @@ $(document).ready( function(){
 
     });
 
-    $(".submit-create-app-interface-form, ").click( function(){
-    	console.log( $(this).parent().parent().find(".app-module-select").length);
-    	if( $(this).parent().find(".app-module-select").length)
+    $(".submit-create-app-interface-form").click( function(){
+    	//check if app interface contains atleast one app module selected.
+    	if( $(this).parent().parent().parent().find(".app-module-select").length)
     	{
     		$("#create-app-interface-form").submit();
+    	}
+    	else
+    		alert("An Application Interface requires minimum one Application Module.");
+    });
+
+    $(".submit-update-app-interface-form").click( function(){
+    	//check if app interface contains atleast one app module selected.
+    	if( $(this).parent().parent().parent().find(".app-module-select").length)
+    	{
+    		$("#edit-app-interface-form").submit();
     	}
     	else
     		alert("An Application Interface requires minimum one Application Module.");

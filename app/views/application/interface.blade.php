@@ -49,7 +49,7 @@
 					<div id="collapse-{{$index}}" class="panel-collapse collapse">
 						<div class="panel-body">
 							<div class="app-interface-block">
-								@include('partials/interface-block', array( 'interface' => $interface, 'dataTypes' => $dataTypes, 'modules' => $modules) )
+								@include('partials/interface-block', array( 'interfaceObject' => $interface, 'dataTypes' => $dataTypes, 'modules' => $modules) )
 							</div>
 						</div>
 					</div>
@@ -82,7 +82,7 @@
 
 <div class="modal fade" id="edit-app-interface-block" tabindex="-1" role="dialog" aria-labelledby="add-modal" aria-hidden="true">
     <div class="modal-dialog">
-		<form action="{{URL::to('/')}}/app/interface-edit" method="POST">	
+		<form action="{{URL::to('/')}}/app/interface-edit" method="POST" id="edit-app-interface-form">	
         <div class="modal-content">
 	    	<div class="modal-header">
 	    		<h3 class="text-center">Edit Application Interface</h3>
@@ -93,7 +93,7 @@
 			</div>
 			<div class="modal-footer">
 	        	<div class="form-group">
-					<input type="submit" class="btn btn-primary" value="Update"/>
+					<input type="button" class="submit-update-app-interface-form btn btn-primary" value="Update"/>
 					<input type="button" class="btn btn-default" data-dismiss="modal" value ="Cancel"/>
 				</div>
 	        </div>	
