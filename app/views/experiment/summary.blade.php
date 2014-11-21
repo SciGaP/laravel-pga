@@ -7,7 +7,6 @@
 @section('content')
 
 <div class="container" style="max-width: 750px;">
-
 <h1>
     Experiment Summary
     <small><a href="{{ URL::to('/') }}/experiment/summary?expId={{ $experiment->experimentID }}"
@@ -63,6 +62,17 @@
             <td><strong>Outputs</strong></td>
             <td><?php if ($expVal["experimentStatusString"] == 'COMPLETED') Utilities::list_output_files($experiment); ?></td>
         </tr>
+        @if( $expVal["experimentStatusString"] == "FAILED")
+        <tr>
+            <td><strong>Errors</strong></td>
+            <td>
+                @foreach( (array)$experiment->errors as $error)
+                    {{ $error->actualErrorMessage }}
+                @endforeach
+            </td>
+        </tr>
+        @endif
+        
     </table>
 
     <form action="{{URL::to('/') }}/experiment/summary" method="post" role="form">
