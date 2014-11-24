@@ -12,7 +12,7 @@
 		<form role="form" method="POST" action="{{ URL::to('/') }}/cr/create">
 			<div class="form-group required">
 				<label class="control-label">Host Name</label>
-				<input class="form-control hostName" maxlength="30" name="hostname" required="required"/>
+				<input class="form-control hostName" maxlength="100" name="hostname" required="required"/>
 			</div>
 			<div class="form-group">
 				<label class="control-label">Host Aliases</label>
