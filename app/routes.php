@@ -91,6 +91,8 @@ Route::post("cr/delete-jsi", "ComputeResource@deleteActions");
 
 Route::post("cr/delete-dmi", "ComputeResource@deleteActions");
 
+Route::post("cr/delete-cr", "ComputeResource@deleteActions");
+
 /*
  * Application Catalog Routes
 */

@@ -249,9 +249,13 @@ public static function create_or_update_DMIObject( $inputs, $update = false){
     }
 }
 
-public static function getAllCRObjects(){
+public static function getBrowseCRData(){
     $airavataclient = Utilities::get_airavata_client();
-    return $airavataclient->getAllComputeResourceNames();
+	$appDeployments = $airavataclient->getAllApplicationDeployments();
+
+    return array( 'crObjects' =>$airavataclient->getAllComputeResourceNames(),
+    			  'appDeployments' => $appDeployments 
+    			);
 }
 
 public static function getJobSubmissionDetails( $jobSubmissionInterfaceId, $jsp){
@@ -296,7 +300,11 @@ public static function deleteActions( $inputs){
             return 1;
         else 
             return 0;
-
+    elseif( isset( $inputs["del-crId"]))
+    	if( $airavataclient->deleteComputeResource( $inputs["del-crId"] ) )
+    		return 1;
+    	else
+    		return 0;
 }
 
 

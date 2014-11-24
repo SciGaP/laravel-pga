@@ -7,8 +7,14 @@
 @section('content')
 
 <div class="container">
+	@if( Session::has("message"))
+		<div class="col-md-12">
+			<span class="alert alert-success">{{ Session::get("message") }}</span>
+		</div>
+		{{ Session::forget("message") }}
+	@endif  
 
-    @if ( isset( $allCRs) )
+	@if ( isset( $allCRs) )
         @if (sizeof($allCRs) == 0)
             {{ Utilities::print_warning_message('No Compute Resources exist at the moment. Please register compute resources and then try again.') }}
         @else
@@ -23,7 +29,7 @@
                         <th>Id</th>
                         <th>Edit</th>
                         <th>View</th>
-
+                        <th>Delete</th>
                     </tr>
 
             @foreach ($allCRs as $crId => $crName)
@@ -45,6 +51,11 @@
 	                            <span class="glyphicon glyphicon-list"></span>
 	                        </a>
 	                    </td>
+	                    <td>
+	                    	<a href="#" title="Delete">
+	                    		<span class="glyphicon glyphicon-trash del-cr"  data-toggle="modal" data-target="#delete-cr-block"  data-delete-cr-name="{{$crName}}" data-deployment-count="{{$connectedDeployments[$crId]}}" data-crid="{{$crId}}" ></span>
+	                    	</a>
+	                    </td>
 	                </tr>
 	            @endforeach
 
@@ -53,6 +64,31 @@
 
         @endif
     @endif
+
+<div class="modal fade" id="delete-cr-block" tabindex="-1" role="dialog" aria-labelledby="add-modal" aria-hidden="true">
+    <div class="modal-dialog">
+
+		<form action="{{URL::to('/')}}/cr/delete-cr" method="POST">
+	        <div class="modal-content">
+	            <div class="modal-header">
+	              	<h3 class="text-center">Delete Confirmation Compute Resource</h3>
+	            </div>
+	            <div class="modal-body">
+					<input type="hidden" class="form-control delete-crId" name="del-crId"/>
+					The Compute Resource, <span class="delete-cr-name"></span> is connected to <span class="deploymentCount">0</span> deployments.
+			 		Do you really want to delete it? This action cannot be undone.
+				</div>
+				<div class="modal-footer">
+					<div class="form-group">
+						<input type="submit" class="btn btn-danger" value="Delete"/>
+						<input type="button" class="btn btn-default" data-dismiss="modal" value ="Cancel"/>
+					</div>
+				</div>
+			</div>
+
+		</form>
+	</div>
+</div>
 
 </div>
 
@@ -87,6 +123,12 @@
             $("table tr").slideDown();
         }
         return false;
+    });
+
+    $(".del-cr").click( function(){
+    	$(".delete-cr-name").html( "'" + $(this).data("delete-cr-name") + "'");
+    	$(".delete-crId").val( $(this).data("crid"));
+    	$(".deploymentCount").html( $(this).data("deployment-count"));
     });
     </script>
 @stop

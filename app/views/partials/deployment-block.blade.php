@@ -5,7 +5,6 @@
 </div>
 -->
 @if( isset( $deploymentObject) )
-	{{var_dump( $deploymentObject->executablePath) }}
 	<input type="hidden" name="app-deployment-id" value="{{$deploymentObject->appDeploymentId}}"/>
 @endif
 <div class="form-group required">
@@ -49,7 +48,7 @@
 			@endforeach
 		@endif
 	</div>
-	<button type="button" class="btn btn-default control-label add-load-cmd">Add Module Load Commands</label>
+	<button type="button" class="btn btn-default control-label add-load-cmd hide">Add Module Load Commands</label>
 </div>
 <hr/>
 <div class="form-group">

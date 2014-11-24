@@ -189,23 +189,37 @@ class ComputeResource extends BaseController{
 	}
 
 	public function deleteActions(){
-		return CRUtilities::deleteActions( Input::all() );
+
+		$result = CRUtilities::deleteActions( Input::all() );
+		//other delete actions are ajax based. only cr delete is not.
+		if( Input::has("del-crId") )
+		{
+			return Redirect::to("cr/browse")->with("message", "The Compute Resource has been successfully deleted.");
+		}
+		else
+			return $result;
 
 	}
 
 	public function browseView(){
-		$allCRs = CRUtilities::getAllCRObjects();
-		/*
-		if( count( $allCRs)>0 )
+		$data = CRUtilities::getBrowseCRData();
+		$allCRs = $data["crObjects"];
+		$appDeployments = $data["appDeployments"];
+
+		$connectedDeployments = array();
+		foreach( (array)$allCRs as $crId => $crName)
 		{
-			foreach( $allCRs as $crId => $crName)
+			$connectedDeployments[ $crId] = 0;
+			foreach( (array)$appDeployments as $deploymentObject)
 			{
-				//
+				if( $crId == $deploymentObject->computeHostId)
+					$connectedDeployments[$crId]++;
 			}
 		}
-		*/
-
-		return View::make("resource/browse", array("allCRs" => $allCRs));
+		return View::make("resource/browse", array(
+												"allCRs" => $allCRs,
+												"connectedDeployments" => $connectedDeployments
+												));
 
 	}
 }
