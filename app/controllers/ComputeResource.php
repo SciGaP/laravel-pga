@@ -191,14 +191,22 @@ class ComputeResource extends BaseController{
 	public function deleteActions(){
 
 		$result = CRUtilities::deleteActions( Input::all() );
-		//other delete actions are ajax based. only cr delete is not.
-		if( Input::has("del-crId") )
+		if( Input::has("jsiId"))
+		{
+			return Redirect::to("cr/edit?crId=" . Input::get("crId"). "#tab-jobSubmission")
+							->with("message", "Job Submission Interface was deleted successfully");
+		}
+		if( Input::has("dmiId"))
+		{
+			return Redirect::to("cr/edit?crId=" . Input::get("crId"). "#tab-dataMovement")
+							->with( "message", "Data Movement Protocol was deleted successfully");
+		}
+		elseif( Input::has("del-crId") )
 		{
 			return Redirect::to("cr/browse")->with("message", "The Compute Resource has been successfully deleted.");
 		}
 		else
 			return $result;
-
 	}
 
 	public function browseView(){

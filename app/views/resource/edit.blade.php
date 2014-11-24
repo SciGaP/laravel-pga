@@ -15,14 +15,20 @@
 		<div class="well">
 			<h4>Compute Resource : {{ $computeResource->hostName }}</h4>
 		</div>
+		@if( Session::has("message"))
+			<span class="alert alert-success col-md-12">{{Session::get("message")}}</span>
+			{{Session::forget("message") }}
+		@endif
 
-		<ul class="nav nav-tabs nav-justified" id="tabs" role="tablist">
-		  <li class="active"><a href="#tab-desc" data-toggle="tab">Description</a></li>
-		  <li><a href="#tab-queues" data-toggle="tab">Queues</a></a></li>
-		  <li><a href="#tab-filesystem" data-toggle="tab">FileSystem</a></li>
-		  <li><a href="#tab-jobSubmission" data-toggle="tab">Job Submission Interfaces</a></li>
-		  <li><a href="#tab-dataMovement" data-toggle="tab">Data Movement Interfaces</a></li>
-		</ul>
+		<div class="col-md-12">
+			<ul class="nav nav-tabs nav-justified" id="tabs" role="tablist">
+			  <li class="active"><a href="#tab-desc" data-toggle="tab">Description</a></li>
+			  <li><a href="#tab-queues" data-toggle="tab">Queues</a></a></li>
+			  <li><a href="#tab-filesystem" data-toggle="tab">FileSystem</a></li>
+			  <li><a href="#tab-jobSubmission" data-toggle="tab">Job Submission Interfaces</a></li>
+			  <li><a href="#tab-dataMovement" data-toggle="tab">Data Movement Interfaces</a></li>
+			</ul>
+		</div>
 
 		<div class="tab-content">
         	
@@ -545,6 +551,9 @@
 <div class="modal fade" id="confirm-delete-jsi" tabindex="-1" role="dialog" aria-labelledby="delete-modal" aria-hidden="true">
     <div class="modal-dialog">
         <div class="modal-content">
+        <form action="{{ URL::to('cr/delete-jsi') }}" method="POST">
+			<input type="hidden" name="crId" value="{{Input::get('crId') }}"/>
+    		<input type="hidden" name="jsiId" value="" class="delete-jsi-confirm"/>
             <div class="modal-header">
                 Confirmation
             </div>
@@ -553,8 +562,10 @@
             </div>
             <div class="modal-footer">
                 <button type="button" class="btn btn-default" data-dismiss="modal">Cancel</button>
-                <button type="button" class="btn btn-danger danger delete-jsi-confirm">Delete</button>
+                <button type="submit" class="btn btn-danger danger">Delete</button>
             </div>
+        </form>
+
         </div>
     </div>
 </div>
@@ -562,6 +573,9 @@
 <div class="modal fade" id="confirm-delete-dmi" tabindex="-1" role="dialog" aria-labelledby="delete-modal" aria-hidden="true">
     <div class="modal-dialog">
         <div class="modal-content">
+        <form action="{{ URL::to('cr/delete-jsi') }}" method="POST">
+			<input type="hidden" name="crId" value="{{Input::get('crId') }}"/>
+    		<input type="hidden" name="dmiId" value="" class="delete-dmi-confirm"/>
             <div class="modal-header">
                 Confirmation
             </div>
@@ -570,7 +584,7 @@
             </div>
             <div class="modal-footer">
                 <button type="button" class="btn btn-default" data-dismiss="modal">Cancel</button>
-                <button type="button" class="btn btn-danger danger delete-dmi-confirm">Delete</button>
+                <button type="submit" class="btn btn-danger danger">Delete</button>
             </div>
         </div>
     </div>

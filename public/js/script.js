@@ -188,7 +188,7 @@ $(document).ready( function(){
   });
 
    $(".delete-jsi").click( function(){
-      $(".delete-jsi-confirm").data("jsi-id", $(this).data("jsi-id"));
+      $(".delete-jsi-confirm").val( $(this).data("jsi-id"));
    });
 
   $(".delete-jsi-confirm").click( function(){
@@ -220,7 +220,7 @@ $(document).ready( function(){
   });
 
   $(".delete-dmi").click( function(){
-      $(".delete-dmi-confirm").data("dmi-id", $(this).data("dmi-id"));
+      $(".delete-dmi-confirm").val($(this).data("dmi-id"));
    });
 
   $(".delete-dmi-confirm").click( function(){
