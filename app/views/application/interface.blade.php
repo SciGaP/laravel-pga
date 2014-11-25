@@ -93,8 +93,9 @@
 			</div>
 			<div class="modal-footer">
 	        	<div class="form-group">
-					<input type="button" class="submit-update-app-interface-form btn btn-primary" value="Update"/>
+					<input type="button" class="submit-edit-app-interface-form btn btn-primary" value="Update"/>
 					<input type="button" class="btn btn-default" data-dismiss="modal" value ="Cancel"/>
+					<input type="submit" class="btn btn-primary hide really-submit-edit-app-interface-form" value=""/>
 				</div>
 	        </div>	
         </div>
@@ -120,6 +121,7 @@
 	        	<div class="form-group">
 					<input type="button" class="btn btn-primary submit-create-app-interface-form" value="Create"/>
 					<input type="button" class="btn btn-default" data-dismiss="modal" value ="Cancel"/>
+					<input type="submit" class="btn btn-primary hide really-submit-create-app-interface-form" value=""/>
 				</div>
 	        </div>	
         </div>

@@ -3,12 +3,12 @@
 @endif
 <div class="appInterfaceInputs">
 	<div class="form-group required">
-		<label class="control-label">Application Name</label>
-		<input type="text" readonly class="form-control" name="applicationName" required value="@if( isset( $interfaceObject) ){{ $interfaceObject->applicationName}} @endif"/>
+		<label class="control-label interface-name">Application Name</label>
+		<input type="text" readonly class="form-control" name="applicationName" required value="@if( isset( $interfaceObject) ){{$interfaceObject->applicationName}}@endif"/>
 	</div>
 	<div class="form-group">
 		<label class="control-label">Application Description</label>
-		<input type="text" readonly class="form-control" name="applicationDescription" value="@if( isset( $interfaceObject) ){{ $interfaceObject->applicationDescription }} @endif" />
+		<input type="text" readonly class="form-control" name="applicationDescription" value="@if( isset( $interfaceObject) ){{ $interfaceObject->applicationDescription}}@endif" />
 	</div>
 	<div class="form-group">
 		<label class="control-label">Application Modules</label>

@@ -81,17 +81,24 @@ $(document).ready( function(){
     	//check if app interface contains atleast one app module selected.
     	if( $(this).parent().parent().parent().find(".app-module-select").length)
     	{
-    		$("#create-app-interface-form").submit();
+    		//Using a dirty hack because jquery submit bypasses required field if directly submitted.
+    		//Need a better solution, but until then submitting via a hidden submit button.
+    		//$("#create-app-interface-form").submit();
+    		$(".really-submit-create-app-interface-form").click();
     	}
     	else
     		alert("An Application Interface requires minimum one Application Module.");
     });
 
-    $(".submit-update-app-interface-form").click( function(){
+    $(".submit-edit-app-interface-form").click( function(){
     	//check if app interface contains atleast one app module selected.
     	if( $(this).parent().parent().parent().find(".app-module-select").length)
     	{
-    		$("#edit-app-interface-form").submit();
+    		//Using a dirty hack because jquery submit bypasses required field if directly submitted.
+    		//Need a better solution, but until then submitting via a hidden submit button.
+    		//$("#create-app-interface-form").submit();
+    		//$("#edit-app-interface-form").submit();
+    		$(".really-submit-edit-app-interface-form").click();
     	}
     	else
     		alert("An Application Interface requires minimum one Application Module.");
