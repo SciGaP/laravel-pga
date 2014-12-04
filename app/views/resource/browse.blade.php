@@ -35,14 +35,9 @@
             @foreach ($allCRs as $crId => $crName)
 
 	                <tr id="crDetails">
-	                    <td>
-	                        {{ $crName }}
-	                    </td>
-	                    <td>
-	                        {{ $crId }}
-	                    </td>
-	                    <td>
-	                        <a href="{{URL::to('/')}}/cr/edit?crId={{ $crId }}" title="Edit">
+	                    <td>{{ $crName }}</td>
+	                    <td>{{ $crId }}</td>
+	                    <td><a href="{{URL::to('/')}}/cr/edit?crId={{ $crId }}" title="Edit">
 	                            <span class="glyphicon glyphicon-pencil"></span>
 	                        </a>
 	                    </td>

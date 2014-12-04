@@ -2042,6 +2042,8 @@ public static function get_expsearch_results( $inputs)
     {
         $expValue = Utilities::get_experiment_values( $experiment, Utilities::get_project($experiment->projectID), true );
         $expContainer[$expNum]['experiment'] = $experiment;
+        if( $expValue["experimentStatusString"] == "FAILED")
+            $expValue["editable"] = false;
         $expContainer[$expNum]['expValue'] = $expValue;
         $expNum++;
     }
