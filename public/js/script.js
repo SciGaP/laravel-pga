@@ -294,5 +294,36 @@ $(document).ready( function(){
         }
     });
   });
-   
+
+  $(".add-queue-block").on("click", ".create-queue-form", function(){
+    var newQueueName = $(this).parent().parent().find(".create-queue-name").val();
+
+    if (newQueueName.length > 0) {
+        children = ($("#accordion").children());
+
+        queueNameExists = false;
+        children.each( function(index, elem){
+          var existingQueueName = $(elem).find(".existing-queue-name").html();
+          if( existingQueueName == newQueueName)
+          {
+            queueNameExists = true;
+            return false;
+          }
+        });
+
+        if( queueNameExists)
+          alert( "This queue name already exists. Please choose another name.");
+        else
+          $(this).parent().parent().parent().submit();
+
+        console.log( containing);
+
+        
+    } else {
+        alert("Please enter queue name before submitting");
+    }
+
+  });
+
+  
 });

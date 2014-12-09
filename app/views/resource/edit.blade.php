@@ -83,9 +83,7 @@
 						<div class="panel panel-default">
 							<div class="panel-heading">
 								<h4 class="panel-title">
-									<a class="accordion-toggle collapsed" data-toggle="collapse" data-parent="#accordion" href="#collapse-{{$index}}">
-									Queue : {{ $queue->queueName }}
-									</a>
+									<a class="accordion-toggle collapsed existing-queue-name" data-toggle="collapse" data-parent="#accordion" href="#collapse-{{$index}}">{{ $queue->queueName }}</a>
 									<div class="pull-right col-md-1">
 										<span class="glyphicon glyphicon-trash delete-queue" style="cursor:pointer;" data-toggle="modal" data-target="#delete-queue" data-queue-name="{{ $queue->queueName }}"></span>
 									</div>
@@ -140,7 +138,7 @@
 								<input type="hidden" name="cr-edit" value="queue"/>
 								<div class="form-group required">
 									<label class="control-label">Queue Name<small> ( A queue name is unique and cannot be changed later.)</small></label>
-									<input class="form-control" maxlength="30" name="qname" placeholder="Queue Name" required="required"/>
+									<input class="form-control create-queue-name" maxlength="30" name="qname" placeholder="Queue Name" required="required"/>
 								</div>
 								<div class="form-group">
 									<label class="control-label">Queue Description</label>
@@ -164,13 +162,13 @@
 			          			</div>
 			          		</div>
 		          			<div class="form-group">
-								<input type="submit" class="btn  btn-primary" name="step1" value="Create"/>
+								<input type="button" class="btn create-queue-form btn-primary" name="step1" value="Create"/>
 								<input type="reset" class="btn  btn-success" value="Reset"/>
 							</div>
 		          		</div>
 		      		</form>
 		      	</div>
-				<div class="form-group well">
+				<div class="form-group well add-queue-block">
 					<button type="button" class="btn btn-sm btn-default add-queue">Add a Queue</button>
 				</div>
 
@@ -612,7 +610,10 @@
                Update the Priority Order
             </div>
             <div class="modal-body">
-            	<form action="{{URL::to('/')}}/cr/edit" method="POST" id="jsi-priority-form"/> 
+            	<!-- dirty hack to avoid some code that removes the form tag below this. Needs better fix. -->
+            	<form></form>
+
+            	<form action="{{URL::to('/')}}/cr/edit" method="POST" id="jsi-priority-form"> 
 					<input type="hidden" name="crId" value="{{Input::get('crId') }}"/>
 	            	<input type="hidden" name="cr-edit" value="jsi-priority"/>
 	        		@foreach( $computeResource->jobSubmissionInterfaces as $index => $JSI )
@@ -660,7 +661,7 @@
                Update the Priority Order
             </div>
             <div class="modal-body">
-            	<form action="{{URL::to('/')}}/cr/edit" method="POST" id="dmi-priority-form"/> 
+            	<form action="{{URL::to('/')}}/cr/edit" method="POST" id="dmi-priority-form"> 
 					<input type="hidden" name="crId" value="{{Input::get('crId') }}"/>
 	            	<input type="hidden" name="cr-edit" value="dmi-priority"/>
 	        		@foreach( $computeResource->dataMovementInterfaces as $index => $DMI )
