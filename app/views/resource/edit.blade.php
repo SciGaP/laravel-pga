@@ -39,7 +39,7 @@
 					<input type="hidden" name="cr-edit" value="resDesc"/>
 					<div class="form-group required">
 						<label class="control-label">Host Name</label>
-						<input class="form-control hostName" value="{{ $computeResource->hostName }}" maxlength="30" name="hostname" required="required"/>
+						<input class="form-control hostName" value="{{ $computeResource->hostName }}" maxlength="100" name="hostname" required="required"/>
 					</div>
 					<div class="form-group">
 						<label class="control-label">Host Aliases</label>

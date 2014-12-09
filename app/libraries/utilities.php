@@ -1444,12 +1444,13 @@ public static function create_nav_bar()
 	            array('label' => 'Interface', 'url' => URL::to('/') . '/app/interface', "nav-active" => "app-catalog"),
 	            array('label' => 'Deployment', 'url' => URL::to('/') . '/app/deployment', "nav-active" => "app-catalog")
 	        );
-	        $menus['Help'] = array
-	        (
-	            array('label' => 'Report Issue', 'url' => '#', "nav-active", ""),
-	            array('label' => 'Request Feature', 'url' => '#', "nav-active", "")
-	        );
 	    }
+        
+        $menus['Help'] = array
+        (
+            array('label' => 'Report Issue', 'url' => '#', "nav-active", ""),
+            array('label' => 'Request Feature', 'url' => '#', "nav-active", "")
+        );
 	}
 
     $selfExplode = explode('/', $_SERVER['PHP_SELF']);
