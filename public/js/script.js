@@ -315,9 +315,6 @@ $(document).ready( function(){
           alert( "This queue name already exists. Please choose another name.");
         else
           $(this).parent().parent().parent().submit();
-
-        console.log( containing);
-
         
     } else {
         alert("Please enter queue name before submitting");
