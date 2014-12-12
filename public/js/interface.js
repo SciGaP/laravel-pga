@@ -115,7 +115,11 @@ function clearInputs( elem, removeJustReadOnly){
 
 	if( !removeJustReadOnly)
 	{
-        elem.find("input[type='text']").val("");
+        inputs = elem.find("input");
+        inputs.each( function(i, e){
+            if( $(e).attr("type") == "text")
+                $(e).val("");
+        });
 		elem.find("textarea").html("");
 	}
 	elem.find("input").removeAttr("readonly");
