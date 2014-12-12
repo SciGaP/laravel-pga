@@ -26,26 +26,22 @@
 		@endfor
 		@endif
 		</div>
-		<button type="button" readonly class=" hide btn btn-default add-app-module">Add Application Module</button>
+		<button type="button" class=" hide btn btn-default add-app-module">Add Application Module</button>
 	</div>
 	<div class="form-group">
 		@if( isset( $interfaceObject))
-		@if( count( $interfaceObject->applicationInputs) )
-			@foreach( $interfaceObject->applicationInputs as $index => $appInputs)
+			@foreach( (array)$interfaceObject->applicationInputs as $index => $appInputs)
 				@include( 'partials/interface-input-block', array('dataTypes' => $dataTypes, 'appInputs' => $appInputs) )
 			@endforeach
 		@endif
-		@endif
-		<button type="button" readonly class=" hide btn btn-default add-input">Add Application Input</button>
+		<button type="button" class=" hide btn btn-default add-input">Add Application Input</button>
 		<div class="app-inputs"></div>
 	</div>
 	<div class="form-group">
 		@if( isset( $interfaceObject) )
-		@if( count( $interfaceObject->applicationOutputs) )
-			@foreach( $interfaceObject->applicationOutputs as $index => $appOutputs)
-				@include( 'partials/interface-output-block', array('dataTypes' => $dataTypes, 'appInputs' => $appInputs) )
+			@foreach( (array)$interfaceObject->applicationOutputs as $index => $appOutputs)
+				@include( 'partials/interface-output-block', array('dataTypes' => $dataTypes, 'appOutputs' => $appOutputs) )
 			@endforeach
-		@endif
 		@endif
 		<button type="button" class=" hide btn btn-default add-output">Add Application Output</button>
 		<div class="app-outputs"></div>

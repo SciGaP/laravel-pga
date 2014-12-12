@@ -9,7 +9,7 @@
 @endif
 <div class="form-group required">
 	<label class="control-label">Application Module</label>
-	<select name="appModuleId" class="form-control" required readonly>
+	<select name="appModuleId" class="form-control app-module-filter" required readonly>
 	@foreach( $modules as $index => $module)
 		<option value="{{ $module->appModuleId }}" @if( isset( $deploymentObject) ) @if( $module->appModuleId == $deploymentObject->appModuleId) selected @endif @endif>{{ $module->appModuleName }}</option>	
 	@endforeach
