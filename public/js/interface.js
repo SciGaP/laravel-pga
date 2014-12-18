@@ -72,7 +72,7 @@ $(document).ready( function(){
     });
 
     $(".create-app-interface").click( function(){
-    	//clearInputs( $(".create-app-interface-block"));
+    	clearInputs( $(".create-app-interface-block"));
     	$("#create-app-interface-block").modal("show");
 
     });

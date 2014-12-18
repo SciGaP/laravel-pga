@@ -41,15 +41,15 @@ class Utilities{
 const AIRAVATA_SERVER = 'gw111.iu.xsede.org';
 //const AIRAVATA_SERVER = 'gw127.iu.xsede.org';
 //const AIRAVATA_SERVER = 'gw56.iu.xsede.org'; //Mirror
-//const AIRAVATA_PORT = 8930; //development
-const AIRAVATA_PORT = 9930; //production
+//const AIRAVATA_PORT = 8930; //production
+const AIRAVATA_PORT = 9930; //development
 const AIRAVATA_TIMEOUT = 100000;
 const EXPERIMENT_DATA_ROOT = '/../experimentData/';
 
 const SSH_USER = 'root';
 //const DATA_PATH = 'file://home/pga/production/experimentData/';
 
-const EXPERIMENT_DATA_ROOT_ABSOLUTE = '/var/www/experimentData/';
+//const EXPERIMENT_DATA_ROOT_ABSOLUTE = '/var/www/experimentData/';
 //const EXPERIMENT_DATA_ROOT_ABSOLUTE = 'C:/wamp/www/experimentData/';
 
 //const USER_STORE = 'WSO2','XML','USER_API';
@@ -71,7 +71,7 @@ private static $experimentDataPathAbsolute;
 function __construct(){
 	$this->sshUser = "root";
 	$this->hostName = $_SERVER['SERVER_NAME'];
-    self::$experimentDataPathAbsolute = base_path() . Utilities::EXPERIMENT_DATA_ROOT;
+    self::$experimentDataPathAbsolute = base_path() . Constant::EXPERIMENT_DATA_ROOT;
 	self::$pathConstant = 'file://'.$this->sshUser.'@'.$this->hostName.':' . self::$experimentDataPathAbsolute;
 	self::$experimentPath = null;
 }
@@ -247,7 +247,7 @@ public static function connect_to_id_store()
 {
     global $idStore;
 
-    switch (Utilities::USER_STORE)
+    switch (Constant::USER_STORE)
     {
         case 'WSO2':
             $idStore = new WSISUtilities(); // WS02 Identity Server
@@ -280,9 +280,9 @@ public static function get_airavata_client()
 {
     try
     {
-        $transport = new TSocket(Utilities::AIRAVATA_SERVER, Utilities::AIRAVATA_PORT);
-        $transport->setRecvTimeout(Utilities::AIRAVATA_TIMEOUT);
-        $transport->setSendTimeout(Utilities::AIRAVATA_TIMEOUT);
+        $transport = new TSocket(Constant::AIRAVATA_SERVER, Constant::AIRAVATA_PORT);
+        $transport->setRecvTimeout(Constant::AIRAVATA_TIMEOUT);
+        $transport->setSendTimeout(Constant::AIRAVATA_TIMEOUT);
 
         $protocol = new TBinaryProtocol($transport);
         $transport->open();
@@ -592,23 +592,13 @@ public static function list_input_files($experiment)
         if ($matchingAppInput->type == DataType::URI)
         {
             $explode = explode('/', $input->value);
-            //echo '<p><a href="' . $input->value . '">' . $input->key . '</a></p>';
             echo '<p><a target="_blank"
-                        href="' . URL::to("/") . "/../.." . Utilities::EXPERIMENT_DATA_ROOT . $explode[sizeof($explode)-2] . '/' . $explode[sizeof($explode)-1] . '">' .
+                        href="' . URL::to("/") . "/../.." . Constant::EXPERIMENT_DATA_ROOT . $explode[sizeof($explode)-2] . '/' . $explode[sizeof($explode)-1] . '">' .
                 $input->name . '
                 <span class="glyphicon glyphicon-new-window"></span></a></p>';
-            //echo $input->value . '<br>';
-            //echo str_replace(Utilities::EXPERIMENT_DATA_ROOT_ABSOLUTE, Utilities::EXPERIMENT_DATA_ROOT, $input->value) . '<br>';
-            //echo dirname($input->value) . '<br>';
-
-
-            //var_dump($explode);
-            //echo sizeof($explode) . '<br>';
-            //echo Utilities::EXPERIMENT_DATA_ROOT . $explode[sizeof($explode)-2] . '/' . $explode[sizeof($explode)-1] . '<br>';
         }
         elseif ($matchingAppInput->type == DataType::STRING)
         {
-            //$valueExplode = explode('=', $input->value);
             echo '<p>' . $input->name . ': ' . $input->value . '</p>';
         }
     }
@@ -783,10 +773,7 @@ public static function get_project($projectId)
 public static function assemble_experiment()
 {
     $utility = new Utilities();
-    //$experimentAssemblySuccessful = true; // errors will set this to false
-    //$experimentPath = Utilities::EXPERIMENT_DATA_ROOT;
     $experimentInputs = array();
-    //$experimentOutputs = array();
 
     $scheduling = new ComputationalResourceScheduling();
     $scheduling->totalCPUCount = $_POST['cpu-count'];
@@ -807,7 +794,7 @@ public static function assemble_experiment()
     if( Utilities::$experimentPath != null){
         $advHandling = new AdvancedOutputDataHandling();
 
-        $advHandling->outputDataDir = str_replace( base_path() . Utilities::EXPERIMENT_DATA_ROOT, Utilities::$pathConstant , Utilities::$experimentPath);
+        $advHandling->outputDataDir = str_replace( base_path() . Constant::EXPERIMENT_DATA_ROOT, Utilities::$pathConstant , Utilities::$experimentPath);
         $userConfigData->advanceOutputDataHandling = $advHandling;
     }
 
@@ -872,7 +859,7 @@ public static function process_inputs($applicationInputs, $experimentInputs)
             // construct unique path
             do
             {
-                Utilities::$experimentPath = base_path() . Utilities::EXPERIMENT_DATA_ROOT . str_replace(' ', '', Session::get('username') ) . md5(rand() * time()) . '/';
+                Utilities::$experimentPath = base_path() . Constant::EXPERIMENT_DATA_ROOT . str_replace(' ', '', Session::get('username') ) . md5(rand() * time()) . '/';
             }
             while (is_dir( Utilities::$experimentPath)); // if dir already exists, try again
             // create upload directory
@@ -965,7 +952,7 @@ public static function process_inputs($applicationInputs, $experimentInputs)
                     $experimentAssemblySuccessful = false;
                 }
 
-                $experimentInput->value = str_replace(base_path() . Utilities::EXPERIMENT_DATA_ROOT, Utilities::$pathConstant , $filePath);
+                $experimentInput->value = str_replace(base_path() . Constant::EXPERIMENT_DATA_ROOT, Utilities::$pathConstant , $filePath);
                 $experimentInput->type = $applicationInput->type;
                 
             }
@@ -1518,7 +1505,7 @@ public static function create_nav_bar()
 
     if ( Session::has('username') )
     {
-        (Utilities::USER_STORE === "USER_API" && !Session::has('excede_login')) ? $link = "user_profile.php" : $link = "index.php";
+        (Constant::USER_STORE === "USER_API" && !Session::has('excede_login')) ? $link = "user_profile.php" : $link = "index.php";
         echo '<li><a href="' . $link . '"><span class="glyphicon glyphicon-user"></span> ' . Session::get('username') . '</a></li>';
     }
 
@@ -1829,7 +1816,7 @@ public static function list_output_files($experiment)
         {
             //echo '<p>' . $output->key .  ': <a href="' . $output->value . '">' . $output->value . '</a></p>';
             echo '<p><a target="_blank"
-                        href="' . str_replace(Utilities::$experimentDataPathAbsolute, Utilities::EXPERIMENT_DATA_ROOT, $output->value) . '">' .
+                        href="' . str_replace(Utilities::$experimentDataPathAbsolute, Constant::EXPERIMENT_DATA_ROOT, $output->value) . '">' .
                         $output->name . ' <span class="glyphicon glyphicon-new-window"></span></a></p>';
         }
         elseif ($output->type == DataType::STRING)

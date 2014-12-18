@@ -26,7 +26,7 @@
 		@endfor
 		@endif
 		</div>
-		<input type="button" class=" hide btn btn-default add-app-module" value="Add Application Module"/>
+		<button type="button" class="hide btn btn-default add-app-module">Add Application Module</button>
 	</div>
 	<div class="form-group">
 		@if( isset( $interfaceObject))
@@ -34,7 +34,7 @@
 				@include( 'partials/interface-input-block', array('dataTypes' => $dataTypes, 'appInputs' => $appInputs) )
 			@endforeach
 		@endif
-		<input type="button" class=" hide btn btn-default add-input" value="Add Application Input"/>
+		<button type="button" class=" hide btn btn-default add-input">Add Application Input</button>
 		<div class="app-inputs"></div>
 	</div>
 	<div class="form-group">
@@ -43,7 +43,7 @@
 				@include( 'partials/interface-output-block', array('dataTypes' => $dataTypes, 'appOutputs' => $appOutputs) )
 			@endforeach
 		@endif
-		<input type="button" class=" hide btn btn-default add-output" value="Add Application Output"/>
+		<button type="button" class="hide btn btn-default add-output">Add Application Output</button>
 		<div class="app-outputs"></div>
 	</div>
 </div>

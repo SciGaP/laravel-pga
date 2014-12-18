@@ -113,7 +113,7 @@
 	    	<div class="modal-body row">
 				<div class="col-md-12">
 					<div class="create-app-interface-block">
-						@include('partials/add-interface-block', array( 'dataTypes' => $dataTypes, 'modules' => $modules) )
+						@include('partials/interface-block', array( 'dataTypes' => $dataTypes, 'modules' => $modules) )
 					</div>
 				</div>
 			</div>
