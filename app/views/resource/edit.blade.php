@@ -68,8 +68,13 @@
 						<textarea class="form-control" maxlength="255" name="description">{{ $computeResource->resourceDescription }}</textarea>
 					</div>
 					<div class="form-group">
+						<label class="control-label">Maximum Memory Per Node ( In MB )</label>
+						<input type="number" min="0" class="form-control" value="{{ $computeResource->maxMemoryPerNode }}" maxlength="30" name="maxMemoryPerNode"/>
+					</div>
+					<div class="form-group">
 						<input type="submit" class="btn btn-primary" name="step1" value="Save changes"/>
 					</div>
+
 				</form>
 
 			</div>
@@ -119,6 +124,10 @@
 												<label class="control-label">Max Jobs in Queue</label>
 												<input type="number" min="0" class="form-control" value="{{ $queue->maxJobsInQueue }}" maxlength="30" name="qmaxjobsinqueue" placeholder="Max Jobs In Queue"/>
 						          			</div>
+											<div class="form-group">
+												<label class="control-label">Max Memory For Queue( In MB )</label>
+												<input type="number" min="0" class="form-control" value="{{ $queue->maxMemory }}" maxlength="30" name="qmaxmemoryinqueue" placeholder="Max Memory For Queue"/>
+						          			</div>
 						          			<div class="form-group">
 												<input type="submit" min="0" class="btn" name="step1" value="Update"/>
 											</div>
@@ -159,6 +168,10 @@
 								<div class="form-group">
 									<label class="control-label">Max Jobs in Queue</label>
 									<input class="form-control" type="number" min="0" maxlength="30" name="qmaxjobsinqueue" placeholder="Max Jobs In Queue"/>
+			          			</div>
+			          			<div class="form-group">
+									<label class="control-label">Max Memory For Queue</label>
+									<input type="number" min="0" class="form-control" maxlength="30" name="qmaxmemoryinqueue" placeholder="Max Memory For Queue"/>
 			          			</div>
 			          		</div>
 		          			<div class="form-group">

@@ -49,7 +49,7 @@
 					<div id="collapse-{{$index}}" class="panel-collapse collapse">
 						<div class="panel-body">
 							<div class="app-interface-block">
-								@include('partials/interface-block', array( 'interfaceObject' => $interface, 'dataTypes' => $dataTypes, 'modules' => $modules) )
+								@include('partials/interface-block', array( 'interfaceObject' => $interface, 'dataTypes' => $dataTypes, 'modules' => $modules, 'validityType' => $validityType, 'commandLineType' => $commandLineType) )
 							</div>
 						</div>
 					</div>
@@ -72,11 +72,11 @@
 	</div>
 
 	<div class="app-input-block hide">
-		@include('partials/interface-input-block', array( 'dataTypes' => $dataTypes) )
+		@include('partials/interface-input-block', array( 'dataTypes' => $dataTypes, 'validityType' => $validityType, 'commandLineType' => $commandLineType) )
 	</div>
 
 	<div class="app-output-block hide">
-		@include('partials/interface-output-block', array( 'dataTypes' => $dataTypes) )
+		@include('partials/interface-output-block', array( 'dataTypes' => $dataTypes,'validityType' => $validityType, 'commandLineType' => $commandLineType) )
 	</div>
 </div>
 
@@ -113,7 +113,7 @@
 	    	<div class="modal-body row">
 				<div class="col-md-12">
 					<div class="create-app-interface-block">
-						@include('partials/interface-block', array( 'dataTypes' => $dataTypes, 'modules' => $modules) )
+						@include('partials/interface-block', array( 'dataTypes' => $dataTypes, 'modules' => $modules, 'validityType' => $validityType, 'commandLineType' => $commandLineType) )
 					</div>
 				</div>
 			</div>

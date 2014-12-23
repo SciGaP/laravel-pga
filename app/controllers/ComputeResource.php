@@ -91,7 +91,8 @@ class ComputeResource extends BaseController{
 			$computeDescription->hostName = trim( Input::get("hostname") );
 			$computeDescription->hostAliases = array_unique( array_filter( Input::get("hostaliases") ) );
 			$computeDescription->ipAddresses = array_unique( array_filter( Input::get("ips") ) );
-			$computeDescription->resourceDescription = Input::get("description") ;
+			$computeDescription->resourceDescription = Input::get("description");
+			$computeDescription->maxMemoryPerNode = Input::get("maxMemoryPerNode");
 			//var_dump( $computeDescription); exit;
 
 			$computeResource = CRUtilities::register_or_update_compute_resource( $computeDescription, true);
@@ -100,12 +101,13 @@ class ComputeResource extends BaseController{
 		}
 		if( Input::get("cr-edit") == "queue") /* Add / Modify a Queue */
 		{
-			$queue = array( "queueName"=>Input::get("qname"),
-							"queueDescription"=>Input::get("qdesc"),
-							"maxRunTime"=>Input::get( "qmaxruntime"),
-							"maxNodes"=>Input::get("qmaxnodes"),
-							"maxProcessors"=>Input::get("qmaxprocessors"),
-							"maxJobsInQueue"=>Input::get("qmaxjobsinqueue")
+			$queue = array( "queueName"			=>Input::get("qname"),
+							"queueDescription"	=>Input::get("qdesc"),
+							"maxRunTime"		=>Input::get( "qmaxruntime"),
+							"maxNodes"			=>Input::get("qmaxnodes"),
+							"maxProcessors"		=>Input::get("qmaxprocessors"),
+							"maxJobsInQueue"	=>Input::get("qmaxjobsinqueue"),
+							"maxMemory"			=>Input::get("qmaxmemoryinqueue")
 						);
 
 			$computeDescription = Utilities::get_compute_resource(  Input::get("crId"));

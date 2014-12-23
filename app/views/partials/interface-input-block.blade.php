@@ -1,4 +1,4 @@
-<div class="well">
+<div class="well app-input-data-block">
 	<button type="button" class="hide close remove-input-space"><span aria-hidden="true">&times;</span><span class="sr-only">Close</span></button>
 	<h4>App Input Fields</h4>
 	<div class="form-group required">
@@ -36,4 +36,49 @@
 		<label class="control-label">Meta Data</label>
 		<textarea readonly class="form-control" name="metaData[]">@if( isset( $appInputs) ){{$appInputs->metaData}}@endif</textarea>
 	</div>
+	<div class="form-group">
+		<label class="control-label">Validity Type</label><br/>
+		<select name="inputValidityType[]">
+			<option>select</option>
+			@foreach( $validityType as $index => $type)
+			<option value="{{ $index }}" @if( isset( $appInputs) ) @if( $appInputs->inputValid == $index) selected @endif @endif>{{ $type }}</option>
+			@endforeach
+		</select>
+	</div>
+	<div class="form-group">
+		<label class="control-label">Command Line Type</label><br/>
+		<select name="inputCommandLineType[]">
+			<option>select</option>
+			@foreach( $commandLineType as $index => $clt)
+			<option value="{{ $index }}"  @if( isset( $appInputs) ) @if( $appInputs->addedToCommandLine == $index) selected @endif @endif>{{ $clt }}</option>
+			@endforeach
+		</select>
+		<!--
+		Removed radio buttons because they do not help with multiple inputs
+		@foreach( $commandLineType as $index => $clt)
+		<label class="radio-inline"><input readonly type="radio" name="inputCommandLineType[]" value="{{ $index }}"  @if( isset( $appInputs) ) @if( $appInputs->addedToCommandLine == $index) checked @endif @endif>{{ $clt }}</label>
+		@endforeach
+		-->
+	</div>
+	<div class="form-group">
+		<label class="control-label">Input Order</label>	
+		<input type="number" readonly class="form-control" name="inputOrder[]" value="@if( isset( $appInputs) ){{$appInputs->inputOrder}}@endif"/>
+	</div>
+	<div class="form-group">
+		<label class="control-label">Data is Staged?</label><br/>
+		<select name="dataStaged[]">
+			<option>select</option>
+			<option value="1" @if( isset( $appInputs) ) @if( $appInputs->dataStaged == 1) selected @endif @endif>True</option>
+			<option value="0" @if( isset( $appInputs) ) @if( $appInputs->dataStaged == 0) selected @endif @endif>False</option>
+		</select>
+		<!-- Removed Radio button because it creates problems with multiple inputs
+		<label class="radio-inline">
+			<input type="radio" name="dataStaged[]"  @if( isset( $appInputs) ) @if( $appInputs->dataStaged == 1) checked @endif @endif>True
+		</label>
+		<label class="radio-inline">
+			<input type="radio" name="dataStaged[]"  @if( isset( $appInputs) ) @if( $appInputs->dataStaged == 0) checked @endif @endif>False
+		</label>
+		-->
+	</div>
+
 </div>

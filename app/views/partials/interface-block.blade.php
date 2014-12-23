@@ -31,7 +31,7 @@
 	<div class="form-group">
 		@if( isset( $interfaceObject))
 			@foreach( (array)$interfaceObject->applicationInputs as $index => $appInputs)
-				@include( 'partials/interface-input-block', array('dataTypes' => $dataTypes, 'appInputs' => $appInputs) )
+				@include( 'partials/interface-input-block', array('dataTypes' => $dataTypes, 'appInputs' => $appInputs, 'validityType' => $validityType) )
 			@endforeach
 		@endif
 		<button type="button" class=" hide btn btn-default add-input">Add Application Input</button>

@@ -20,6 +20,7 @@ use Airavata\Model\Workspace\Experiment\UserConfigurationData;
 use Airavata\Model\Workspace\Experiment\AdvancedOutputDataHandling;
 use Airavata\Model\Workspace\Experiment\Experiment;
 use Airavata\Model\AppCatalog\AppInterface\DataType;
+use Airavata\Model\AppCatalog\AppInterface\ValidityType;
 use Airavata\Model\Workspace\Project;
 use Airavata\Model\Workspace\Experiment\ExperimentState;
 use Airavata\Model\Workspace\Experiment\JobState;
@@ -1314,48 +1315,54 @@ public static function create_inputs($id, $isRequired)
 
     $required = $isRequired? ' required' : '';
 
+    $validityTypes = new ValidityType();
+
     foreach ($inputs as $input)
     {
-        /*
-        echo '<p>DataType::STRING = ' . \Airavata\Model\AppCatalog\AppInterface\DataType::STRING . '</p>';
-        echo '<p>DataType::INTEGER = ' . \Airavata\Model\AppCatalog\AppInterface\DataType::INTEGER . '</p>';
-        echo '<p>DataType::FLOAT = ' . \Airavata\Model\AppCatalog\AppInterface\DataType::FLOAT . '</p>';
-        echo '<p>DataType::URI = ' . \Airavata\Model\AppCatalog\AppInterface\DataType::URI . '</p>';
-
-        echo '<p>$input->type = ' . $input->type . '</p>';
-        */
-
-        switch ($input->type)
+        //null is also allowed here because  validityTypes all old application inputs are set as null.
+        if( $input->inputValid == $validityTypes::REQUIRED || $input->inputValid == null)
         {
-            case DataType::STRING:
-                echo '<div class="form-group">
-                    <label for="experiment-input">' . $input->name . '</label>
-                    <input type="text" class="form-control" name="' . $input->name .
-                    '" id="' . $input->name .
-                    '" placeholder="' . $input->userFriendlyDescription . '"' . $required . '>
-                    </div>';
-                break;
-            case DataType::INTEGER:
-            case DataType::FLOAT:
-                echo '<div class="form-group">
-                    <label for="experiment-input">' . $input->name . '</label>
-                    <input type="number" class="form-control" name="' . $input->name .
-                    '" id="' . $input->name .
-                    '" placeholder="' . $input->userFriendlyDescription . '"' . $required . '>
-                    </div>';
-                break;
-            case DataType::URI:
-                echo '<div class="form-group">
-                    <label for="experiment-input">' . $input->name . '</label>
-                    <input type="file" class="" name="' . $input->name .
-                    '" id="' . $input->name . '" ' . $required . '>
-                    <p class="help-block">' . $input->userFriendlyDescription . '</p>
-                    </div>';
-                break;
-            default:
-                Utilities::print_error_message('Input data type not supported!
-                    Please file a bug report using the link in the Help menu.');
-                break;
+            /*
+            echo '<p>DataType::STRING = ' . \Airavata\Model\AppCatalog\AppInterface\DataType::STRING . '</p>';
+            echo '<p>DataType::INTEGER = ' . \Airavata\Model\AppCatalog\AppInterface\DataType::INTEGER . '</p>';
+            echo '<p>DataType::FLOAT = ' . \Airavata\Model\AppCatalog\AppInterface\DataType::FLOAT . '</p>';
+            echo '<p>DataType::URI = ' . \Airavata\Model\AppCatalog\AppInterface\DataType::URI . '</p>';
+
+            echo '<p>$input->type = ' . $input->type . '</p>';
+            */
+
+            switch ($input->type)
+            {
+                case DataType::STRING:
+                    echo '<div class="form-group">
+                        <label for="experiment-input">' . $input->name . '</label>
+                        <input type="text" class="form-control" name="' . $input->name .
+                        '" id="' . $input->name .
+                        '" placeholder="' . $input->userFriendlyDescription . '"' . $required . '>
+                        </div>';
+                    break;
+                case DataType::INTEGER:
+                case DataType::FLOAT:
+                    echo '<div class="form-group">
+                        <label for="experiment-input">' . $input->name . '</label>
+                        <input type="number" class="form-control" name="' . $input->name .
+                        '" id="' . $input->name .
+                        '" placeholder="' . $input->userFriendlyDescription . '"' . $required . '>
+                        </div>';
+                    break;
+                case DataType::URI:
+                    echo '<div class="form-group">
+                        <label for="experiment-input">' . $input->name . '</label>
+                        <input type="file" class="" name="' . $input->name .
+                        '" id="' . $input->name . '" ' . $required . '>
+                        <p class="help-block">' . $input->userFriendlyDescription . '</p>
+                        </div>';
+                    break;
+                default:
+                    Utilities::print_error_message('Input data type not supported!
+                        Please file a bug report using the link in the Help menu.');
+                    break;
+            }
         }
     }
 }

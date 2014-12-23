@@ -4,6 +4,8 @@
 use Airavata\API\AiravataClient;
 
 use Airavata\Model\AppCatalog\AppInterface\DataType;
+use Airavata\Model\AppCatalog\AppInterface\ValidityType;
+use Airavata\Model\AppCatalog\AppInterface\CommandLineType;
 use Airavata\Model\AppCatalog\AppInterface\InputDataObjectType;
 use Airavata\Model\AppCatalog\AppInterface\OutputDataObjectType;
 use Airavata\Model\AppCatalog\AppInterface\ApplicationInterfaceDescription;
@@ -50,13 +52,17 @@ class AppUtilities{
 		$dataType = new DataType();
 		$modules = AppUtilities::getAllModules();
 		$appInterfaces = $airavataclient->getAllApplicationInterfaces();
+		$validityType = new ValidityType();
+		$commandLineType = new CommandLineType();
 
 		$InputDataObjectType = new InputDataObjectType();
 
 		return array(
-						"appInterfaces" => $appInterfaces,
-						"dataTypes" 	=> $dataType::$__names,
-						"modules"   	=> $modules
+						"appInterfaces" 	=> $appInterfaces,
+						"dataTypes" 		=> $dataType::$__names,
+						"modules"   		=> $modules,
+						"validityType"  	=> $validityType::$__names,
+						"commandLineType" 	=> $commandLineType::$__names
 					);
 	}
 
@@ -80,7 +86,11 @@ class AppUtilities{
 																	"applicationArgument" => $appInterfaceValues["applicationArgument"][$index],
 																	"standardInput" => $appInterfaceValues["standardInput"],
 																	"userFriendlyDescription" => $appInterfaceValues["userFriendlyDescription"][ $index],
-																	"metaData" => $appInterfaceValues["metaData"][ $index]
+																	"metaData" => $appInterfaceValues["metaData"][ $index],
+																	"inputValid" => intval( $appInterfaceValues["inputValidityType"][ $index]),
+																	"addedToCommandLine" =>  intval( $appInterfaceValues["inputCommandLineType"][ $index] ),
+																	"inputOrder" => intval( $appInterfaceValues["inputOrder"][ $index]),
+																	"dataStaged" => intval( $appInterfaceValues["dataStaged"][ $index])
 																) );
 				$appInterface->applicationInputs[] = $inputDataObjectType;
 			}
@@ -92,7 +102,12 @@ class AppUtilities{
 				$outputDataObjectType = new OutputDataObjectType( array(
 																	"name" => $name,
 																	"value" => $appInterfaceValues["outputValue"][ $index],
-																	"type" => $appInterfaceValues["outputType"][ $index]
+																	"type" => $appInterfaceValues["outputType"][ $index],
+																	"validityType" => intval( $appInterfaceValues["outputValidityType"][ $index]),
+																	"addedToCommandLine" =>  intval( $appInterfaceValues["outputCommandLineType"][ $index] ),
+																	"dataMovement" => intval( $appInterfaceValues["dataMovement"][ $index]),
+																	"dataNameLocation" => $appInterfaceValues["dataNameLocation"][ $index]
+																
 																));
 				$appInterface->applicationOutputs[] = $outputDataObjectType;
 			}
