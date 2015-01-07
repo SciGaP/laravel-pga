@@ -36,6 +36,7 @@
 		-->
 	</div>
 	<div class="form-group">
+		<label class="control-label">Command Line Type</label><br/>
 		<select name="outputCommandLineType[]">
 			<option>select</option>
 			@foreach( $commandLineType as $index => $clt)

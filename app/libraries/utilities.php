@@ -595,7 +595,7 @@ public static function list_input_files($experiment)
             $explode = explode('/', $input->value);
             echo '<p><a target="_blank"
                         href="' . URL::to("/") . "/../.." . Constant::EXPERIMENT_DATA_ROOT . $explode[sizeof($explode)-2] . '/' . $explode[sizeof($explode)-1] . '">' .
-                $input->name . '
+                $explode[sizeof($explode)-1] . '
                 <span class="glyphicon glyphicon-new-window"></span></a></p>';
         }
         elseif ($matchingAppInput->type == DataType::STRING)
@@ -817,6 +817,8 @@ public static function assemble_experiment()
         $experimentOutputs[] = $experimentOutput;
     }
     */
+
+    //TODO: replace constructor with a call to airvata to get a prepopulated experiment template
     $experiment = new Experiment();
 
     // required
@@ -830,8 +832,11 @@ public static function assemble_experiment()
     $experiment->userConfigurationData = $userConfigData;
     $experiment->experimentInputs = $experimentInputs;
 
-    //$experiment->experimentOutputs = $experimentOutputs;
+    // adding default experiment outputs for now till prepoulated experiment template is not implemented.
+    $airavataclient = Utilities::get_airavata_client();
+    $application = $airavataclient->getApplicationInterface( $_POST["application"] );
 
+    $experiment->experimentOutputs = $application->applicationOutputs;
 
     if ($experimentInputs)
     {
