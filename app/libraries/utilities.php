@@ -577,10 +577,18 @@ public static function list_input_files($experiment)
     $experimentInputs = $experiment->experimentInputs;
 
 
-
+    //showing experiment inputs in the order defined by the admins.
+    $order = array();
+    foreach ($experimentInputs as $index => $input)
+    {
+        $order[$index] = $input->inputOrder;
+    }
+    array_multisort($order, SORT_ASC, $experimentInputs);
+    
     foreach ($experimentInputs as $input)
     {
         $matchingAppInput = null;
+
         foreach($applicationInputs as $applicationInput)
         {
             if ($input->name == $applicationInput->name)
@@ -890,8 +898,9 @@ public static function process_inputs($applicationInputs, $experimentInputs)
     foreach ($applicationInputs as $applicationInput)
     {
         $experimentInput = new InputDataObjectType();
-        $experimentInput->name = $applicationInput->name;
-        $experimentInput->metaData = $applicationInput->metaData;
+        $experimentInput = $applicationInput;
+        //$experimentInput->name = $applicationInput->name;
+        //$experimentInput->metaData = $applicationInput->metaData;
 
 
         //$experimentInput->type = $applicationInput->type;
