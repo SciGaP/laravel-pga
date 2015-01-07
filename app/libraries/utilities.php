@@ -833,10 +833,7 @@ public static function assemble_experiment()
     $experiment->experimentInputs = $experimentInputs;
 
     // adding default experiment outputs for now till prepoulated experiment template is not implemented.
-    $airavataclient = Utilities::get_airavata_client();
-    $application = $airavataclient->getApplicationInterface( $_POST["application"] );
-
-    $experiment->experimentOutputs = $application->applicationOutputs;
+    $experiment->experimentOutputs = Utilities::get_application_outputs( $_POST["application"]);
 
     if ($experimentInputs)
     {
@@ -882,6 +879,14 @@ public static function process_inputs($applicationInputs, $experimentInputs)
         }
     }
 
+    //sending application inputs in the order defined by the admins.
+    $order = array();
+    foreach ($applicationInputs as $index => $input)
+    {
+        $order[$index] = $input->inputOrder;
+    }
+    array_multisort($order, SORT_ASC, $applicationInputs);
+    
     foreach ($applicationInputs as $applicationInput)
     {
         $experimentInput = new InputDataObjectType();
