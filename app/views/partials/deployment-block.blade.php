@@ -95,3 +95,31 @@
 	</div>
 	<button type="button" class="btn btn-default control-label add-environment hide">Add Environment</label>
 </div>
+
+<div class="form-group">
+	<div class="show-preJobCommands">
+		<h5>Pre Job Commands</h5>
+		@if( isset( $deploymentObject))
+			@foreach( (array)$deploymentObject->preJobCommands as $preJobCommand)
+				<div class="col-md-12 well">
+					<input name="preJobCommand[]" type="text" class="col-md-12" placeholder="Pre Job Command" value="{{$preJobCommand}}" readonly/>
+				</div>
+			@endforeach
+		@endif
+	</div>
+	<button type="button" class="btn btn-default control-label add-preJobCommand hide">Add Pre Job Command</label>
+</div>
+
+<div class="form-group">
+	<div class="show-postJobCommands">
+		<h5>Post Job Commands</h5>
+		@if( isset( $deploymentObject))
+			@foreach( (array)$deploymentObject->postJobCommands as $postJobCommand)
+				<div class="col-md-12 well">
+					<input name="postJobCommand[]" type="text" class="col-md-12" placeholder="Post Job Command" value="{{$postJobCommand}}" readonly/>
+				</div>
+			@endforeach
+		@endif
+	</div>
+	<button type="button" class="btn btn-default control-label add-postJobCommand hide">Add Post Job Command</label>
+</div>

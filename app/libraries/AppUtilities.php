@@ -197,6 +197,16 @@ class AppUtilities{
 				$appDeploymentValues["setEnvironment"][] = $envPath;
 			}
 		}
+		
+		if( isset( $appDeploymentValues["preJobCommand"] )) 
+		{
+			$appDeploymentValues["preJobCommands"] = array_unique( array_filter( $appDeploymentValues["preJobCommand"], "trim"));
+		}
+
+		if( isset( $appDeploymentValues["postJobCommand"] )) 
+		{
+			$appDeploymentValues["postJobCommands"] = array_unique( array_filter( $appDeploymentValues["postJobCommand"], "trim"));
+		}
 
 		//var_dump( $appDeploymentValues); exit;
 		$appDeployment = new ApplicationDeploymentDescription(  $appDeploymentValues);

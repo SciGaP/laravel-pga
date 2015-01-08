@@ -27,6 +27,14 @@ $( document).ready( function(){
 		$(this).parent().children(".show-environments").append( $(".environment-ui").html() );
 	});
 
+	$("body").on("click",".add-preJobCommand", function(){
+		$(this).parent().children(".show-preJobCommands").append( $(".pre-job-command-ui").html() );
+	});
+
+	$("body").on("click",".add-postJobCommand", function(){
+		$(this).parent().children(".show-postJobCommands").append( $(".post-job-command-ui").html() );
+	});
+
 	$('.filterinput').keyup(function() {
         var a = $(this).val();
         if (a.length > 0) {

@@ -83,6 +83,18 @@
 			</div>
 		</div>
 
+		<div class="pre-job-command-ui hide">
+			<div class="col-md-12 well">
+				<input name="preJobCommand[]" type="text" class="col-md-12" placeholder="Pre Job Command"/>
+			</div>
+		</div>
+
+		<div class="post-job-command-ui hide">
+			<div class="col-md-12 well">
+				<input name="postJobCommand[]" type="text" class="col-md-12" placeholder="Post Job Command"/>
+			</div>
+		</div>
+
 		<div class="modal fade" id="edit-app-deployment-block" tabindex="-1" role="dialog" aria-labelledby="add-modal" aria-hidden="true">
 		    <div class="modal-dialog">
 				<form action="{{URL::to('/')}}/app/deployment-edit" method="POST">	
