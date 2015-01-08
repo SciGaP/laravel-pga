@@ -10,7 +10,7 @@
 <h1>
     Experiment Summary
     <small><a href="{{ URL::to('/') }}/experiment/summary?expId={{ $experiment->experimentID }}"
-              title="Refresh"><span class="glyphicon glyphicon-refresh"></span></a></small>
+              title="Refresh"><span class="glyphicon glyphicon-refresh refresh-exp"></span></a></small>
 </h1>
 
     <table class="table">
@@ -99,7 +99,25 @@
             </a>
         </div>
     </form>
-
+    <input type="hidden" id="expObj" value='{{ json_encode( $experiment) }}'/>
 </div>
 
+@stop
+
+@section('scripts')
+    @parent
+    <script>
+    setInterval( function(){
+        $.ajax({
+            type:"GET",
+            url: "{{URL::to('/') }}/experiment/summary",
+            data: {expId: "{{ Input::get('expId') }}" },
+            success: function( exp){
+                if( $("#expObj").val() != exp)
+                    $(".refresh-exp").click();
+
+            }
+        });
+    }, 3000);
+    </script>
 @stop

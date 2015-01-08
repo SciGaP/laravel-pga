@@ -61,7 +61,6 @@ class ExperimentController extends BaseController {
 
 	public function summary()
 	{
-
 		$experiment = Utilities::get_experiment($_GET['expId']);
 		$project = Utilities::get_project($experiment->projectID);
 
@@ -70,7 +69,13 @@ class ExperimentController extends BaseController {
 		if( $expVal["experimentStatusString"] == "FAILED")
 			$expVal["editable"] = false;
 
-		return View::make( "experiment/summary", 
+		if( Request::ajax() )
+		{
+			return json_encode( $experiment);
+		}
+		else
+		{
+			return View::make( "experiment/summary", 
 								array(
 									"expId" => Input::get("expId"),
 									"experiment" => $experiment,
@@ -79,6 +84,7 @@ class ExperimentController extends BaseController {
 
 								)
 							);
+		}
 	}
 
 	public function expChange()

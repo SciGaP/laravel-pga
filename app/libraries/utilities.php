@@ -1850,7 +1850,7 @@ public static function list_output_files($experiment)
     $experimentOutputs = $experiment->experimentOutputs;
     foreach ($experimentOutputs as $output)
     {
-        if ($output->type == DataType::URI)
+        if ($output->type == DataType::URI || $output->type == DataType::STDOUT || $output->type == DataType::STDERR )
         {
             //echo '<p>' . $output->key .  ': <a href="' . $output->value . '">' . $output->value . '</a></p>';
             echo '<p><a target="_blank"
