@@ -1853,9 +1853,9 @@ public static function list_output_files($experiment)
         if ($output->type == DataType::URI || $output->type == DataType::STDOUT || $output->type == DataType::STDERR )
         {
             //echo '<p>' . $output->key .  ': <a href="' . $output->value . '">' . $output->value . '</a></p>';
-            echo '<p><a target="_blank"
-                        href="' . str_replace(Utilities::$experimentDataPathAbsolute, Constant::EXPERIMENT_DATA_ROOT, $output->value) . '">' .
-                        $output->name . ' <span class="glyphicon glyphicon-new-window"></span></a></p>';
+            echo '<p>' . $output->name  . ' : ' . '<a target="_blank"
+                        href="' . str_replace(Utilities::$experimentDataPathAbsolute, Constant::EXPERIMENT_DATA_ROOT, $output->value) . '">' . 
+                        str_replace(Utilities::$experimentDataPathAbsolute, Constant::EXPERIMENT_DATA_ROOT, $output->value) . ' <span class="glyphicon glyphicon-new-window"></span></a></p>';
         }
         elseif ($output->type == DataType::STRING)
         {

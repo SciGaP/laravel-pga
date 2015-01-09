@@ -14,7 +14,7 @@ $(document).ready( function(){
 		var appInputDiv = $('<div></div>');
 		appInputDiv.html( $(".app-input-block").html() );
 		clearInputs( appInputDiv);
-		$(".app-inputs").append(  appInputDiv );
+		$(".app-inputs").prepend(  appInputDiv );
 	});
 
 	// add new output fields block.
@@ -22,7 +22,7 @@ $(document).ready( function(){
 		var appOutputDiv = $('<div></div>');
 		appOutputDiv.html( $(".app-output-block").html() );
 		clearInputs( appOutputDiv);
-		$(".app-outputs").append( appOutputDiv );
+		$(".app-outputs").prepend( appOutputDiv );
 	});
 
 	// remove an input fields block
@@ -126,4 +126,7 @@ function clearInputs( elem, removeJustReadOnly){
 	elem.find("textarea").removeAttr("readonly");
 	elem.find("select").removeAttr("readonly");
 	elem.find(".hide").removeClass("hide");
+    //remove previously created input/output blocks
+    elem.find(".app-inputs").html("");
+    elem.find(".app-outputs").html("");
 }

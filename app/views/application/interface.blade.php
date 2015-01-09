@@ -80,11 +80,12 @@
 	</div>
 </div>
 
-<div class="modal fade" id="edit-app-interface-block" tabindex="-1" role="dialog" aria-labelledby="add-modal" aria-hidden="true">
+<div class="modal fade" id="edit-app-interface-block" tabindex="-1" role="dialog" aria-labelledby="add-modal" aria-hidden="true" data-backdrop="static">
     <div class="modal-dialog">
 		<form action="{{URL::to('/')}}/app/interface-edit" method="POST" id="edit-app-interface-form">	
         <div class="modal-content">
 	    	<div class="modal-header">
+	    		<button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
 	    		<h3 class="text-center">Edit Application Interface</h3>
 	    	</div>
 	    	<div class="modal-body row">
@@ -103,11 +104,12 @@
     </div>
 </div>
 
-<div class="modal fade" id="create-app-interface-block" tabindex="-1" role="dialog" aria-labelledby="add-modal" aria-hidden="true">
+<div class="modal fade" id="create-app-interface-block" tabindex="-1" role="dialog" aria-labelledby="add-modal" aria-hidden="true" data-backdrop="static">
     <div class="modal-dialog">
 		<form action="{{URL::to('/')}}/app/interface-create" method="POST" id="create-app-interface-form">	
         <div class="modal-content">
 	    	<div class="modal-header">
+	    		<button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
 	    		<h3 class="text-center">Create Application Interface</h3>
 	    	</div>
 	    	<div class="modal-body row">

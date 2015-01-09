@@ -99,7 +99,7 @@
             </a>
         </div>
     </form>
-    <input type="hidden" id="expObj" value='{{ json_encode( $experiment) }}'/>
+    <input type="hidden" id="expObj" value="{{ htmlentities( json_encode( $experiment)) }}"/>
 </div>
 
 @stop
@@ -107,14 +107,18 @@
 @section('scripts')
     @parent
     <script>
-    setInterval( function(){
+    setTimeout( function(){
         $.ajax({
             type:"GET",
             url: "{{URL::to('/') }}/experiment/summary",
             data: {expId: "{{ Input::get('expId') }}" },
             success: function( exp){
+                console.log("server");
+                console.log( $("#expObj").val());
+                console.log("ajax");
+                console.log( exp);
                 if( $("#expObj").val() != exp)
-                    $(".refresh-exp").click();
+                   $(".refresh-exp").click();
 
             }
         });

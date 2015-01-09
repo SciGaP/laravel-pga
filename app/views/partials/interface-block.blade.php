@@ -28,22 +28,22 @@
 		</div>
 		<button type="button" class="hide btn btn-default add-app-module">Add Application Module</button>
 	</div>
-	<div class="form-group">
+	<div class="form-group form-horizontal">
 		@if( isset( $interfaceObject))
 			@foreach( (array)$interfaceObject->applicationInputs as $index => $appInputs)
 				@include( 'partials/interface-input-block', array('dataTypes' => $dataTypes, 'appInputs' => $appInputs, 'validityType' => $validityType) )
 			@endforeach
 		@endif
-		<button type="button" class=" hide btn btn-default add-input">Add Application Input</button>
 		<div class="app-inputs"></div>
+		<button type="button" class=" hide btn btn-default add-input">Add Application Input</button>
 	</div>
-	<div class="form-group">
+	<div class="form-group form-horizontal">
 		@if( isset( $interfaceObject) )
 			@foreach( (array)$interfaceObject->applicationOutputs as $index => $appOutputs)
 				@include( 'partials/interface-output-block', array('dataTypes' => $dataTypes, 'appOutputs' => $appOutputs) )
 			@endforeach
 		@endif
-		<button type="button" class="hide btn btn-default add-output">Add Application Output</button>
 		<div class="app-outputs"></div>
+		<button type="button" class="hide btn btn-default add-output">Add Application Output</button>
 	</div>
 </div>
