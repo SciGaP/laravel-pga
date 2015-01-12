@@ -52,18 +52,15 @@ class AppUtilities{
 		$dataType = new DataType();
 		$modules = AppUtilities::getAllModules();
 		$appInterfaces = $airavataclient->getAllApplicationInterfaces();
-		$validityType = new ValidityType();
-		$commandLineType = new CommandLineType();
+
 
 		$InputDataObjectType = new InputDataObjectType();
 
 		return array(
 						"appInterfaces" 	=> $appInterfaces,
 						"dataTypes" 		=> $dataType::$__names,
-						"modules"   		=> $modules,
-						"validityType"  	=> $validityType::$__names,
-						"commandLineType" 	=> $commandLineType::$__names
-					);
+						"modules"   		=> $modules
+						);
 	}
 
 	public static function create_or_update_appInterface( $appInterfaceValues, $update = false){
@@ -84,13 +81,13 @@ class AppUtilities{
 																	"value" => $appInterfaceValues["inputValue"][ $index],
 																	"type" => $appInterfaceValues["inputType"][ $index],
 																	"applicationArgument" => $appInterfaceValues["applicationArgument"][$index],
-																	"standardInput" => $appInterfaceValues["standardInput"],
+																	"standardInput" => $appInterfaceValues["standardInput"][ $index],
 																	"userFriendlyDescription" => $appInterfaceValues["userFriendlyDescription"][ $index],
 																	"metaData" => $appInterfaceValues["metaData"][ $index],
-																	"inputValid" => intval( $appInterfaceValues["inputValidityType"][ $index]),
-																	"addedToCommandLine" =>  intval( $appInterfaceValues["inputCommandLineType"][ $index] ),
 																	"inputOrder" => intval( $appInterfaceValues["inputOrder"][ $index]),
-																	"dataStaged" => intval( $appInterfaceValues["dataStaged"][ $index])
+																	"dataStaged" => intval( $appInterfaceValues["dataStaged"][ $index]),
+																	"isRequired" => $appInterfaceValues["isRequired"][ $index],
+																	"requiredToAddedToCommandLine" => $appInterfaceValues["requiredToAddedToCommandLine"][$index]
 																) );
 				$appInterface->applicationInputs[] = $inputDataObjectType;
 			}
@@ -103,11 +100,10 @@ class AppUtilities{
 																	"name" => $name,
 																	"value" => $appInterfaceValues["outputValue"][ $index],
 																	"type" => $appInterfaceValues["outputType"][ $index],
-																	"validityType" => intval( $appInterfaceValues["outputValidityType"][ $index]),
-																	"addedToCommandLine" =>  intval( $appInterfaceValues["outputCommandLineType"][ $index] ),
 																	"dataMovement" => intval( $appInterfaceValues["dataMovement"][ $index]),
-																	"dataNameLocation" => $appInterfaceValues["dataNameLocation"][ $index]
-																
+																	"dataNameLocation" => $appInterfaceValues["dataNameLocation"][ $index],
+																	"isRequired" => $appInterfaceValues["isRequired"][ $index],
+																	"requiredToAddedToCommandLine" => $appInterfaceValues["requiredToAddedToCommandLine"][$index]
 																));
 				$appInterface->applicationOutputs[] = $outputDataObjectType;
 			}

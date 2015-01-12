@@ -31,7 +31,7 @@
 	<div class="form-group form-horizontal">
 		@if( isset( $interfaceObject))
 			@foreach( (array)$interfaceObject->applicationInputs as $index => $appInputs)
-				@include( 'partials/interface-input-block', array('dataTypes' => $dataTypes, 'appInputs' => $appInputs, 'validityType' => $validityType) )
+				@include( 'partials/interface-input-block', array('dataTypes' => $dataTypes, 'appInputs' => $appInputs) )
 			@endforeach
 		@endif
 		<div class="app-inputs"></div>

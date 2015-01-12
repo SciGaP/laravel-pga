@@ -14,7 +14,7 @@ $(document).ready( function(){
 		var appInputDiv = $('<div></div>');
 		appInputDiv.html( $(".app-input-block").html() );
 		clearInputs( appInputDiv);
-		$(".app-inputs").prepend(  appInputDiv );
+		$(".app-inputs").append(  appInputDiv );
 	});
 
 	// add new output fields block.
@@ -22,7 +22,7 @@ $(document).ready( function(){
 		var appOutputDiv = $('<div></div>');
 		appOutputDiv.html( $(".app-output-block").html() );
 		clearInputs( appOutputDiv);
-		$(".app-outputs").prepend( appOutputDiv );
+		$(".app-outputs").append( appOutputDiv );
 	});
 
 	// remove an input fields block
