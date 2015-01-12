@@ -107,7 +107,7 @@
 @section('scripts')
     @parent
     <script>
-    setTimeout( function(){
+    setInterval( function(){
         $.ajax({
             type:"GET",
             url: "{{URL::to('/') }}/experiment/summary",
