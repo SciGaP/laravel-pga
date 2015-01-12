@@ -117,7 +117,7 @@
                 console.log( $("#expObj").val());
                 console.log("ajax");
                 console.log( exp);
-                if( $("#expObj").val() != exp)
+                if( $.trim( $("#expObj").val() ) != $.trim( exp) )
                    $(".refresh-exp").click();
 
             }
