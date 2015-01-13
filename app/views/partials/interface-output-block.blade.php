@@ -24,7 +24,13 @@
 		</div>
 	</div>
 	<div class="form-group">
-		<label class="control-label col-md-3">Data Movement</label><br/>
+		<label class="control-label col-md-3">Application Argument</label>
+		<div class="col-md-9">
+			<input type="text" readonly class="form-control" name="applicationArgumentOutput[]" value="@if( isset( $appOutputs) ){{$appOutputs->applicationArgument }}@endif"/>
+		</div>
+	</div>
+	<div class="form-group">
+		<label class="control-label col-md-3">Data Movement</label>
 		<div class="col-md-9">
 			<select name="dataMovement[]" class="form-control">
 				<option>select</option>
@@ -41,18 +47,18 @@
 		</label>
 		-->
 	</div>
-	<div class="form-group">
-		<label class="control-label col-md-3">Is the Input required?</label>
-		<div class="col-md-9">
+	<div class="form-group col-md-6">
+		<label class="control-label col-md-6">Is the Output required?</label>
+		<div class="col-md-6">
 			<select class="form-control" name="isRequiredOutput[]" readonly>
 				<option value="0" @if( isset( $appOutputs) )  @if( 0 == $appOutputs->isRequired) selected @endif @endif>False</option>
 				<option value="1" @if( isset( $appOutputs) ) @if( 1 == $appOutputs->isRequired) selected @endif @endif>True</option>
 			</select>
 		</div>
 	</div>
-	<div class="form-group">
-		<label class="control-label col-md-3">Is it required to be added to the command Line?</label>
-		<div class="col-md-9">
+	<div class="form-group col-md-7">
+		<label class="control-label col-md-6">Required on command line?</label>
+		<div class="col-md-6">
 			<select class="form-control" name="requiredToAddedToCommandLineOutput[]" readonly>
 				<option value="0" @if( isset( $appOutputs) )  @if( 0 == $appOutputs->requiredToAddedToCommandLine) selected @endif @endif>False</option>
 				<option value="1" @if( isset( $appOutputs) ) @if( 1 == $appOutputs->requiredToAddedToCommandLine) selected @endif @endif>True</option>
@@ -60,9 +66,15 @@
 		</div>
 	</div>
 	<div class="form-group">
-		<label class="control-label col-md-3">Data Name Location</label>	
+		<label class="control-label col-md-3">Location</label>	
 		<div class="col-md-9">
-			<input type="text" readonly class="form-control" name="dataNameLocation[]" value="@if( isset( $appOutputs) ){{$appOutputs->dataNameLocation}}@endif"/>
+			<input type="text" readonly class="form-control" name="location[]" value="@if( isset( $appOutputs) ){{$appOutputs->location}}@endif"/>
+		</div>
+	</div>
+	<div class="form-group">
+		<label class="control-label col-md-3">Search Query</label>	
+		<div class="col-md-9">
+			<input type="text" readonly class="form-control" name="searchQuery[]" value="@if( isset( $appOutputs) ){{$appOutputs->searchQuery}}@endif"/>
 		</div>
 	</div>
 </div>

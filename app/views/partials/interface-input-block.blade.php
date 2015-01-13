@@ -26,7 +26,7 @@
 	<div class="form-group">
 		<label class="control-label col-md-3">Application Argument</label>
 		<div class="col-md-9">
-			<input type="text" readonly class="form-control" name="applicationArgument[]" value="@if( isset( $appInputs) ){{$appInputs->applicationArgument }}@endif"/>
+			<input type="text" readonly class="form-control" name="applicationArgumentInput[]" value="@if( isset( $appInputs) ){{$appInputs->applicationArgument }}@endif"/>
 		</div>
 	</div>
 	<div class="form-group">
@@ -44,13 +44,13 @@
 			<textarea readonly class="form-control" name="userFriendlyDescription[]">@if( isset( $appInputs) ){{$appInputs->userFriendlyDescription}}@endif</textarea>
 		</div>
 	</div>
-	<div class="form-group col-md-5">
+	<div class="form-group col-md-6">
 		<label class="control-label col-md-5">Input Order</label>	
 		<div class="col-md-7">
 			<input type="number" readonly class="form-control" name="inputOrder[]" value="@if( isset( $appInputs) ){{$appInputs->inputOrder}}@endif"/>
 		</div>
 	</div>
-	<div class="form-group col-md-8">
+	<div class="form-group col-md-7">
 		<label class="control-label col-md-4">Data is Staged?</label>
 		<div class="col-md-8">
 			<select name="dataStaged[]" class="form-control">
@@ -68,18 +68,18 @@
 		</label>
 		-->
 	</div>
-	<div class="form-group">
-		<label class="control-label col-md-3">Is the Input required?</label>
-		<div class="col-md-9">
+	<div class="form-group col-md-6">
+		<label class="control-label col-md-6">Is the Input required?</label>
+		<div class="col-md-6">
 			<select class="form-control" name="isRequiredInput[]" readonly>
 				<option value="0" @if( isset( $appInputs) )  @if( 0 == $appInputs->isRequired) selected @endif @endif>False</option>
 				<option value="1" @if( isset( $appInputs) ) @if( 1 == $appInputs->isRequired) selected @endif @endif>True</option>
 			</select>
 		</div>
 	</div>
-	<div class="form-group">
-		<label class="control-label col-md-3">Is it required to be added to the command Line?</label>
-		<div class="col-md-9">
+	<div class="form-group col-md-7">
+		<label class="control-label col-md-6">Required on command line?</label>
+		<div class="col-md-6">
 			<select class="form-control" name="requiredToAddedToCommandLineInput[]" readonly>
 				<option value="0" @if( isset( $appInputs) )  @if( 0 == $appInputs->requiredToAddedToCommandLine) selected @endif @endif>False</option>
 				<option value="1" @if( isset( $appInputs) ) @if( 1 == $appInputs->requiredToAddedToCommandLine) selected @endif @endif>True</option>

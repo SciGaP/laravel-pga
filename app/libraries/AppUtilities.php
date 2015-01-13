@@ -78,7 +78,7 @@ class AppUtilities{
 																	"name" => $name,
 																	"value" => $appInterfaceValues["inputValue"][ $index],
 																	"type" => $appInterfaceValues["inputType"][ $index],
-																	"applicationArgument" => $appInterfaceValues["applicationArgument"][$index],
+																	"applicationArgument" => $appInterfaceValues["applicationArgumentInput"][$index],
 																	"standardInput" => $appInterfaceValues["standardInput"][ $index],
 																	"userFriendlyDescription" => $appInterfaceValues["userFriendlyDescription"][ $index],
 																	"metaData" => $appInterfaceValues["metaData"][ $index],
@@ -98,10 +98,12 @@ class AppUtilities{
 																	"name" => $name,
 																	"value" => $appInterfaceValues["outputValue"][ $index],
 																	"type" => $appInterfaceValues["outputType"][ $index],
+																	"applicationArgument" => $appInterfaceValues["applicationArgumentOutput"][$index],
 																	"dataMovement" => intval( $appInterfaceValues["dataMovement"][ $index]),
-																	"dataNameLocation" => $appInterfaceValues["dataNameLocation"][ $index],
+																	"location" => $appInterfaceValues["location"][ $index],
 																	"isRequired" => $appInterfaceValues["isRequiredOutput"][ $index],
-																	"requiredToAddedToCommandLine" => $appInterfaceValues["requiredToAddedToCommandLineOutput"][$index]
+																	"requiredToAddedToCommandLine" => $appInterfaceValues["requiredToAddedToCommandLineOutput"][$index],
+																	"searchQuery" => $appInterfaceValues["searchQuery"][$index]
 																));
 				$appInterface->applicationOutputs[] = $outputDataObjectType;
 			}

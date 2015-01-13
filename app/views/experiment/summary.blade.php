@@ -36,7 +36,7 @@
         </tr>
         <tr>
             <td><strong>Experiment Status</strong></td>
-            <td><?php echo $expVal["experimentStatusString"]; ?></td>
+            <td class="exp-status"><?php echo $expVal["experimentStatusString"]; ?></td>
         </tr>
         <?php
         if ($expVal["jobState"]) echo '
@@ -108,20 +108,19 @@
     @parent
     <script>
     setInterval( function(){
-        $.ajax({
-            type:"GET",
-            url: "{{URL::to('/') }}/experiment/summary",
-            data: {expId: "{{ Input::get('expId') }}" },
-            success: function( exp){
-                console.log("server");
-                console.log( $("#expObj").val());
-                console.log("ajax");
-                console.log( exp);
-                if( $.trim( $("#expObj").val() ) != $.trim( exp) )
-                   $(".refresh-exp").click();
+        if( $.trim( $(".exp-status").html() ) != "COMPLETED")
+        {
+            $.ajax({
+                type:"GET",
+                url: "{{URL::to('/') }}/experiment/summary",
+                data: {expId: "{{ Input::get('expId') }}" },
+                success: function( exp){
+                    if( $.trim( $("#expObj").val() ) != $.trim( exp) )
+                       $(".refresh-exp").click();
 
-            }
-        });
+                }
+            });
+        }
     }, 3000);
     </script>
 @stop
