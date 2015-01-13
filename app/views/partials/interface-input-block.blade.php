@@ -71,7 +71,7 @@
 	<div class="form-group">
 		<label class="control-label col-md-3">Is the Input required?</label>
 		<div class="col-md-9">
-			<select class="form-control" name="isRequired[]" readonly>
+			<select class="form-control" name="isRequiredInput[]" readonly>
 				<option value="0" @if( isset( $appInputs) )  @if( 0 == $appInputs->isRequired) selected @endif @endif>False</option>
 				<option value="1" @if( isset( $appInputs) ) @if( 1 == $appInputs->isRequired) selected @endif @endif>True</option>
 			</select>
@@ -80,7 +80,7 @@
 	<div class="form-group">
 		<label class="control-label col-md-3">Is it required to be added to the command Line?</label>
 		<div class="col-md-9">
-			<select class="form-control" name="requiredToAddedToCommandLine[]" readonly>
+			<select class="form-control" name="requiredToAddedToCommandLineInput[]" readonly>
 				<option value="0" @if( isset( $appInputs) )  @if( 0 == $appInputs->requiredToAddedToCommandLine) selected @endif @endif>False</option>
 				<option value="1" @if( isset( $appInputs) ) @if( 1 == $appInputs->requiredToAddedToCommandLine) selected @endif @endif>True</option>
 			</select>

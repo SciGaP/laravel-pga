@@ -84,8 +84,8 @@ class AppUtilities{
 																	"metaData" => $appInterfaceValues["metaData"][ $index],
 																	"inputOrder" => intval( $appInterfaceValues["inputOrder"][ $index]),
 																	"dataStaged" => intval( $appInterfaceValues["dataStaged"][ $index]),
-																	"isRequired" => $appInterfaceValues["isRequired"][ $index],
-																	"requiredToAddedToCommandLine" => $appInterfaceValues["requiredToAddedToCommandLine"][$index]
+																	"isRequired" => $appInterfaceValues["isRequiredInput"][ $index],
+																	"requiredToAddedToCommandLine" => $appInterfaceValues["requiredToAddedToCommandLineInput"][$index]
 																) );
 				$appInterface->applicationInputs[] = $inputDataObjectType;
 			}
@@ -100,8 +100,8 @@ class AppUtilities{
 																	"type" => $appInterfaceValues["outputType"][ $index],
 																	"dataMovement" => intval( $appInterfaceValues["dataMovement"][ $index]),
 																	"dataNameLocation" => $appInterfaceValues["dataNameLocation"][ $index],
-																	"isRequired" => $appInterfaceValues["isRequired"][ $index],
-																	"requiredToAddedToCommandLine" => $appInterfaceValues["requiredToAddedToCommandLine"][$index]
+																	"isRequired" => $appInterfaceValues["isRequiredOutput"][ $index],
+																	"requiredToAddedToCommandLine" => $appInterfaceValues["requiredToAddedToCommandLineOutput"][$index]
 																));
 				$appInterface->applicationOutputs[] = $outputDataObjectType;
 			}
