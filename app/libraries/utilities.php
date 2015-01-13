@@ -20,7 +20,6 @@ use Airavata\Model\Workspace\Experiment\UserConfigurationData;
 use Airavata\Model\Workspace\Experiment\AdvancedOutputDataHandling;
 use Airavata\Model\Workspace\Experiment\Experiment;
 use Airavata\Model\AppCatalog\AppInterface\DataType;
-use Airavata\Model\AppCatalog\AppInterface\ValidityType;
 use Airavata\Model\Workspace\Project;
 use Airavata\Model\Workspace\Experiment\ExperimentState;
 use Airavata\Model\Workspace\Experiment\JobState;
@@ -1334,8 +1333,6 @@ public static function create_inputs($id, $isRequired)
 
     $required = $isRequired? ' required' : '';
 
-    $validityTypes = new ValidityType();
-
     //var_dump( $inputs);  echo "<br/>after sort<br/>";
     //arranging inputs in ascending order.
     foreach ($inputs as $index => $input)
@@ -1346,16 +1343,6 @@ public static function create_inputs($id, $isRequired)
     //var_dump( $inputs); exit;
     foreach ($inputs as $input)
     {
-        //null is also allowed here because  validityTypes all old application inputs are set as null.
-        /*
-        echo '<p>DataType::STRING = ' . \Airavata\Model\AppCatalog\AppInterface\DataType::STRING . '</p>';
-        echo '<p>DataType::INTEGER = ' . \Airavata\Model\AppCatalog\AppInterface\DataType::INTEGER . '</p>';
-        echo '<p>DataType::FLOAT = ' . \Airavata\Model\AppCatalog\AppInterface\DataType::FLOAT . '</p>';
-        echo '<p>DataType::URI = ' . \Airavata\Model\AppCatalog\AppInterface\DataType::URI . '</p>';
-
-        echo '<p>$input->type = ' . $input->type . '</p>';
-        */
-
         switch ($input->type)
         {
             case DataType::STRING:

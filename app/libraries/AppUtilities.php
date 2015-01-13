@@ -4,8 +4,6 @@
 use Airavata\API\AiravataClient;
 
 use Airavata\Model\AppCatalog\AppInterface\DataType;
-use Airavata\Model\AppCatalog\AppInterface\ValidityType;
-use Airavata\Model\AppCatalog\AppInterface\CommandLineType;
 use Airavata\Model\AppCatalog\AppInterface\InputDataObjectType;
 use Airavata\Model\AppCatalog\AppInterface\OutputDataObjectType;
 use Airavata\Model\AppCatalog\AppInterface\ApplicationInterfaceDescription;
