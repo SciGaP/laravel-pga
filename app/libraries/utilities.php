@@ -33,32 +33,14 @@ class Utilities{
  * Basic utility functions
  */
 
-//define('ROOT_DIR', __DIR__);
+/*
 
-/**
- * Define configuration constants
- */
-const AIRAVATA_SERVER = 'gw111.iu.xsede.org';
-//const AIRAVATA_SERVER = 'gw127.iu.xsede.org';
-//const AIRAVATA_SERVER = 'gw56.iu.xsede.org'; //Mirror
-//const AIRAVATA_PORT = 8930; //production
-const AIRAVATA_PORT = 9930; //development
-const AIRAVATA_TIMEOUT = 100000;
-const EXPERIMENT_DATA_ROOT = '/../experimentData/';
+************* IMPORTANT ************
 
-const SSH_USER = 'root';
-//const DATA_PATH = 'file://home/pga/production/experimentData/';
+READ :: ALL CONSTANTS ARE NOW BEING CALLED FROM app/models/Constant.php. 
 
-//const EXPERIMENT_DATA_ROOT_ABSOLUTE = '/var/www/experimentData/';
-//const EXPERIMENT_DATA_ROOT_ABSOLUTE = 'C:/wamp/www/experimentData/';
-
-//const USER_STORE = 'WSO2','XML','USER_API';
-const USER_STORE = 'WSO2';
-
-
-const REQ_URL = 'https://gw111.iu.xsede.org:8443/credential-store/acs-start-servlet';
-const GATEWAY_NAME = 'PHP-Reference-Gateway';
-const EMAIL = 'admin@gw120.iu.xsede.org';
+************* IMPORTANT ************
+*/
 private $tokenFilePath = 'tokens.xml';
 private $tokenFile = null;
 
@@ -1372,7 +1354,7 @@ public static function create_inputs($id, $isRequired)
             case DataType::URI:
                 echo '<div class="form-group">
                     <label for="experiment-input">' . $input->name . '</label>
-                    <input type="file" class="" name="' . $input->name .
+                    <input class="file-input" type="file" name="' . $input->name .
                     '" id="' . $input->name . '" ' . $required . '>
                     <p class="help-block">' . $input->userFriendlyDescription . '</p>
                     </div>';
@@ -1433,13 +1415,13 @@ public static function create_nav_bar()
 	    (
 	        'Project' => array
 	        (
-	            array('label' => 'Create Project', 'url' => URL::to('/') . '/project/create', "nav-active" => "project"),
-	            array('label' => 'Search Projects', 'url' => URL::to('/') . '/project/search', "nav-active"=> "project")
+	            array('label' => 'Create', 'url' => URL::to('/') . '/project/create', "nav-active" => "project"),
+	            array('label' => 'Search', 'url' => URL::to('/') . '/project/search', "nav-active"=> "project")
 	        ),
 	        'Experiment' => array
 	        (
-	            array('label' => 'Create Experiment', 'url' => URL::to('/') . '/experiment/create', "nav-active" => "experiment"),
-	            array('label' => 'Search Experiments', 'url' => URL::to('/') . '/experiment/search', "nav-active" => "experiment")
+	            array('label' => 'Create', 'url' => URL::to('/') . '/experiment/create', "nav-active" => "experiment"),
+	            array('label' => 'Search', 'url' => URL::to('/') . '/experiment/search', "nav-active" => "experiment")
 	        )
 	    );
 
@@ -1456,6 +1438,13 @@ public static function create_nav_bar()
 	            array('label' => 'Interface', 'url' => URL::to('/') . '/app/interface', "nav-active" => "app-catalog"),
 	            array('label' => 'Deployment', 'url' => URL::to('/') . '/app/deployment', "nav-active" => "app-catalog")
 	        );
+            $menus['Gateway Profile'] = array
+            (
+
+                array('label' => 'Register', 'url' => URL::to('/') . '/gp/create', "nav-active" => "gateway-profile"),
+                array('label' => 'Browse', 'url' => URL::to('/') . '/gp/browse', "nav-active" => "gateway-profile")
+            );
+               
 	    }
         
         $menus['Help'] = array

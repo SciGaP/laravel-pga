@@ -4,6 +4,8 @@
 //Airavata classes - loaded from app/libraries/Airavata
 use Airavata\API\AiravataClient;
 
+//Compute Resource classes
+
 use Airavata\Model\AppCatalog\ComputeResource\FileSystems;
 use Airavata\Model\AppCatalog\ComputeResource\JobSubmissionInterface;
 use Airavata\Model\AppCatalog\ComputeResource\JobSubmissionProtocol;
@@ -19,6 +21,12 @@ use Airavata\Model\AppCatalog\ComputeResource\BatchQueue;
 use Airavata\Model\AppCatalog\ComputeResource\SCPDataMovement;
 use Airavata\Model\AppCatalog\ComputeResource\GridFTPDataMovement;
 use Airavata\Model\AppCatalog\ComputeResource\LOCALDataMovement;
+
+//Gateway Classes
+
+use Airavata\Model\AppCatalog\GatewayProfile\GatewayResourceProfile;
+
+
 
 
 
@@ -244,11 +252,28 @@ public static function create_or_update_DMIObject( $inputs, $update = false){
     }
 }
 
+public static function getAllCRObjects( $onlyName = false){
+    $airavataclient = Utilities::get_airavata_client();
+    $crNames = $airavataclient->getAllComputeResourceNames();
+    if( $onlyName)
+        return $crNames;
+    else
+    {
+        $crObjects = array();
+        foreach( $crNames as $id => $crName)
+        {
+            $crObjects[] = $airavataclient->getComputeResource( $id);
+        }
+        return $crObjects;
+    }
+
+}
+
 public static function getBrowseCRData(){
     $airavataclient = Utilities::get_airavata_client();
 	$appDeployments = $airavataclient->getAllApplicationDeployments();
 
-    return array( 'crObjects' =>$airavataclient->getAllComputeResourceNames(),
+    return array( 'crObjects' => CRUtilities::getAllCRObjects(true),
     			  'appDeployments' => $appDeployments 
     			);
 }
@@ -300,6 +325,46 @@ public static function deleteActions( $inputs){
     		return 1;
     	else
     		return 0;
+}
+
+public static function create_or_update_gateway_profile( $inputs, $update = false){
+    $airavataclient = Utilities::get_airavata_client();
+
+    $computeResourcePreferences = array();
+    if( isset( $input["crPreferences"]) )
+        $computeResourcePreferences = $input["crPreferences"];
+
+    $gatewayProfile = new GatewayResourceProfile( array(
+                                                        "gatewayName" => $inputs["gatewayName"],
+                                                        "gatewayDescription" => $inputs["gatewayDescription"],
+                                                        "computeResourcePreferences" =>  $computeResourcePreferences
+                                                        )
+                                                );
+
+    if( $update){
+        $gatewayProfileId = $airavataclient->updateGatewayResourceProfile( $input["gatewayId"], $gatewayProfile);
+    }
+    else
+        $gatewayProfileId = $airavataclient->registerGatewayResourceProfile( $gatewayProfile);
+
+    print_r( $gatewayProfileId); exit;
+}
+
+public static function getAllGatewayProfilesData(){
+    $airavataclient = Utilities::get_airavata_client();
+
+    $gatewayProfiles = $airavataclient->getAllGatewayComputeResources();
+    //$gatewayProfileIds = array("GatewayTest3_57726e98-313f-4e7c-87a5-18e69928afb5", "GatewayTest4_4fd9fb28-4ced-4149-bdbd-1f276077dad8");
+    foreach( (array)$gatewayProfiles as $index => $gp)
+    {
+        foreach( (array)$gp->computeResourcePreferences as $i => $crp)
+        {
+            $gatewayProfiles[$index]->computeResourcePreferences[$i]->crDetails = $airavataclient->getComputeResource( $crp->computeResourceId);
+        }
+    }
+    //var_dump( $gatewayProfiles[0]->computeResourcePreferences[0]->crDetails); exit;
+    
+    return $gatewayProfiles;
 }
 
 

@@ -18,7 +18,7 @@
 
 <h1>Edit Experiment</h1>
 
-<form action="{{URL::to('/')}}/experiment/edit" method="post" role="form" enctype="multipart/form-data">
+<form action="{{URL::to('/')}}/experiment/edit" method="POST" role="form" enctype="multipart/form-data">
     <input type="hidden" name="expId" value="<?php echo Input::get('expId');?>"/>
 
     <div class="form-group">

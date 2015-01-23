@@ -23,6 +23,8 @@ class Constant extends Eloquent{
 	const REQ_URL = 'https://gw111.iu.xsede.org:8443/credential-store/acs-start-servlet';
 	const GATEWAY_NAME = 'PHP-Reference-Gateway';
 	const EMAIL = 'admin@gw120.iu.xsede.org';	
+
+	const SERVER_ALLOWED_FILE_SIZE = 64; // in MB
 }
 
 ?>

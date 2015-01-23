@@ -104,30 +104,7 @@
 												<label class="control-label">Queue Name <small> ( cannot be changed.) </small></label>
 												<input class="form-control" value="{{ $queue->queueName }}" maxlength="30" name="qname" placeholder="Queue Name" readonly />
 											</div>
-											<div class="form-group">
-												<label class="control-label">Queue Description</label>
-												<textarea class="form-control" value="{{ $queue->queueDescription }}" maxlength="255" name="qdesc" placeholder="Queue Description"></textarea>
-											</div>
-											<div class="form-group">
-												<label class="control-label">Queue Max Run Time<small> ( In Minutes) </small></label>
-												<input type="number" min="0" class="form-control" value="{{ $queue->maxRunTime }}" maxlength="30" name="qmaxruntime" placeholder="Queue Max Run Time"/>
-											</div>
-											<div class="form-group">
-												<label class="control-label">Queue Max Nodes</label>
-												<input type="number" min="0" class="form-control" value="{{ $queue->maxNodes }}" maxlength="30" name="qmaxnodes" placeholder="Queue Max Nodes"/>
-											</div>
-											<div class="form-group">
-												<label class="control-label">Queue Max Processors</label>
-												<input type="number" min="0" class="form-control" value="{{ $queue->maxProcessors }}" maxlength="30" name="qmaxprocessors" placeholder="Queue Max Processors"/>
-											</div>
-											<div class="form-group">
-												<label class="control-label">Max Jobs in Queue</label>
-												<input type="number" min="0" class="form-control" value="{{ $queue->maxJobsInQueue }}" maxlength="30" name="qmaxjobsinqueue" placeholder="Max Jobs In Queue"/>
-						          			</div>
-											<div class="form-group">
-												<label class="control-label">Max Memory For Queue( In MB )</label>
-												<input type="number" min="0" class="form-control" value="{{ $queue->maxMemory }}" maxlength="30" name="qmaxmemoryinqueue" placeholder="Max Memory For Queue"/>
-						          			</div>
+											@include('partials/queue-block', array('queueData'=>$queue))
 						          			<div class="form-group">
 												<input type="submit" min="0" class="btn" name="step1" value="Update"/>
 											</div>
@@ -149,30 +126,8 @@
 									<label class="control-label">Queue Name<small> ( A queue name is unique and cannot be changed later.)</small></label>
 									<input class="form-control create-queue-name" maxlength="30" name="qname" placeholder="Queue Name" required="required"/>
 								</div>
-								<div class="form-group">
-									<label class="control-label">Queue Description</label>
-									<textarea class="form-control" maxlength="255" name="qdesc" placeholder="Queue Description"></textarea>
-								</div>
-								<div class="form-group">
-									<label class="control-label">Queue Max Run Time<small> ( In Minutes)</small> </label>
-									<input class="form-control" type="number" min="0" maxlength="30" name="qmaxruntime" placeholder="Queue Max Run Time"/>
-								</div>
-								<div class="form-group">
-									<label class="control-label">Queue Max Nodes</label>
-									<input class="form-control" type="number" min="0" maxlength="30" name="qmaxnodes" placeholder="Queue Max Nodes"/>
-								</div>
-								<div class="form-group">
-									<label class="control-label">Queue Max Processors</label>
-									<input class="form-control" type="number" min="0" maxlength="30" name="qmaxprocessors" placeholder="Queue Max Processors"/>
-								</div>
-								<div class="form-group">
-									<label class="control-label">Max Jobs in Queue</label>
-									<input class="form-control" type="number" min="0" maxlength="30" name="qmaxjobsinqueue" placeholder="Max Jobs In Queue"/>
-			          			</div>
-			          			<div class="form-group">
-									<label class="control-label">Max Memory For Queue</label>
-									<input type="number" min="0" class="form-control" maxlength="30" name="qmaxmemoryinqueue" placeholder="Max Memory For Queue"/>
-			          			</div>
+								@include('partials/queue-block')
+								
 			          		</div>
 		          			<div class="form-group">
 								<input type="button" class="btn create-queue-form btn-primary" name="step1" value="Create"/>
@@ -705,6 +660,8 @@
 <div class="modal fade" id="delete-queue" tabindex="-1" role="dialog" aria-labelledby="add-modal" aria-hidden="true">
     <div class="modal-dialog">
         <div class="modal-content">
+   			<!-- dirty hack to neutralise form problem in code by just adding an empty form tag before the actual form. Needs fix.-->
+        	<form></form>
         	<form action="{{URL::to('/')}}/cr/edit" method="POST"/> 	
 				<input type="hidden" name="crId" value="{{Input::get('crId') }}"/>    
 				<input type="hidden" name="cr-edit" value="delete-queue"/>

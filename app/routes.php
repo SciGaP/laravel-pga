@@ -121,6 +121,12 @@ Route::post("app/deployment-edit", "ApplicationController@editAppDeploymentSubmi
 
 Route::post("app/deployment-delete", "ApplicationController@deleteAppDeployment");
 
+Route::get("gp/create", "GatewayprofileController@createView");
+
+Route::post("gp/create", "GatewayprofileController@createSubmit");
+
+Route::get("gp/browse", "GatewayprofileController@browseView");
+
 Route::get("airavata/down", function(){
 	return View::make("server-down");
 });

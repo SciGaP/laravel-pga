@@ -20,16 +20,19 @@ class ExperimentController extends BaseController {
 
 	public function createSubmit()
 	{
+		//var_dump( Input::all() ); exit;
 		if( isset( $_POST['continue'] ))
 		{
 			Session::put( 'exp_create_continue', true);
-			return View::make( "experiment/create", array( 
+			return View::make( "experiment/create-complete", array( 
 								"disabled" => ' disabled',
 						        "experimentName" => $_POST['experiment-name'],
 						        "experimentDescription" => $_POST['experiment-description'] . ' ',
 						        "project" => $_POST['project'],
 						        "application" => $_POST['application'],
-						        // ugly hack until app catalog is in place
+						        "allowedFileSize" => Constant::SERVER_ALLOWED_FILE_SIZE,
+						        // ugly hack until app catalog is in place. 
+						        //App catalog is in place. But, I'm not sure what this does so not removing it.
 						        "echo" => ($_POST['application'] == 'Echo')? ' selected' : '',
 						        "wrf" => ($_POST['application'] == 'WRF')? ' selected' : ''
 
@@ -56,7 +59,7 @@ class ExperimentController extends BaseController {
         	return Redirect::to('experiment/summary?expId=' . $expId);
 		}
 		else
-			return Redirect::to("home");
+			return Redirect::to("home")->with("message", "Something went wrong here. Please file a bug report using the link in the Help menu.");
 	}
 
 	public function summary()
