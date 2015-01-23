@@ -1,10 +1,10 @@
 <!-- String replace is done as Jquery creates problems when using period(.) in id or class. -->
-<div id="cr-{{ str_replace( '.', "_", $computeResource->computeResourceId) }}" class="@if(isset( $edit) ) @if( !$edit) hide @endif @else hide @endif">
-	<h4>Set Preferences</h4>
+<div id="cr-{{ str_replace( '.', "_", $computeResource->computeResourceId) }}" class="@if(isset( $show) ) @if( !$show) hide @endif @else hide @endif">
+	<h3 class="text-center">Set Preferences</h3>
 	<div class="form-group">
 		<label class="control-label col-md-3">Override by Airavata</label>
 		<div class="col-md-9">
-			<select class="form-control" name="overridebyAiravata[]">
+			<select class="form-control" name="overridebyAiravata">
 				<option value="1" @if( isset( $preferences) ) @if( 1 == $preferences->overridebyAiravata) selected @endif @endif>True</option>
 				<option value="0" @if( isset( $preferences) )  @if( 0 == $preferences->overridebyAiravata) selected @endif @endif>False</option>
 			</select>
@@ -35,7 +35,7 @@
 	<div class="form-group">
 		<label class="control-label col-md-3">Preferred Batch Queue</label>
 		<div class="col-md-9">
-			<select name="preferredBatchQueue[]" class="form-control">
+			<select name="preferredBatchQueue" class="form-control">
 			@foreach( (array)$computeResource->batchQueues as $index => $queue)
 				<option value="{{ $queue->queueName}}"   @if( isset( $preferences) )  @if( $preferences->preferredBatchQueue == $queue->queueName) selected @endif @endif>{{ $queue->queueName}}</option>
 			@endforeach
@@ -55,10 +55,6 @@
 		</div>
 	</div>
 	<div class="form-group">
-		@if( isset( $edit) )
-			<input type="submit" class="form-control btn btn-primary" value="Change" />
-		@else
-			<input type="submit" class="form-control btn btn-primary" value="Submit" />
-		@endif
+		<input type="submit" class="form-control btn btn-primary" value="Set preferences" />
 	</div>
 </div>

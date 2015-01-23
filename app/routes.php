@@ -127,6 +127,10 @@ Route::post("gp/create", "GatewayprofileController@createSubmit");
 
 Route::get("gp/browse", "GatewayprofileController@browseView");
 
+Route::post("gp/add-crp", "GatewayprofileController@modifyCRP");
+
+Route::post("gp/update-crp", "GatewayprofileController@modifyCRP");
+
 Route::get("airavata/down", function(){
 	return View::make("server-down");
 });

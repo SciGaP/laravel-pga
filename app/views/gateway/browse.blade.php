@@ -9,7 +9,9 @@
 <div class="container">
 	<div class="col-md-offset-2 col-md-8">
 		<div class="row">
-			<button class="btn btn-default create-gateway-profile">Create a new Gateway Resource Profile</button>
+			<a href="{{URL::to('/')}}/gp/create">
+				<button class="btn btn-default create-gateway-profile">Create a new Gateway Resource Profile</button>
+			</a>
 		</div>
 		@if( count( $gatewayProfiles) )
 			@if( Session::has("message"))
@@ -31,11 +33,11 @@
 				</div>
 			</div>
 			<div class="panel-group" id="accordion1">
-			@foreach( $gatewayProfiles as $index => $gp )
+			@foreach( $gatewayProfiles as $indexGP => $gp )
 				<div class="panel panel-default">
 					<div class="panel-heading">
 						<h4 class="panel-title">
-							<a class="accordion-toggle collapsed gateway-name" data-toggle="collapse" data-parent="#accordion" href="#collapse-gateway-{{$index}}">
+							<a class="accordion-toggle collapsed gateway-name" data-toggle="collapse" data-parent="#accordion" href="#collapse-gateway-{{$indexGP}}">
 							{{ $gp->gatewayName }}
 							</a>
 							<div class="pull-right col-md-2 gateway-options fade">
@@ -44,7 +46,7 @@
 							</div>
 						</h4>
 					</div>
-					<div id="collapse-gateway-{{$index}}" class="panel-collapse collapse">
+					<div id="collapse-gateway-{{$indexGP}}" class="panel-collapse collapse">
 						<div class="panel-body">
 							<div class="app-interface-block">
 								<h2>{{ $gp->gatewayDescription}}</h2>
@@ -59,22 +61,26 @@
 										<h3>Existing Compute Resources :</h3>
 									</div>
 									<div class="accordion-inner">
-										<div class="panel-group" id="accordion-{{$index}}">
-										@foreach( (array)$gp->computeResourcePreferences as $index => $crp )
+										<div class="panel-group" id="accordion-{{$indexGP}}">
+										@foreach( (array)$gp->computeResourcePreferences as $indexCRP => $crp )
 											<div class="panel panel-default">
 												<div class="panel-heading">
 													<h4 class="panel-title">
-														<a class="accordion-toggle collapsed gateway-name" data-toggle="collapse" data-parent="#accordion" href="#collapse-crp-{{$index}}">
+														<a class="accordion-toggle collapsed gateway-name" data-toggle="collapse" data-parent="#accordion" href="#collapse-crp-{{$indexGP}}-{{$indexCRP}}">
 														{{ $crp->crDetails->hostName }}
 														</a>
 													</h4>
 												</div>
-												<div id="collapse-crp-{{$index}}" class="panel-collapse collapse">
+												<div id="collapse-crp-{{$indexGP}}-{{$indexCRP}}" class="panel-collapse collapse">
 													<div class="panel-body">
 														<div class="app-compute-resource-preferences-block">
-															<div class="form-horizontal">
-																@include('partials/gateway-preferences', array('computeResource' => $crp->crDetails, 'crData' => $crData, 'preferences'=>$crp, 'edit'=>'true'))
-															</div>
+															<form action="{{URL::to('/')}}/gp/update-crp" method="POST">
+																<input type="hidden" name="gatewayId" id="gatewayId" value="{{$gp->gatewayID}}">
+																<input type="hidden" name="computeResourceId" id="gatewayId" value="{{$crp->computeResourceId}}">
+																<div class="form-horizontal">
+																	@include('partials/gateway-preferences', array('computeResource' => $crp->crDetails, 'crData' => $crData, 'preferences'=>$crp, 'show'=>true))
+																</div>
+															</form>
 														</div>
 													</div>
 												</div>
@@ -95,7 +101,8 @@
 
 <div class="add-compute-resource-block hide">
 	<div class="well">
-		<form action="{{URL::to('/')}}/gp/add-cr" method="POST">
+		<form action="{{URL::to('/')}}/gp/add-crp" method="POST">
+			<input type="hidden" name="gatewayId" id="gatewayId" value="">
 			<div class="input-group">
 				<select name="computeResourceId" class="cr-select form-control">
 					<option value="">Select a compute Resource and set its preferences</option>
@@ -156,6 +163,8 @@
 
 
 		$(".add-cr").click( function(){
+
+			$(".add-compute-resource-block").find("#gatewayId").val( $(this).data("gpid"));
 			$(this).after( $(".add-compute-resource-block").html() );
 		});
 

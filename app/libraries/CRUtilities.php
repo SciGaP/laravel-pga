@@ -25,7 +25,7 @@ use Airavata\Model\AppCatalog\ComputeResource\LOCALDataMovement;
 //Gateway Classes
 
 use Airavata\Model\AppCatalog\GatewayProfile\GatewayResourceProfile;
-
+use Airavata\Model\AppCatalog\GatewayProfile\ComputeResourcePreference;
 
 
 
@@ -367,6 +367,15 @@ public static function getAllGatewayProfilesData(){
     return $gatewayProfiles;
 }
 
+public static function add_or_update_CRP( $inputs){
+    $airavataclient = Utilities::get_airavata_client();
+
+    $computeResourcePreferences = new computeResourcePreference( $inputs);
+
+    //var_dump( $inputs); exit;
+    return $airavataclient->addGatewayComputeResourcePreference( $inputs["gatewayId"], $inputs["computeResourceId"], $computeResourcePreferences);
+
+}
 
 }
 ?>
