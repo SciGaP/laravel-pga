@@ -41,8 +41,8 @@
 							{{ $gp->gatewayName }}
 							</a>
 							<div class="pull-right col-md-2 gateway-options fade">
-								<span class="glyphicon glyphicon-pencil edit-gateway" style="cursor:pointer;" data-toggle="modal" data-target="#edit-gateway-block" data-interface-id=""></span>
-								<span class="glyphicon glyphicon-trash delete-gateway" style="cursor:pointer;" data-toggle="modal" data-target="#delete-gateway-block" data-interface-id=""></span>
+								<span class="glyphicon glyphicon-pencil edit-gateway" style="cursor:pointer;" data-toggle="modal" data-target="#edit-gateway-block" data-gp-id="{{ $gp->gatewayID }}"></span>
+								<span class="glyphicon glyphicon-trash delete-gateway" style="cursor:pointer;" data-toggle="modal" data-target="#delete-gateway-block" data-gp-id="{{ $gp->gatewayID }}"></span>
 							</div>
 						</h4>
 					</div>
@@ -117,6 +117,32 @@
 	</div>
 </div>
 
+<!-- delete a Gateway Modal -->
+<div class="modal fade" id="delete-gateway-block" tabindex="-1" role="dialog" aria-labelledby="add-modal" aria-hidden="true">
+    <div class="modal-dialog">
+
+		<form action="{{URL::to('/')}}/gp/delete-gp" method="POST">
+	        <div class="modal-content">
+	            <div class="modal-header">
+	              	<h3 class="text-center">Delete Gateway Profile Confirmation</h3>
+	            </div>
+	            <div class="modal-body">
+					<input type="hidden" class="form-control delete-gpId" name="del-gpId"/>
+					Do you really want to delete The Gateway Profile, <span class="delete-gp-name"></span> ?
+				</div>
+				<div class="modal-footer">
+					<div class="form-group">
+						<input type="submit" class="btn btn-danger" value="Delete"/>
+						<input type="button" class="btn btn-default" data-dismiss="modal" value ="Cancel"/>
+					</div>
+				</div>
+			</div>
+
+		</form>
+	</div>
+</div>
+
+<!-- contains all compute resource choices that might get selected on adding a new one to a gateway -->
 @foreach( (array)$computeResources as $index => $cr)
 	@include('partials/gateway-preferences', array('computeResource' => $cr, 'crData' => $crData))
 @endforeach
@@ -173,6 +199,10 @@
 			//This is done as Jquery creates problems when using period(.) in id or class.
 			crId = crId.replace(/\./g,"_");
 			$(this).parent().parent().find(".pref-space").html( $("#cr-" + crId).html());
+		});
+
+		$(".delete-gateway").click( function(){
+			$(".delete-gpId").val( $(this).data("gp-id") );
 		});
 
 	</script>

@@ -127,6 +127,8 @@ Route::post("gp/create", "GatewayprofileController@createSubmit");
 
 Route::get("gp/browse", "GatewayprofileController@browseView");
 
+Route::post("gp/delete-gp", "GatewayprofileController@delete");
+
 Route::post("gp/add-crp", "GatewayprofileController@modifyCRP");
 
 Route::post("gp/update-crp", "GatewayprofileController@modifyCRP");

@@ -375,5 +375,11 @@ public static function add_or_update_CRP( $inputs){
 
 }
 
+public static function deleteGP( $gpId){
+    $airavataclient = Utilities::get_airavata_client();
+
+    return $airavataclient->deleteGatewayResourceProfile( $gpId);
+}
+
 }
 ?>

@@ -40,6 +40,24 @@ class GatewayprofileController extends BaseController {
 		}
 	}
 
+	public function delete()
+	{
+		$error = false;
+		if( Input::has("del-gpId"))
+		{
+			if( CRUtilities::deleteGP( Input::get("del-gpId")) )
+				return Redirect::to("gp/browse")->with("message","Gateway Profile has been deleted.");
+			else
+				$error = true;
+		}
+		else
+			$error = true;
+		if( $error)
+		{
+			return Redirect::to("gp/browse")->with("message","An error has occurred. Please try again later or report a bug using the link in the Help menu");
+		}
+	}
+
 }
 
 ?>

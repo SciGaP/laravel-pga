@@ -66,7 +66,7 @@
 		<form action="{{URL::to('/')}}/cr/delete-cr" method="POST">
 	        <div class="modal-content">
 	            <div class="modal-header">
-	              	<h3 class="text-center">Delete Confirmation Compute Resource</h3>
+	              	<h3 class="text-center">Delete Compute Resource Confirmation</h3>
 	            </div>
 	            <div class="modal-body">
 					<input type="hidden" class="form-control delete-crId" name="del-crId"/>
