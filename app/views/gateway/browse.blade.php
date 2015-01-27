@@ -49,7 +49,7 @@
 					<div id="collapse-gateway-{{$indexGP}}" class="panel-collapse collapse">
 						<div class="panel-body">
 							<div class="app-interface-block">
-								<h2>{{ $gp->gatewayDescription}}</h2>
+								<h5>{{ $gp->gatewayDescription}}</h5>
 								<hr/>
 								<div class="row">
 									<div class="col-md-offset-1 col-md-10">

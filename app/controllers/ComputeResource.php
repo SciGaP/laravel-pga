@@ -113,7 +113,7 @@ class ComputeResource extends BaseController{
 			$computeDescription = Utilities::get_compute_resource(  Input::get("crId"));
 			$computeDescription->batchQueues[] = CRUtilities::createQueueObject( $queue);
 			$computeResource = CRUtilities::register_or_update_compute_resource( $computeDescription, true);
-
+			//var_dump( $computeResource); exit;
 			$tabName = "#tab-queues";
 		}
 		else if( Input::get("cr-edit") == "delete-queue" )

@@ -346,8 +346,6 @@ public static function create_or_update_gateway_profile( $inputs, $update = fals
     }
     else
         $gatewayProfileId = $airavataclient->registerGatewayResourceProfile( $gatewayProfile);
-
-    print_r( $gatewayProfileId); exit;
 }
 
 public static function getAllGatewayProfilesData(){

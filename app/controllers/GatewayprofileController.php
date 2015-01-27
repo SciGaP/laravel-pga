@@ -16,7 +16,9 @@ class GatewayprofileController extends BaseController {
 	public function createSubmit()
 	{
 		$gatewayProfileId = CRUtilities::create_or_update_gateway_profile( Input::all() );
-		return Redirect::to("gp/browse")->with("gpId", $gatewayProfileId);
+		//TODO:: Maybe this is a better way. Things to ponder upon.
+		//return Redirect::to("gp/browse")->with("gpId", $gatewayProfileId);
+		return Redirect::to("gp/browse")->with("message","Gateway has been created. You can set preferences now.");
 	}
 
 	public function browseView()

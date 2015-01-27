@@ -1,6 +1,6 @@
 <div class="form-group">
 	<label class="control-label">Queue Description</label>
-	<textarea class="form-control" value="@if( isset( $queueData) ){{ $queueData->queueDescription }}@endif" maxlength="255" name="qdesc" placeholder="Queue Description"></textarea>
+	<textarea class="form-control" maxlength="255" name="qdesc" placeholder="Queue Description">@if( isset( $queueData) ){{ $queueData->queueDescription }}@endif</textarea>
 </div>
 <div class="form-group">
 	<label class="control-label">Queue Max Run Time<small> (In Minutes) </small></label>
