@@ -21,6 +21,12 @@ class GatewayprofileController extends BaseController {
 		return Redirect::to("gp/browse")->with("message","Gateway has been created. You can set preferences now.");
 	}
 
+	public function editGP()
+	{
+		$gatewayProfileId = CRUtilities::create_or_update_gateway_profile( Input::all(), true );
+		return Redirect::to("gp/browse")->with("message","Gateway has been created. You can set preferences now.");
+	}
+
 	public function browseView()
 	{
 		$crObjects = CRUtilities::getAllCRObjects();
@@ -42,16 +48,26 @@ class GatewayprofileController extends BaseController {
 
 	public function delete()
 	{
+		//var_dump( Input::all()); exit;
 		$error = false;
-		if( Input::has("del-gpId"))
+		if( Input::has("del-gpId")) // if Gateway has to be deleted
 		{
 			if( CRUtilities::deleteGP( Input::get("del-gpId")) )
 				return Redirect::to("gp/browse")->with("message","Gateway Profile has been deleted.");
 			else
 				$error = true;
 		}
+		else if( Input::has("rem-crId")) // if Compute Resource has to be removed from Gateway
+		{
+			if(CRUtilities::deleteCR( Input::all()) )
+				return Redirect::to("gp/browse")->with("message", "The selected Compute Resource has been successfully removed");
+			else
+				$error = true;
+		}
 		else
 			$error = true;
+
+
 		if( $error)
 		{
 			return Redirect::to("gp/browse")->with("message","An error has occurred. Please try again later or report a bug using the link in the Help menu");

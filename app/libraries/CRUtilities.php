@@ -342,7 +342,12 @@ public static function create_or_update_gateway_profile( $inputs, $update = fals
                                                 );
 
     if( $update){
-        $gatewayProfileId = $airavataclient->updateGatewayResourceProfile( $input["gatewayId"], $gatewayProfile);
+        $gatewayProfile = new GatewayResourceProfile( array(
+                                                        "gatewayName" => $inputs["gatewayName"],
+                                                        "gatewayDescription" => $inputs["gatewayDescription"]
+                                                        )
+                                                );
+        $gatewayProfileId = $airavataclient->updateGatewayResourceProfile( $inputs["edit-gpId"], $gatewayProfile);
     }
     else
         $gatewayProfileId = $airavataclient->registerGatewayResourceProfile( $gatewayProfile);
@@ -379,6 +384,12 @@ public static function deleteGP( $gpId){
     $airavataclient = Utilities::get_airavata_client();
 
     return $airavataclient->deleteGatewayResourceProfile( $gpId);
+}
+
+public static function deleteCR( $inputs){
+    $airavataclient = Utilities::get_airavata_client();
+
+    return $airavataclient->deleteGatewayComputeResourcePreference( $inputs["gpId"], $inputs["rem-crId"]);
 }
 
 }

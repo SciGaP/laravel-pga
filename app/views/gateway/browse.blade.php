@@ -41,8 +41,8 @@
 							{{ $gp->gatewayName }}
 							</a>
 							<div class="pull-right col-md-2 gateway-options fade">
-								<span class="glyphicon glyphicon-pencil edit-gateway" style="cursor:pointer;" data-toggle="modal" data-target="#edit-gateway-block" data-gp-id="{{ $gp->gatewayID }}"></span>
-								<span class="glyphicon glyphicon-trash delete-gateway" style="cursor:pointer;" data-toggle="modal" data-target="#delete-gateway-block" data-gp-id="{{ $gp->gatewayID }}"></span>
+								<span class="glyphicon glyphicon-pencil edit-gateway" style="cursor:pointer;" data-toggle="modal" data-target="#edit-gateway-block" data-gp-id="{{ $gp->gatewayID }}" data-gp-name="{{ $gp->gatewayName }}" data-gp-desc="{{ $gp->gatewayDescription }}"></span>
+								<span class="glyphicon glyphicon-trash delete-gateway" style="cursor:pointer;" data-toggle="modal" data-target="#delete-gateway-block" data-gp-name="{{$gp->gatewayName}}" data-gp-id="{{ $gp->gatewayID }}"></span>
 							</div>
 						</h4>
 					</div>
@@ -69,6 +69,9 @@
 														<a class="accordion-toggle collapsed gateway-name" data-toggle="collapse" data-parent="#accordion" href="#collapse-crp-{{$indexGP}}-{{$indexCRP}}">
 														{{ $crp->crDetails->hostName }}
 														</a>
+														<div class="pull-right col-md-2 gateway-options fade">
+															<span class="glyphicon glyphicon-remove remove-resource" style="cursor:pointer;" data-toggle="modal" data-target="#remove-resource-block" data-cr-name="{{$crp->crDetails->hostName}}" data-cr-id="{{$crp->computeResourceId}}" data-gp-id="{{ $gp->gatewayID }}"></span>
+														</div>
 													</h4>
 												</div>
 												<div id="collapse-crp-{{$indexGP}}-{{$indexCRP}}" class="panel-collapse collapse">
@@ -117,6 +120,38 @@
 	</div>
 </div>
 
+<!-- Edit a Gateway Modal -->
+<div class="modal fade" id="edit-gateway-block" tabindex="-1" role="dialog" aria-labelledby="add-modal" aria-hidden="true">
+    <div class="modal-dialog">
+
+		<form action="{{URL::to('/')}}/gp/edit" method="POST">
+	        <div class="modal-content">
+	            <div class="modal-header">
+	              	<h3 class="text-center">Edit Gateway</h3>
+	            </div>
+	            <div class="modal-body">
+					<input type="hidden" class="form-control edit-gpId" name="edit-gpId"/>
+					<div class="form-group required">
+						<label class="control-label">Gateway Name</label>
+						<input class="form-control edit-gp-name" maxlength="100" name="gatewayName" required="required" placeholder="Gateway Name"/>
+					</div>
+					<div class="form-group">
+						<label class="control-label">Gateway Description</label>
+						<textarea class="form-control edit-gp-desc" maxlength="255" name="gatewayDescription" placeholder="Gateway Description"></textarea>
+					</div>
+				</div>
+				<div class="modal-footer">
+					<div class="form-group">
+						<input type="submit" class="btn btn-primary" value="Update"/>
+						<input type="button" class="btn btn-default" data-dismiss="modal" value ="Cancel"/>
+					</div>
+				</div>
+			</div>
+
+		</form>
+	</div>
+</div>
+
 <!-- delete a Gateway Modal -->
 <div class="modal fade" id="delete-gateway-block" tabindex="-1" role="dialog" aria-labelledby="add-modal" aria-hidden="true">
     <div class="modal-dialog">
@@ -128,11 +163,38 @@
 	            </div>
 	            <div class="modal-body">
 					<input type="hidden" class="form-control delete-gpId" name="del-gpId"/>
-					Do you really want to delete The Gateway Profile, <span class="delete-gp-name"></span> ?
+					Do you really want to delete the Gateway Profile, <span class="delete-gp-name"></span> ?
 				</div>
 				<div class="modal-footer">
 					<div class="form-group">
 						<input type="submit" class="btn btn-danger" value="Delete"/>
+						<input type="button" class="btn btn-default" data-dismiss="modal" value ="Cancel"/>
+					</div>
+				</div>
+			</div>
+
+		</form>
+	</div>
+</div>
+
+<!-- Remove a Compute Resource from a Gateway -->
+<div class="modal fade" id="remove-resource-block" tabindex="-1" role="dialog" aria-labelledby="add-modal" aria-hidden="true">
+    <div class="modal-dialog">
+
+		<form action="{{URL::to('/')}}/gp/remove-cr" method="POST">
+	        <div class="modal-content">
+	            <div class="modal-header">
+	              	<h3 class="text-center">Remove Compute Resource Confirmation</h3>
+	            </div>
+	            <div class="modal-body">
+					<input type="hidden" class="form-control remove-crId" name="rem-crId"/>
+					<input type="hidden" class="form-control cr-gpId" name="gpId"/>
+
+					Do you really want to remove the Compute Resource, <span class="remove-cr-name"> </span>from the selected Gateway?
+				</div>
+				<div class="modal-footer">
+					<div class="form-group">
+						<input type="submit" class="btn btn-danger" value="Remove"/>
 						<input type="button" class="btn btn-default" data-dismiss="modal" value ="Cancel"/>
 					</div>
 				</div>
@@ -152,59 +214,5 @@
 
 @section('scripts')
 	@parent
-
-	<script type="text/javascript">
-
-		//show options on hovering on a gateway
-		$(".panel-title").hover( 
-			function(){
-				$(this).find(".gateway-options").addClass("in");
-			},
-			function(){
-				$(this).find(".gateway-options").removeClass("in");
-			}
-		);
-
-		//search Gateway Profiles 
-		$('.filterinput').keyup(function() {
-	        var a = $(this).val();
-	        if (a.length > 0) {
-	            children = ($("#accordion").children());
-
-	            var containing = children.filter(function () {
-	                var regex = new RegExp('\\b' + a, 'i');
-	                return regex.test($('a', this).text());
-	            }).slideDown();
-	            children.not(containing).slideUp();
-	        } else {
-	            children.slideDown();
-	        }
-	        return false;
-	    });
-
-	    //remove Compute Resource
-	    $("body").on("click", ".remove-cr", function(){
-			$(this).parent().remove();
-		});
-
-
-		$(".add-cr").click( function(){
-
-			$(".add-compute-resource-block").find("#gatewayId").val( $(this).data("gpid"));
-			$(this).after( $(".add-compute-resource-block").html() );
-		});
-
-		$("body").on("change", ".cr-select", function(){
-			crId = $(this).val();
-			//This is done as Jquery creates problems when using period(.) in id or class.
-			crId = crId.replace(/\./g,"_");
-			$(this).parent().parent().find(".pref-space").html( $("#cr-" + crId).html());
-		});
-
-		$(".delete-gateway").click( function(){
-			$(".delete-gpId").val( $(this).data("gp-id") );
-		});
-
-	</script>
-
+	{{ HTML::script('js/gateway.js') }}
 @stop
