@@ -22,7 +22,7 @@ class AppUtilities{
 
 	public static function create_or_update_appModule( $inputs, $update = false){
 
-		$airavataclient = Utilities::get_airavata_client();
+		$airavataclient = Session::get("airavataClient");
 
 		$appModule = new ApplicationModule( array(
 												"appModuleName" => $inputs["appModuleName"],
@@ -38,14 +38,14 @@ class AppUtilities{
 
 	public static function deleteAppModule( $appModuleId){
 
-		$airavataclient = Utilities::get_airavata_client();
+		$airavataclient = Session::get("airavataClient");
 
 		return $airavataclient->deleteApplicationModule( $appModuleId);
 	}
 
 	public static function getAppInterfaceData(){
 
-		$airavataclient = Utilities::get_airavata_client();
+		$airavataclient = Session::get("airavataClient");
 
 		$dataType = new DataType();
 		$modules = AppUtilities::getAllModules();
@@ -63,7 +63,7 @@ class AppUtilities{
 
 	public static function create_or_update_appInterface( $appInterfaceValues, $update = false){
 		
-		$airavataclient = Utilities::get_airavata_client();
+		$airavataclient = Session::get("airavataClient");
 		//var_dump( $appInterfaceValues); exit;
 		$appInterface = new ApplicationInterfaceDescription( array(
 																"applicationName" => $appInterfaceValues["applicationName"],
@@ -121,7 +121,7 @@ class AppUtilities{
 
 	public static function deleteAppInterface( $appInterfaceId){
 
-		$airavataclient = Utilities::get_airavata_client();
+		$airavataclient = Session::get("airavataClient");
 
 		return $airavataclient->deleteApplicationInterface( $appInterfaceId);
 	}
@@ -129,7 +129,7 @@ class AppUtilities{
 
 	public static function getAppDeploymentData(){
 
-		$airavataclient = Utilities::get_airavata_client();
+		$airavataclient = Session::get("airavataClient");
 
 		$appDeployments = $airavataclient->getAllApplicationDeployments();
 		//var_dump( $appDeployments); exit;
@@ -149,7 +149,7 @@ class AppUtilities{
 
 		$appDeploymentValues = $inputs;
 
-		$airavataclient = Utilities::get_airavata_client();
+		$airavataclient = Session::get("airavataClient");
 
 		if( isset( $appDeploymentValues["moduleLoadCmds"]))
 			$appDeploymentValues["moduleLoadCmds"] = array_unique( array_filter( $appDeploymentValues["moduleLoadCmds"]));
@@ -218,13 +218,13 @@ class AppUtilities{
 	public static function deleteAppDeployment( $appDeploymentId )
 	{
 
-		$airavataclient = Utilities::get_airavata_client();
+		$airavataclient = Session::get("airavataClient");
 
 		return $airavataclient->deleteApplicationDeployment( $appDeploymentId);
 	}
 
 	public static function getAllModules(){
-		$airavataclient = Utilities::get_airavata_client();
+		$airavataclient = Session::get("airavataClient");
 		return $airavataclient->getAllAppModules();
 	}
 }

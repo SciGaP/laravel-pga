@@ -42,7 +42,7 @@ class CRUtilities{
  */
 public static function register_or_update_compute_resource( $computeDescription, $update = false)
 {
-    $airavataclient = Utilities::get_airavata_client();
+    $airavataclient = Session::get("airavataClient");
     if( $update)
     {
         $computeResourceId = $computeDescription->computeResourceId;
@@ -105,7 +105,7 @@ public static function createQueueObject( $queue){
 
 public static function deleteQueue( $computeResourceId, $queueName)
 {
-    $airavataclient = Utilities::get_airavata_client();
+    $airavataclient = Session::get("airavataClient");
     $airavataclient->deleteBatchQueue( $computeResourceId, $queueName);
 }
 
@@ -116,7 +116,7 @@ public static function deleteQueue( $computeResourceId, $queueName)
 
 public static function create_or_update_JSIObject( $inputs, $update = false){
 
-    $airavataclient = Utilities::get_airavata_client();
+    $airavataclient = Session::get("airavataClient");
     $computeResource = Utilities::get_compute_resource(  $inputs["crId"]);
 
     if( $inputs["jobSubmissionProtocol"] == JobSubmissionProtocol::LOCAL)
@@ -207,7 +207,7 @@ public static function create_or_update_JSIObject( $inputs, $update = false){
  * Creating Data Movement Interface Object.
 */
 public static function create_or_update_DMIObject( $inputs, $update = false){
-    $airavataclient = Utilities::get_airavata_client();
+    $airavataclient = Session::get("airavataClient");
 
     $computeResource = Utilities::get_compute_resource(  $inputs["crId"] );
     if( $inputs["dataMovementProtocol"] == DataMovementProtocol::LOCAL) /* LOCAL */
@@ -253,7 +253,7 @@ public static function create_or_update_DMIObject( $inputs, $update = false){
 }
 
 public static function getAllCRObjects( $onlyName = false){
-    $airavataclient = Utilities::get_airavata_client();
+    $airavataclient = Session::get("airavataClient");
     $crNames = $airavataclient->getAllComputeResourceNames();
     if( $onlyName)
         return $crNames;
@@ -270,7 +270,7 @@ public static function getAllCRObjects( $onlyName = false){
 }
 
 public static function getBrowseCRData(){
-    $airavataclient = Utilities::get_airavata_client();
+    $airavataclient = Session::get("airavataClient");
 	$appDeployments = $airavataclient->getAllApplicationDeployments();
 
     return array( 'crObjects' => CRUtilities::getAllCRObjects(true),
@@ -280,7 +280,7 @@ public static function getBrowseCRData(){
 
 public static function getJobSubmissionDetails( $jobSubmissionInterfaceId, $jsp){
     //jsp = job submission protocol type
-    $airavataclient = Utilities::get_airavata_client();
+    $airavataclient = Session::get("airavataClient");
     if( $jsp == JobSubmissionProtocol::LOCAL)
         return $airavataclient->getLocalJobSubmission( $jobSubmissionInterfaceId);
     else if( $jsp == JobSubmissionProtocol::SSH)
@@ -295,7 +295,7 @@ public static function getJobSubmissionDetails( $jobSubmissionInterfaceId, $jsp)
 
 public static function getDataMovementDetails( $dataMovementInterfaceId, $dmi){
     //jsp = job submission protocol type
-    $airavataclient = Utilities::get_airavata_client();
+    $airavataclient = Session::get("airavataClient");
     if( $dmi == DataMovementProtocol::LOCAL)
         return $airavataclient->getLocalDataMovement( $dataMovementInterfaceId);
     else if( $dmi == DataMovementProtocol::SCP)
@@ -309,7 +309,7 @@ public static function getDataMovementDetails( $dataMovementInterfaceId, $dmi){
 }
 
 public static function deleteActions( $inputs){
-    $airavataclient = Utilities::get_airavata_client();
+    $airavataclient = Session::get("airavataClient");
     if( isset( $inputs["jsiId"]) )
         if( $airavataclient->deleteJobSubmissionInterface( $inputs["crId"], $inputs["jsiId"]) )
             return 1;
@@ -328,7 +328,7 @@ public static function deleteActions( $inputs){
 }
 
 public static function create_or_update_gateway_profile( $inputs, $update = false){
-    $airavataclient = Utilities::get_airavata_client();
+    $airavataclient = Session::get("airavataClient");
 
     $computeResourcePreferences = array();
     if( isset( $input["crPreferences"]) )
@@ -354,7 +354,7 @@ public static function create_or_update_gateway_profile( $inputs, $update = fals
 }
 
 public static function getAllGatewayProfilesData(){
-    $airavataclient = Utilities::get_airavata_client();
+    $airavataclient = Session::get("airavataClient");
 
     $gatewayProfiles = $airavataclient->getAllGatewayComputeResources();
     //$gatewayProfileIds = array("GatewayTest3_57726e98-313f-4e7c-87a5-18e69928afb5", "GatewayTest4_4fd9fb28-4ced-4149-bdbd-1f276077dad8");
@@ -371,7 +371,7 @@ public static function getAllGatewayProfilesData(){
 }
 
 public static function add_or_update_CRP( $inputs){
-    $airavataclient = Utilities::get_airavata_client();
+    $airavataclient = Session::get("airavataClient");
 
     $computeResourcePreferences = new computeResourcePreference( $inputs);
 
@@ -381,13 +381,13 @@ public static function add_or_update_CRP( $inputs){
 }
 
 public static function deleteGP( $gpId){
-    $airavataclient = Utilities::get_airavata_client();
+    $airavataclient = Session::get("airavataClient");
 
     return $airavataclient->deleteGatewayResourceProfile( $gpId);
 }
 
 public static function deleteCR( $inputs){
-    $airavataclient = Utilities::get_airavata_client();
+    $airavataclient = Session::get("airavataClient");
 
     return $airavataclient->deleteGatewayComputeResourcePreference( $inputs["gpId"], $inputs["rem-crId"]);
 }

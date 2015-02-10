@@ -58,48 +58,6 @@ function __construct(){
 	self::$experimentPath = null;
 }
 
-
-//already set inside app/config.php
-//date_default_timezone_set('UTC');
-
-/**
- * Import user store utilities
- */
-/*
-switch (USER_STORE)
-{
-    case 'WSO2':
-        require_once 'wsis_utilities.php'; // WS02 Identity Server
-        break;
-    case 'XML':
-        require_once 'xml_id_utilities.php'; // XML user database
-        break;
-    case 'USER_API':
-        require_once 'userapi_utilities.php'; // Airavata UserAPI
-        break;
-}
-*/
-/**
- * import Thrift and Airavata
- */
-//$GLOBALS['THRIFT_ROOT'] = './lib/Thrift/';
-
-/*
-require_once 'Thrift/Transport/TTransport.php';
-require_once 'Thrift/Transport/TSocket.php';
-require_once 'Thrift/Protocol/TProtocol.php';
-require_once 'Thrift/Protocol/TBinaryProtocol.php';
-require_once 'Thrift/Exception/TException.php';
-require_once 'Thrift/Exception/TApplicationException.php';
-require_once 'Thrift/Exception/TProtocolException.php';
-require_once 'Thrift/Base/TBase.php';
-require_once 'Thrift/Type/TType.php';
-require_once 'Thrift/Type/TMessageType.php';
-require_once 'Thrift/Factory/TStringFuncFactory.php';
-require_once 'Thrift/StringFunc/TStringFunc.php';
-require_once 'Thrift/StringFunc/Core.php';
-*/
-
 /**
  * Print success message
  * @param $message
@@ -174,9 +132,16 @@ public static function id_matches_db($username, $password)
             Please try again later or report a bug using the link in the Help menu</p>' .
             '<p>' . $e->getMessage() . '</p>');
     }
-
+    //checking user roles.
+    //var_dump( $idStore->updateRoleListOfUser( $username, array( "new"=>array("admin"), "deleted"=>array() ) ) );
+    //var_dump($idStore->getRoleListOfUser( $username) ); exit;
     if($idStore->authenticate($username, $password))
     {
+        //checking if user is an Admin and saving in Session.
+        if( in_array( Constant::ADMIN_ROLE, (array)$idStore->getRoleListOfUser( $username)))
+        {
+            Session::put("admin", true);
+        }
         return true;
     }else{
         return false;
@@ -293,7 +258,7 @@ public static function get_airavata_client()
  */
 public static function launch_experiment($expId)
 {
-    $airavataclient = Utilities::get_airavata_client();
+    $airavataclient = Session::get("airavataClient");
     //global $tokenFilePath;
     try
     {
@@ -362,7 +327,7 @@ public static function launch_experiment($expId)
  */
 public static function get_all_user_projects($username)
 {
-    $airavataclient = Utilities::get_airavata_client();
+    $airavataclient = Session::get("airavataClient");
     $userProjects = null;
 
     try
@@ -406,7 +371,7 @@ public static function get_all_user_projects($username)
  */
 public static function get_all_applications()
 {
-    $airavataclient = Utilities::get_airavata_client();
+    $airavataclient = Session::get("airavataClient");
     $applications = null;
 
     try
@@ -443,7 +408,7 @@ public static function get_all_applications()
  */
 public static function get_application_interface($id)
 {
-    $airavataclient = Utilities::get_airavata_client();
+    $airavataclient = Session::get("airavataClient");
     $applicationInterface = null;
 
     try
@@ -480,7 +445,7 @@ public static function get_application_interface($id)
  */
 public static function get_available_app_interface_compute_resources($id)
 {
-    $airavataclient = Utilities::get_airavata_client();
+    $airavataclient = Session::get("airavataClient");
     $computeResources = null;
 
     try
@@ -517,7 +482,7 @@ public static function get_available_app_interface_compute_resources($id)
  */
 public static function get_compute_resource($id)
 {
-    $airavataclient = Utilities::get_airavata_client();
+    $airavataclient = Session::get("airavataClient");
     $computeResource = null;
 
     try
@@ -602,7 +567,7 @@ public static function list_input_files($experiment)
  */
 public static function get_application_inputs($id)
 {
-    $airavataclient = Utilities::get_airavata_client();
+    $airavataclient = Session::get("airavataClient");
     $inputs = null;
 
     try
@@ -639,7 +604,7 @@ public static function get_application_inputs($id)
  */
 public static function get_application_outputs($id)
 {
-    $airavataclient = Utilities::get_airavata_client();
+    $airavataclient = Session::get("airavataClient");
     $outputs = null;
 
     try
@@ -676,7 +641,7 @@ public static function get_application_outputs($id)
  */
 public static function get_experiment($expId)
 {
-    $airavataclient = Utilities::get_airavata_client();
+    $airavataclient = Session::get("airavataClient");
 
     try
     {
@@ -728,7 +693,7 @@ public static function get_experiment($expId)
  */
 public static function get_project($projectId)
 {
-    $airavataclient = Utilities::get_airavata_client();
+    $airavataclient = Session::get("airavataClient");
 
     try
     {
@@ -820,6 +785,11 @@ public static function assemble_experiment()
     $experiment->applicationId = $_POST['application'];
     $experiment->userConfigurationData = $userConfigData;
     $experiment->experimentInputs = $experimentInputs;
+    if( isset( $_POST["emailNotification"]))
+    {
+        $experiment->emailNotification = intval( $_POST["emailNotification"] );
+        $experiment->emailAddresses = array_unique( array_filter( $_POST["emailAddresses"], "trim") );
+    }
 
     // adding default experiment outputs for now till prepoulated experiment template is not implemented.
     $experiment->experimentOutputs = Utilities::get_application_outputs( $_POST["application"]);
@@ -1070,7 +1040,7 @@ public static function file_upload_successful()
  */
 public static function update_experiment($expId, $updatedExperiment)
 {
-    $airavataclient = Utilities::get_airavata_client();
+    $airavataclient = Session::get("airavataClient");
 
     try
     {
@@ -1116,7 +1086,7 @@ public static function update_experiment($expId, $updatedExperiment)
  */
 public static function clone_experiment($expId)
 {
-    $airavataclient = Utilities::get_airavata_client();
+    $airavataclient = Session::get("airavataClient");
 
     try
     {
@@ -1169,7 +1139,7 @@ public static function clone_experiment($expId)
  */
 public static function cancel_experiment($expId)
 {
-    $airavataclient = Utilities::get_airavata_client();
+    $airavataclient = Session::get("airavataClient");
 
     try
     {
@@ -1425,7 +1395,7 @@ public static function create_nav_bar()
 	        )
 	    );
 
-	    if( Session::get("username") == User::ADMIN_USERNAME)
+	    if( Session::has("admin"))
 	    {
 	    	$menus['Compute Resource'] = array
 	        (
@@ -1460,7 +1430,7 @@ public static function create_nav_bar()
 
     // nav bar and left-aligned content
 
-    echo '<nav class="navbar navbar-default navbar-static-top" role="navigation">
+    echo '<nav class="navbar navbar-inverse navbar-static-top" role="navigation">
             <div class="container-fluid">
                 <!-- Brand and toggle get grouped for better mobile display -->
                 <div class="navbar-header">
@@ -1511,31 +1481,38 @@ public static function create_nav_bar()
 
         <ul class="nav navbar-nav navbar-right">';
 
-
-
-
-
     // right-aligned content
 
-    if ( Session::has('username') )
+    if ( Session::has('loggedin') )
     {
-        (Constant::USER_STORE === "USER_API" && !Session::has('excede_login')) ? $link = "user_profile.php" : $link = "index.php";
-        echo '<li><a href="' . $link . '"><span class="glyphicon glyphicon-user"></span> ' . Session::get('username') . '</a></li>';
-    }
+        $active = "";
+        if( Session::has("nav-active") )
+        {
+            if( "user-console" == Session::get("nav-active"))
+                $active = " active ";
+        }
+        echo '<li class="dropdown ' . $active . '">
 
-    if ( Session::has( 'loggedin') )
-    {
+                <a href="#" class="dropdown-toggle" data-toggle="dropdown">' . Session::get("username") . ' <span class="caret"></span></a>
+                <ul class="dropdown-menu" role="menu">';
+
+        if( Session::has("admin"))
+            echo '<li><a href="' . URL::to("/") . '/admin/dashboard"><span class="glyphicon glyphicon-user"></span> Dashboard</a></li>';
+        else
+            echo '<li><a href="' . URL::to("/") . '/user/profile"><span class="glyphicon glyphicon-user"></span> Profile</a></li>';
+
         echo '<li><a href="' . URL::to('/') . '/logout"><span class="glyphicon glyphicon-log-out"></span> Log out</a></li>';
+        echo    '</ul></li></ul>';
     }
     else
     {
         echo '<li><a href="' . URL::to('/') . '/create"><span class="glyphicon glyphicon-user"></span> Create account</a></li>';
         echo '<li><a href="' . URL::to('/') . '/login"><span class="glyphicon glyphicon-log-in"></span> Log in</a></li>';
+        echo '</ul>';
+
     }
 
-
-    echo    '</ul>
-    </div><!-- /.navbar-collapse -->
+    echo '</div><!-- /.navbar-collapse -->
     </div><!-- /.container-fluid -->
     </nav>';
 }
@@ -1658,7 +1635,7 @@ public static function write_new_token($tokenId)
 public static function create_project()
 {
     
-    $airavataclient = Utilities::get_airavata_client();
+    $airavataclient = Session::get("airavataClient");
     
     $project = new Project();
     $project->owner = Session::get('username');
@@ -1706,7 +1683,7 @@ public static function create_project()
  */
 public static function get_experiments_in_project($projectId)
 {
-    $airavataclient = Utilities::get_airavata_client();
+    $airavataclient = Session::get("airavataClient");
 
     $experiments = array();
 
@@ -1736,7 +1713,7 @@ public static function get_experiments_in_project($projectId)
 
 public static function update_project($projectId, $projectDetails)
 {
-    $airavataclient = Utilities::get_airavata_client();
+    $airavataclient = Session::get("airavataClient");
 
     $updatedProject = new Project();
     $updatedProject->owner = $projectDetails["owner"];
@@ -1774,7 +1751,7 @@ public static function update_project($projectId, $projectDetails)
  */
 public static function create_experiment()
 {
-    $airavataclient = Utilities::get_airavata_client();
+    $airavataclient = Session::get("airavataClient");
 
     $experiment = Utilities::assemble_experiment();
     //var_dump($experiment); exit;
@@ -1845,17 +1822,22 @@ public static function list_output_files($experiment)
 
 public static function get_experiment_values( $experiment, $project, $forSearch = false)
 {
-    $airavataclient = Utilities::get_airavata_client();
-
+    $airavataclient = Session::get("airavataClient");
+    //var_dump( $experiment); exit;
     $expVal = array();
+    $expVal["experimentStatusString"] = "";
+    $expVal["experimentTimeOfStateChange"] = "";
+    $expVal["experimentCreationTime"] = "";
 
-    $experimentStatus = $experiment->experimentStatus;
-    $experimentState = $experimentStatus->experimentState;
-    $experimentStatusString = ExperimentState::$__names[$experimentState];
-    $expVal["experimentStatusString"] = $experimentStatusString;
-    $expVal["experimentTimeOfStateChange"] = date('Y-m-d H:i:s', $experimentStatus->timeOfStateChange/1000); // divide by 1000 since timeOfStateChange is in ms
-    $expVal["experimentCreationTime"] = date('Y-m-d H:i:s', $experiment->creationTime/1000); // divide by 1000 since creationTime is in ms
-
+    if( $experiment->experimentStatus != null)
+    {
+        $experimentStatus = $experiment->experimentStatus;
+        $experimentState = $experimentStatus->experimentState;
+        $experimentStatusString = ExperimentState::$__names[$experimentState];
+        $expVal["experimentStatusString"] = $experimentStatusString;
+        $expVal["experimentTimeOfStateChange"] = date('Y-m-d H:i:s', $experimentStatus->timeOfStateChange/1000); // divide by 1000 since timeOfStateChange is in ms
+        $expVal["experimentCreationTime"] = date('Y-m-d H:i:s', $experiment->creationTime/1000); // divide by 1000 since creationTime is in ms
+    }
     $jobStatus = $airavataclient->getJobStatuses($experiment->experimentID);
 
     if ($jobStatus)
@@ -1914,7 +1896,7 @@ public static function get_experiment_values( $experiment, $project, $forSearch 
 
 public static function get_projsearch_results( $searchKey, $searchValue)
 {
-    $airavataclient = Utilities::get_airavata_client();;
+    $airavataclient = Session::get("airavataClient");;
 
     $projects = array();
 
@@ -1991,7 +1973,7 @@ public static function create_options($values, $labels, $disabled)
  */
 public static function get_expsearch_results( $inputs)
 {
-    $airavataclient = Utilities::get_airavata_client();
+    $airavataclient = Session::get("airavataClient");
     $experiments = array();
 
     try

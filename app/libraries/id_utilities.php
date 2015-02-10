@@ -121,6 +121,13 @@ interface IdUtilities
      * @return mixed
      */
     public function getRoleListOfUser($username);
+    /**
+     * Function to update role list of user 
+     *
+     * @param UpdateRoleListOfUser $parameters
+     * @return void
+     */
+    public function updateRoleListOfUser( $username, $roles);
 
     /**
      * Function to get the user list of a particular role

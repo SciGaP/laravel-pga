@@ -48,17 +48,16 @@ class UserStoreManager {
      * @param type $userName
      * @param type $password
      */
-    public function addUser($userName, $password){
+    public function addUser($userName, $password, $fullName){
         $parameters = new AddUser();
         $parameters->userName = $userName;
         $parameters->credential = $password;
         $parameters->claims = null;
-        $parameters->profileName = null;
+        $parameters->profileName = $fullName;
         $parameters->requirePasswordChange = false;
         $parameters->roleList = null;
         $this->serviceStub->addUser($parameters);
     }
-    
     /**
      * Function to delete existing user by providing the username.
      * 
@@ -102,11 +101,22 @@ class UserStoreManager {
     public function listUsers(){
         $parameters = new ListUsers();
         $parameters->filter = "*";
-        $parameters->filter = -1;
+        $parameters->maxItemLimit = -1;
         
-        return $this->serviceStub->listUsers($parameters);
+        return $this->serviceStub->listUsers($parameters)->return;
     }
-    
+
+     /**
+     * Function get user list
+     *
+     * @param GetUserList $parameters
+     * @return GetUserListResponse
+     */
+     public function getUserList(){
+        $parameters = new GetUserList();
+    }
+
+        
     /**
      * Function to check whether the given username already exists
      * 
@@ -119,5 +129,39 @@ class UserStoreManager {
         
         return $this->serviceStub->isExistingUser($parameters)->return;
     }
+
+    /**
+    * Function to get the list of all existing roles
+    *
+    * @return roles list
+    */
+    public function getRoleNames( $parameters = null){
+        $parameters = new GetRoleNames();
+        return $this->serviceStub->getRoleNames( $parameters);
+    }
+
+    /**
+    * Function to get role of a user
+    *
+    * @return User Role
+    */
+    public function getRoleListOfUser( $username){
+        $parameters = new GetRoleListOfUser();
+        $parameters->userName = $username;
+        return $this->serviceStub->GetRoleListOfUser( $parameters)->return;
+    }
     
+    /**
+     * Function to update role list of user 
+     *
+     * @param UpdateRoleListOfUser $parameters
+     * @return void
+     */
+    public function updateRoleListOfUser( $username, $roles){
+        $parameters = new UpdateRoleListOfUser();
+        $parameters->userName = $username;
+        $parameters->deletedRoles = $roles["deleted"];
+        $parameters->newRoles = $roles["new"];
+        return $this->serviceStub->updateRoleListOfUser( $parameters);
+    }
 }

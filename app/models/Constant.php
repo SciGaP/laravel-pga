@@ -19,6 +19,11 @@ class Constant extends Eloquent{
 	//const USER_STORE = 'WSO2','XML','USER_API';
 	const USER_STORE = 'WSO2';
 
+	//This will need to be updated everytime a new user role is being added for
+	//specific purposes.
+	const ADMIN_ROLE = "admin";
+	const USER_ROLE = "Internal/everyone";
+
 
 	const REQ_URL = 'https://gw111.iu.xsede.org:8443/credential-store/acs-start-servlet';
 	const GATEWAY_NAME = 'PHP-Reference-Gateway';

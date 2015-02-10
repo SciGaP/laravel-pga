@@ -5,7 +5,7 @@ class GatewayprofileController extends BaseController {
 	public function __construct()
 	{
 		$this->beforeFilter('verifyadmin');
-		Session::put("nav-active", "app-catalog");
+		Session::put("nav-active", "gateway-profile");
 	}
 
 	public function createView()

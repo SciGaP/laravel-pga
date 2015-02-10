@@ -61,11 +61,24 @@
                 </div>
             </div>
         </div>
+        <h3>Notifications</h3>
+        <div class="form-group well">
+        	<label for=""></label>
+        	<input type="checkbox" id="enableEmail" name="enableEmailNotification" value="1">Do you want to receive email notifications for status changes in the experiment?<br/>
+    		<div class="emailSection hide">
+    			<h4>Enter Email Address here.</h4>
+    			<div class="emailAddresses">
+    				<input type="email" id="emailAddresses" class="form-control" name="emailAddresses[]" placeholder="Email" required/>
+    			</div>
+    			<button type="button" class="addEmail btn btn-default">Add another Email</button>
+    		</div>
+    	</div>
+
 
         <div class="btn-toolbar">
             <div class="btn-group">
                 <button name="save" type="submit" class="btn btn-primary" value="Save">Save</button>
-                <button name="launch" type="submit" class="btn btn-success" value="Save and launch">Save and launch</button>
+                <button name="launch" type="submit" class="btn btn-success" id="expLaunch" value="Save and launch">Save and launch</button>
             </div>
             
             <a href="' . URL::to('/') . '/experiment/create" class="btn btn-default" role="button">Start over</a>
@@ -75,6 +88,7 @@
         
 
 </div>
+
 
 @stop
 
@@ -90,6 +104,19 @@
             $(this).val("");
         }
 
+    });
+
+    $("#enableEmail").change( function(){
+    	if( this.checked)
+    		$(this).parent().children(".emailSection").removeClass("hide");
+    	else
+    		$(this).parent().children(".emailSection").addClass("hide");
+
+    });
+
+    $(".addEmail").click( function(){
+    	var emailInput = $(this).parent().find("#emailAddresses").clone();
+    	emailInput.removeAttr("id").removeAttr("required").val("").appendTo(".emailAddresses");
     });
     </script>
 @stop

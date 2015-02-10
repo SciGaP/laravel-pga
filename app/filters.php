@@ -13,8 +13,11 @@
 
 App::before(function($request)
 {
-	if( ! is_object( Utilities::get_airavata_client()))
+	$airavataClient = Utilities::get_airavata_client();
+	if( ! is_object( $airavataClient))
 		return View::make("server-down");
+	else
+		Session::put("airavataClient", $airavataClient);
 });
 
 
@@ -101,7 +104,7 @@ Route::filter('verifyadmin', function()
 {
 	if( Utilities::verify_login() )
 	{
-		if( Session::get("username") != User::ADMIN_USERNAME )
+		if( !Session::has("admin"))
 			return Redirect::to("home")->with("admin-alert", true);
 	} 
 	else

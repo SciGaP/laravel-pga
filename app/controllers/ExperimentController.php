@@ -20,7 +20,6 @@ class ExperimentController extends BaseController {
 
 	public function createSubmit()
 	{
-		//var_dump( Input::all() ); exit;
 		if( isset( $_POST['continue'] ))
 		{
 			Session::put( 'exp_create_continue', true);
@@ -66,7 +65,6 @@ class ExperimentController extends BaseController {
 	{
 		$experiment = Utilities::get_experiment($_GET['expId']);
 		$project = Utilities::get_project($experiment->projectID);
-
 		$expVal = Utilities::get_experiment_values( $experiment, $project);
 		// User should not clone or edit a failed experiment. Only create clones of it.
 		if( $expVal["experimentStatusString"] == "FAILED")

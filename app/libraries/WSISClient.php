@@ -80,9 +80,9 @@ class WSISClient {
      * @return void
      * @throws Exception
      */
-    public function addUser($userName, $password) {
+    public function addUser($userName, $password, $fullName) {
         try {
-            $this->userStoreManager->addUser($userName, $password);
+            $this->userStoreManager->addUser($userName, $password, $fullName);
         } catch (Exception $ex) {
             throw new Exception("Unable to add new user", 0, $ex);
         }
@@ -132,6 +132,61 @@ class WSISClient {
             return $this->userStoreManager->isExistingUser($username);
         } catch (Exception $ex) {
             throw new Exception("Unable to verify username exists", 0, $ex);
+        }
+    }
+
+    /**
+    * Function to get the list of all existing roles
+    *
+    * @return roles list
+    */
+    public function get_all_roles(){
+        try {
+            return $this->userStoreManager->getRoleNames();
+        } catch (Exception $ex) {
+            throw new Exception("Unable to get all roles", 0, $ex);
+        }
+    }
+
+    /**
+    * Function to get role of a user
+    *
+    * @return user role
+    */
+    public function get_user_roles( $username){
+        try {
+            return $this->userStoreManager->getRoleListOfUser( $username);
+        } catch (Exception $ex) {
+            throw new Exception("Unable to update User roles.", 0, $ex);
+        }
+    }
+
+    /**
+     * Function to update role list of user 
+     *
+     * @param UpdateRoleListOfUser $parameters
+     * @return void
+     */
+    public function update_user_roles( $username, $roles){
+        try {
+            return $this->userStoreManager->updateRoleListOfUser( $username, $roles);
+        } catch (Exception $ex) {
+            throw new Exception("Unable to get role of the user.", 0, $ex);
+        }
+    }
+
+    /**
+     * Function to list users
+     *
+     * @param void
+     * @return void
+     */
+    public function list_users(){
+        try {
+            return $this->userStoreManager->listUsers();
+        } catch (Exception $ex) {
+            var_dump( $ex->debug_message); 
+            throw new Exception("Unable to list users.", 0, $ex);
         }
     }
 }

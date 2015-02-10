@@ -11,7 +11,7 @@ class AccountController extends BaseController {
 	{
 		$rules = array(
 				"username" => "required|min:6",
-				"password" => "required",
+				"password" => "required|min:6",
 				"confirm_password" => "required|same:password",
 				"email" => "required",
 		);
@@ -79,7 +79,6 @@ class AccountController extends BaseController {
                 if ( Utilities::id_matches_db($username, $password)) {
                     Utilities::store_id_in_session($username);
                     Utilities::print_success_message('Login successful! You will be redirected to your home page shortly.');
-                	
                 	return Redirect::to( "home");
 
                 } else {
@@ -96,4 +95,5 @@ class AccountController extends BaseController {
 		Session::flush();
 		return Redirect::to('home');
 	}
+	
 }

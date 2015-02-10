@@ -115,7 +115,7 @@ class WSISUtilities implements IdUtilities{
     public function add_user($username, $password, $first_name, $last_name, $email, $organization,
             $address, $country,$telephone, $mobile, $im, $url) {
         try{
-            $this->wsis_client->addUser($username, $password);
+            $this->wsis_client->addUser($username, $password, $first_name . " " . $last_name);
         } catch (Exception $ex) {
             var_dump($ex);
             throw new Exception("Unable to add new user", 0, NULL);
@@ -208,7 +208,12 @@ class WSISUtilities implements IdUtilities{
      */
     public function getRoleList()
     {
-        // TODO: Implement getRoleList() method.
+        try{
+            return $this->wsis_client->get_all_roles();
+        } catch (Exception $ex) {
+            var_dump($ex);
+            throw new Exception("Unable to get roles.", 0, NULL);
+        }        
     }
 
     /**
@@ -219,7 +224,12 @@ class WSISUtilities implements IdUtilities{
      */
     public function getRoleListOfUser($username)
     {
-        // TODO: Implement getRoleListOfUser() method.
+        try{
+            return $this->wsis_client->get_user_roles( $username);
+        } catch (Exception $ex) {
+            var_dump($ex);
+            throw new Exception("Unable to get roles.", 0, NULL);
+        }  
     }
 
     /**
@@ -252,8 +262,39 @@ class WSISUtilities implements IdUtilities{
      * @param $role
      * @return void
      */
+
+    /**
+     * Function to update role list of user 
+     *
+     * @param UpdateRoleListOfUser $parameters
+     * @return void
+     */
+    public function updateRoleListOfUser($username, $roles)
+    {
+        try{
+            return $this->wsis_client->update_user_roles( $username, $roles);
+        } catch (Exception $ex) {
+            var_dump($ex);
+            throw new Exception("Unable to update User roles.", 0, NULL);
+        }  
+    }
     public function removeUserFromRole($username, $role)
     {
         // TODO: Implement removeUserFromRole() method.
+    }
+
+    /**
+     * Function to list users
+     *
+     * @param void
+     * @return void
+     */
+    public function listUsers(){
+        try {
+            return $this->wsis_client->list_users();
+        } catch (Exception $ex) {
+    
+            throw new Exception( "Unable to list users", 0, $ex);
+        }
     }
 }

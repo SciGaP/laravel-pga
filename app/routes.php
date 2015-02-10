@@ -137,6 +137,15 @@ Route::post("gp/add-crp", "GatewayprofileController@modifyCRP");
 
 Route::post("gp/update-crp", "GatewayprofileController@modifyCRP");
 
+//Management Dashboard
+
+Route::get("admin/dashboard", "AdminController@dashboard");
+
+Route::get("manage/admins", "AdminController@adminView");
+
+Route::get("manage/users", "AdminController@usersView");
+
+//Airavata Server Check
 Route::get("airavata/down", function(){
 	return View::make("server-down");
 });

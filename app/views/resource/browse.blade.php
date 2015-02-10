@@ -19,6 +19,9 @@
             {{ Utilities::print_warning_message('No Compute Resources exist at the moment. Please register compute resources and then try again.') }}
         @else
             <div class="col-md-12">
+                <div class="col-md-6">
+                    <h3 style="margin:0;">Existing Compute Resources :</h3>
+                </div>
                 <input type="text" class="pull-right filterinput col-md-6" placeholder="Search by Compure Resource Name"/>
             <div class="table-responsive">
                 <table class="table">

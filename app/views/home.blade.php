@@ -6,7 +6,7 @@
 
 @section('content')
 
-<div class="jumbotron">
+<div class="well">
     <div class="container">
 
         <?php
@@ -14,8 +14,12 @@
         if (Utilities::id_in_session())
         {
             $columnClass = 'col-md-4';
+            if( Session::has("admin"))
+                $admin = " Admin";
+            else
+                $admin = "";
 
-            echo '<h1>Welcome, ' . Session::get("username") . '!</h1>';
+            echo '<h4>Welcome'. $admin . ', '. Session::get("username") . '!</h4>';
 
             if( Session::get("username") == 'admin1') // temporary hard-coded admin user. will replace with admin role in future
             {
