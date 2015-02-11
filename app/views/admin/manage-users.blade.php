@@ -17,7 +17,7 @@
             {{ Session::forget("message") }}
         @endif
 
-        <h1>Users</h1>
+        <h1 class="text-center">Users</h1>
 
         <table class="table table-striped table-condensed">
             <tr>

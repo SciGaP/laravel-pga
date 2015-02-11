@@ -68,7 +68,7 @@
     		<div class="emailSection hide">
     			<h4>Enter Email Address here.</h4>
     			<div class="emailAddresses">
-    				<input type="email" id="emailAddresses" class="form-control" name="emailAddresses[]" placeholder="Email" required/>
+    				<input type="email" id="emailAddresses" class="form-control" name="emailAddresses[]" placeholder="Email"/>
     			</div>
     			<button type="button" class="addEmail btn btn-default">Add another Email</button>
     		</div>
@@ -108,9 +108,15 @@
 
     $("#enableEmail").change( function(){
     	if( this.checked)
+        {
+            $("#emailAddresses").addAttr("required", "required");
     		$(this).parent().children(".emailSection").removeClass("hide");
+        }
     	else
+        {
     		$(this).parent().children(".emailSection").addClass("hide");
+            $("#emailAddresses").removeAttr("required");
+        }
 
     });
 
