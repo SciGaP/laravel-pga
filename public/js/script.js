@@ -88,14 +88,11 @@ $(document).ready( function(){
     }
     else if( selectedVal == "unicore")
     {
-      alert("Unicore Protool is not being setup right now. Please choose another option.");
-      /*
       $(this).parent().append(  parentResDiv 
                       + $(".ssh-block").html()
                       + "<h5>Unicore End Point Url</h5>" 
                       + "<input class='form-control' name='unicoreEndPointURL'/>"
                       + "</div>" );
-      */
     }
     else if( selectedVal == "cloud")
     {
@@ -113,7 +110,7 @@ $(document).ready( function(){
     }
 
     //temporary till all protocols are not setup
-    if( selectedVal == "local" || selectedVal == "ssh" )
+    if( selectedVal == "local" || selectedVal == "ssh" || selectedVal == "unicore" )
       $(".jspSubmit").removeClass("hide");
     else
       $(".jspSubmit").addClass("hide");

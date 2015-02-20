@@ -136,6 +136,33 @@ class WSISClient {
     }
 
     /**
+     * Function to check whether a role is existing 
+     *
+     * @param string $roleName 
+     * @return IsExistingRoleResponse
+     */
+    public function is_existing_role( $roleName){
+        try {
+            return $this->userStoreManager->isExistingRole( $roleName);
+        } catch (Exception $ex) {
+            throw new Exception("Unable to check if the role exists", 0, $ex);
+        }
+    }
+
+    /**
+     * Function to add new role by providing the role name.
+     * 
+     * @param string $roleName
+     */
+    public function add_role($roleName){
+        try {
+            return $this->userStoreManager->addRole( $roleName);
+        } catch (Exception $ex) {
+            throw new Exception("Unable to add this role", 0, $ex);
+        }
+    }
+    
+    /**
     * Function to get the list of all existing roles
     *
     * @return roles list
@@ -157,8 +184,22 @@ class WSISClient {
         try {
             return $this->userStoreManager->getRoleListOfUser( $username);
         } catch (Exception $ex) {
-            throw new Exception("Unable to update User roles.", 0, $ex);
+            throw new Exception("Unable to get User roles.", 0, $ex);
         }
+    }
+
+    /**
+     * Function to get the user list of role
+     *
+     * @param GetUserListOfRole $parameters
+     * @return GetUserListOfRoleResponse
+     */
+    public function get_userlist_of_role( $role){
+        try {
+            return $this->userStoreManager->getRoleListOfUser( $role);
+        } catch (Exception $ex) {
+            throw new Exception("Unable to get user list of roles.", 0, $ex);
+        }   
     }
 
     /**
@@ -171,7 +212,7 @@ class WSISClient {
         try {
             return $this->userStoreManager->updateRoleListOfUser( $username, $roles);
         } catch (Exception $ex) {
-            throw new Exception("Unable to get role of the user.", 0, $ex);
+            throw new Exception("Unable to update role of the user.", 0, $ex);
         }
     }
 

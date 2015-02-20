@@ -112,7 +112,22 @@ interface IdUtilities
      *
      * @return mixed
      */
-    public function getRoleList();
+    public function getRoleNames();
+    
+    /**
+     * Function to check whether a role is existing 
+     *
+     * @param string $roleName 
+     * @return IsExistingRoleResponse
+     */
+    public function isExistingRole( $roleName);
+
+    /**
+     * Function to add new role by providing the role name.
+     * 
+     * @param string $roleName
+     */
+    public function addRole($roleName);
 
     /**
      * Function to get the role list of a user

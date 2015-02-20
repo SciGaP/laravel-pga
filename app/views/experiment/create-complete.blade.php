@@ -109,7 +109,7 @@
     $("#enableEmail").change( function(){
     	if( this.checked)
         {
-            $("#emailAddresses").addAttr("required", "required");
+            $("#emailAddresses").attr("required", "required");
     		$(this).parent().children(".emailSection").removeClass("hide");
         }
     	else

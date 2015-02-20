@@ -145,6 +145,12 @@ Route::get("manage/admins", "AdminController@adminView");
 
 Route::get("manage/users", "AdminController@usersView");
 
+Route::post("admin/adduser", "AdminController@addAdminSubmit");
+
+Route::post("admin/addgatewayadmin", "AdminController@addGatewayAdminSubmit");
+
+Route::post("admin/addrole", "AdminController@addRole");
+
 //Airavata Server Check
 Route::get("airavata/down", function(){
 	return View::make("server-down");

@@ -22,8 +22,12 @@ class Constant extends Eloquent{
 	//This will need to be updated everytime a new user role is being added for
 	//specific purposes.
 	const ADMIN_ROLE = "admin";
+	const GATEWAY_ADMIN_ROLE = "gateway_admin";
 	const USER_ROLE = "Internal/everyone";
 
+	//identity server roles assigned for Gateway
+	const GATEWAY_ROLE_PREPEND = "gateway_";
+	const GATEWAY_ROLE_ADMIN_APPEND = "_admin";
 
 	const REQ_URL = 'https://gw111.iu.xsede.org:8443/credential-store/acs-start-servlet';
 	const GATEWAY_NAME = 'PHP-Reference-Gateway';

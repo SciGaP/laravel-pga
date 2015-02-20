@@ -74,8 +74,9 @@ $(document).ready( function(){
     $(".create-app-interface").click( function(){
     	clearInputs( $(".create-app-interface-block"));
     	$("#create-app-interface-block").modal("show");
+        $("#create-app-interface-block").find(".add-app-module").click();
 
-    });
+    });add-app-module
 
     $(".submit-create-app-interface-form").click( function(){
     	//check if app interface contains atleast one app module selected.

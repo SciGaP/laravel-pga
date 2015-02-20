@@ -263,7 +263,6 @@
 										</div>
 										</div>
 									</div>
-
 								@elseif(  $selectedJspIndex == $jobSubmissionProtocolsObject::UNICORE)
 									<div class="form-group required">		
 										<label class="control-label">Select Security Protocol</label>
@@ -275,7 +274,7 @@
 									</div>
 									<div class="form-group">
 										<label class="form-label">Unicore End Point URL</label>
-										<input class='form-control' name='unicoreEndPointURL'/>
+										<input class='form-control' name='unicoreEndPointURL' value="{{ $JSI->unicoreEndPointURL }}"/>
 									</div>
 								@endif
 								<div class="form-group">

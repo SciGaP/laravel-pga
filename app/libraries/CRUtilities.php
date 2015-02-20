@@ -17,10 +17,13 @@ use Airavata\Model\AppCatalog\ComputeResource\DataMovementProtocol;
 use Airavata\Model\AppCatalog\ComputeResource\ComputeResourceDescription;
 use Airavata\Model\AppCatalog\ComputeResource\SSHJobSubmission;
 use Airavata\Model\AppCatalog\ComputeResource\LOCALSubmission;
+use Airavata\Model\AppCatalog\ComputeResource\UnicoreJobSubmission;
 use Airavata\Model\AppCatalog\ComputeResource\BatchQueue;
 use Airavata\Model\AppCatalog\ComputeResource\SCPDataMovement;
 use Airavata\Model\AppCatalog\ComputeResource\GridFTPDataMovement;
 use Airavata\Model\AppCatalog\ComputeResource\LOCALDataMovement;
+use Airavata\Model\AppCatalog\ComputeResource\UnicoreDataMovement;
+
 
 //Gateway Classes
 
@@ -119,6 +122,11 @@ public static function create_or_update_JSIObject( $inputs, $update = false){
     $airavataclient = Session::get("airavataClient");
     $computeResource = Utilities::get_compute_resource(  $inputs["crId"]);
 
+
+    $jsiId = null;
+    if( isset( $inputs["jsiId"]))
+        $jsiId = $inputs["jsiId"];
+
     if( $inputs["jobSubmissionProtocol"] == JobSubmissionProtocol::LOCAL)
     {
 
@@ -140,9 +148,6 @@ public static function create_or_update_JSIObject( $inputs, $update = false){
 
         if( $update) //update Local JSP
         {
-            $jsiId = null;
-            if( isset( $inputs["jsiId"]))
-                $jsiId = $inputs["jsiId"];
             $jsiObject = $airavataclient->getLocalJobSubmission( $jsiId);
             $localSub = $airavataclient->updateResourceJobManager(  $jsiObject->resourceJobManager->resourceJobManagerId, $resourceManager);
             //$localSub = $airavataclient->updateLocalSubmissionDetails( $jsiId, $localJobSubmission);
@@ -172,9 +177,6 @@ public static function create_or_update_JSIObject( $inputs, $update = false){
                                                 );
         if( $update) //update Local JSP
         {
-            $jsiId = null;
-            if( isset( $inputs["jsiId"]))
-                $jsiId = $inputs["jsiId"];
             $jsiObject = $airavataclient->getSSHJobSubmission( $jsiId);
 
             //first update resource job manager
@@ -197,7 +199,28 @@ public static function create_or_update_JSIObject( $inputs, $update = false){
         }
         return;        
     }
-    else /* Globus & Unicore currently */
+    else if( $inputs["jobSubmissionProtocol"] == JobSubmissionProtocol::UNICORE)
+    {
+        $unicoreJobSubmission  = new UnicoreJobSubmission( array
+                                                            (
+                                                                "securityProtocol" => intval( $inputs["securityProtocol"]),
+                                                                "unicoreEndPointURL" => $inputs["unicoreEndPointURL"]
+                                                            )
+                                                        );
+        if( $update)
+        {
+            $jsiObject = $airavataclient->getUnicoreJobSubmission( $jsiId);
+            $jsiObject->securityProtocol = intval( $inputs["securityProtocol"] );
+            $jsiObject->unicoreEndPointURL = $inputs["unicoreEndPointURL"];
+
+            $unicoreSub = $airavataclient->updateUnicoreJobSubmissionDetails( $jsiId, $jsiObject);
+        }
+        else
+        {
+            $unicoreSub = $airavataclient->addUNICOREJobSubmissionDetails( $computeResource->computeResourceId, 0, $unicoreJobSubmission);
+        }
+    }
+    else /* Globus does not work currently */
     {
         print_r( "Whoops! We haven't coded for this Job Submission Protocol yet. Still working on it. Please click <a href='" . URL::to('/') . "/cr/edit'>here</a> to go back to edit page for compute resource.");
     }
@@ -245,6 +268,17 @@ public static function create_or_update_DMIObject( $inputs, $update = false){
             $gridftpdmp = $airavataclient->updateGridFTPDataMovementDetails( $inputs["dmiId"], $gridFTPDataMovement);
         else
             $gridftpdmp = $airavataclient->addGridFTPDataMovementDetails( $computeResource->computeResourceId, 0, $gridFTPDataMovement);
+    }
+    else if( $inputs["dataMovementProtocol"] == DataMovementProtocol::UNICORE_STORAGE_SERVICE) /* Unicore Storage Service */
+    {
+        $unicoreDataMovement = new UnicoreDataMovement( array(
+                "securityProtocol" => $inputs["securityProtocol"],
+                "gridFTPEndPoints" => $inputs["gridFTPEndPoints"]
+            ));
+        if( $update)
+            $unicoredmp = $airavataclient->updateUnicoreDataMovementDetails( $inputs["dmiId"], $unicoreDataMovement);
+        else
+            $gridftpdmp = $airavataclient->addUnicoreDataMovementDetails( $computeResource->computeResourceId, 0, $unicoreDataMovement);
     }
     else /* other data movement protocols */
     {

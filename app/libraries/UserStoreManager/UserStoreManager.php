@@ -70,6 +70,17 @@ class UserStoreManager {
     }
     
     /**
+     * Function to check whether a role is existing 
+     *
+     * @param string $roleName 
+     * @return IsExistingRoleResponse
+     */
+    public function isExistingRole( $roleName) {
+        $parameters = new IsExistingRole();
+        $parameters->roleName = $roleName;
+        $this->serviceStub->isExistingRole( $parameters)->return;
+    }
+    /**
      * Function to add new role by providing the role name.
      * 
      * @param string $roleName
@@ -137,7 +148,7 @@ class UserStoreManager {
     */
     public function getRoleNames( $parameters = null){
         $parameters = new GetRoleNames();
-        return $this->serviceStub->getRoleNames( $parameters);
+        return $this->serviceStub->getRoleNames( $parameters)->return;
     }
 
     /**
@@ -149,6 +160,18 @@ class UserStoreManager {
         $parameters = new GetRoleListOfUser();
         $parameters->userName = $username;
         return $this->serviceStub->GetRoleListOfUser( $parameters)->return;
+    }
+
+    /**
+     * Function to get the user list of role
+     *
+     * @param GetUserListOfRole $parameters
+     * @return GetUserListOfRoleResponse
+     */
+    public function getUserListOfRole( $role){
+        $parameters = new GetUserListOfRole();
+        $paramerters->roleName = $role;
+        return $this->serviceStub->getUserListOfRole( $paramerters)->return;
     }
     
     /**

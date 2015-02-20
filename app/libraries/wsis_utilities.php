@@ -202,11 +202,39 @@ class WSISUtilities implements IdUtilities{
     }
 
     /**
+     * Function to check whether a role is existing 
+     *
+     * @param string $roleName 
+     * @return IsExistingRoleResponse
+     */
+    public function isExistingRole( $roleName){
+        try{
+            return $this->wsis_client->is_existing_role( $roleName);
+        } catch (Exception $ex) {
+            var_dump($ex); exit;
+            throw new Exception("Unable to check if role exists.", 0, $ex);
+        }    
+    }
+
+    /**
+     * Function to add new role by providing the role name.
+     * 
+     * @param string $roleName
+     */
+    public function addRole($roleName){
+        try{
+            return $this->wsis_client->add_role( $roleName);
+        } catch (Exception $ex) {
+            var_dump($ex); exit;
+            throw new Exception("Unable to add role.", 0, $ex);
+        }        
+    }
+    /**
      * Function to get the entire list of roles in the application
      *
      * @return mixed
      */
-    public function getRoleList()
+    public function getRoleNames()
     {
         try{
             return $this->wsis_client->get_all_roles();
@@ -274,7 +302,7 @@ class WSISUtilities implements IdUtilities{
         try{
             return $this->wsis_client->update_user_roles( $username, $roles);
         } catch (Exception $ex) {
-            var_dump($ex);
+            var_dump($ex); exit;
             throw new Exception("Unable to update User roles.", 0, NULL);
         }  
     }

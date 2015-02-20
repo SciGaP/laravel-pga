@@ -52,7 +52,7 @@
 								<h5>{{ $gp->gatewayDescription}}</h5>
 								<hr/>
 								<div class="row">
-									<div class="col-md-offset-1 col-md-10">
+									<div class="col-md-10">
 										<button class="btn btn-default add-cr" data-gpid="{{$gp->gatewayID}}"><span class="glyphicon glyphicon-plus"></span> Add a Compute Resource</button>
 									</div>
 								</div>
