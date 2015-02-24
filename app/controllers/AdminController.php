@@ -29,6 +29,8 @@ class AdminController extends BaseController {
 
 	public function adminView(){
 		$idStore = $this->idStore;
+		$ti = $idStore->getTenantId();
+		print_r( $ti); exit;
 		$roles = $idStore->getRoleNames();
 		foreach ($roles as $key => $role) {
 			//$gatewayAdmins = $idStore->getUserListOfRole

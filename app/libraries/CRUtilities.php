@@ -271,14 +271,16 @@ public static function create_or_update_DMIObject( $inputs, $update = false){
     }
     else if( $inputs["dataMovementProtocol"] == DataMovementProtocol::UNICORE_STORAGE_SERVICE) /* Unicore Storage Service */
     {
-        $unicoreDataMovement = new UnicoreDataMovement( array(
-                "securityProtocol" => $inputs["securityProtocol"],
-                "gridFTPEndPoints" => $inputs["gridFTPEndPoints"]
-            ));
+        $unicoreDataMovement  = new UnicoreDataMovement( array
+                                                            (
+                                                                "securityProtocol" => intval( $inputs["securityProtocol"]),
+                                                                "unicoreEndPointURL" => $inputs["unicoreEndPointURL"]
+                                                            )
+                                                        );
         if( $update)
             $unicoredmp = $airavataclient->updateUnicoreDataMovementDetails( $inputs["dmiId"], $unicoreDataMovement);
         else
-            $gridftpdmp = $airavataclient->addUnicoreDataMovementDetails( $computeResource->computeResourceId, 0, $unicoreDataMovement);
+            $unicoredmp = $airavataclient->addUnicoreDataMovementDetails( $computeResource->computeResourceId, 0, $unicoreDataMovement);
     }
     else /* other data movement protocols */
     {
@@ -336,8 +338,12 @@ public static function getDataMovementDetails( $dataMovementInterfaceId, $dmi){
         return $airavataclient->getSCPDataMovement( $dataMovementInterfaceId);
     else if( $dmi == DataMovementProtocol::GridFTP)
         return $airavataclient->getGridFTPDataMovement( $dataMovementInterfaceId);
+    else if( $dmi == DataMovementProtocol::UNICORE_STORAGE_SERVICE)
+        return $airavataclient->getUnicoreDataMovement( $dataMovementInterfaceId);
+    /*
     else if( $dmi == JobSubmissionProtocol::CLOUD)
         return $airavataclient->getCloudJobSubmission( $dataMovementInterfaceId);
+    */
 
     //globus get function not present ??
 }

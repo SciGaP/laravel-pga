@@ -74,9 +74,11 @@ $(document).ready( function(){
     $(".create-app-interface").click( function(){
     	clearInputs( $(".create-app-interface-block"));
     	$("#create-app-interface-block").modal("show");
-        $("#create-app-interface-block").find(".add-app-module").click();
+        //checking if app module select option exist and if not add one.
+        if( $("#create-app-interface-block").find(".app-module-select").length == 0 )
+            $("#create-app-interface-block").find(".add-app-module").click();
 
-    });add-app-module
+    });
 
     $(".submit-create-app-interface-form").click( function(){
     	//check if app interface contains atleast one app module selected.

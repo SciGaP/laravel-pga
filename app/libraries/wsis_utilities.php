@@ -325,4 +325,19 @@ class WSISUtilities implements IdUtilities{
             throw new Exception( "Unable to list users", 0, $ex);
         }
     }
+
+    /**
+     * Function to get the tenant id
+     *
+     * @param GetTenantId $parameters
+     * @return GetTenantIdResponse
+     */
+    public function getTenantId(){
+        try {
+            return $this->wsis_client->get_tenant_id();
+        } catch (Exception $ex) {
+            var_dump( $ex->debug_message); 
+            throw new Exception("Unable to get the Tenant Id.", 0, $ex);
+        }
+    }
 }

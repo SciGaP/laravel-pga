@@ -383,6 +383,24 @@
 							            	<button type="submit" class="btn">Update</button>
 							            </div>
 									</div>
+								@elseif( $selectedDMIIndex == $dataMovementProtocolsObject::UNICORE_STORAGE_SERVICE)
+									<div class="form-group">		
+										<label class="control-label">Select Security Protocol</label>
+										<select name="securityProtocol">
+										@foreach( $securityProtocols as $index => $sp)
+											<option value="{{ $index }}" @if( $DMI->securityProtocol == $index ) selected @endif>{{ $sp }}</option>
+										@endforeach
+										</select>
+										<div>
+											<div class="form-group required">
+												<label class="control-label">Unicore End Point URL</label>
+												<input class="form-control" maxlength="30" name="unicoreEndPointURL" required="required" value="{{ $DMI->unicoreEndPointURL }}"/>
+											</div>
+										</div>
+										<div class="form-group">
+							            	<button type="submit" class="btn">Update</button>
+							            </div>
+									</div>
 								@endif
 							</form>
 						</div>

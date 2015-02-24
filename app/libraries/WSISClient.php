@@ -230,4 +230,19 @@ class WSISClient {
             throw new Exception("Unable to list users.", 0, $ex);
         }
     }
+
+    /**
+     * Function to get the tenant id
+     *
+     * @param GetTenantId $parameters
+     * @return GetTenantIdResponse
+     */
+    public function get_tenant_id(){
+        try {
+            return $this->userStoreManager->getTenantId();
+        } catch (Exception $ex) {
+            var_dump( $ex->debug_message); 
+            throw new Exception("Unable to get the tenant Id.", 0, $ex);
+        }
+    }
 }

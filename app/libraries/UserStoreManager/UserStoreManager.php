@@ -187,4 +187,16 @@ class UserStoreManager {
         $parameters->newRoles = $roles["new"];
         return $this->serviceStub->updateRoleListOfUser( $parameters);
     }
+
+    /**
+     * Function to get the tenant id
+     *
+     * @param GetTenantId $parameters
+     * @return GetTenantIdResponse
+     */
+    public function getTenantId(){
+        $parameters = new GetTenantId();
+
+        return $this->serviceStub->getTenantId( $parameters);
+    }
 }

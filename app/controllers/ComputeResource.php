@@ -69,6 +69,7 @@ class ComputeResource extends BaseController{
 					$addedDMI[] = $DMI->dataMovementProtocol;
 				}
 			}
+
 			$data["computeResource"] = $computeResource;
 			$data["jobSubmissionInterfaces"] = $jobSubmissionInterfaces;
 			$data["dataMovementInterfaces"] = $dataMovementInterfaces;
