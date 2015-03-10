@@ -307,7 +307,7 @@ public static function getAllCRObjects( $onlyName = false){
 
 public static function getBrowseCRData(){
     $airavataclient = Session::get("airavataClient");
-	$appDeployments = $airavataclient->getAllApplicationDeployments();
+	$appDeployments = $airavataclient->getAllApplicationDeployments( Session::get("gateway_id"));
 
     return array( 'crObjects' => CRUtilities::getAllCRObjects(true),
     			  'appDeployments' => $appDeployments 
