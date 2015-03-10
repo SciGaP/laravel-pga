@@ -12,7 +12,8 @@
 
 <?php
 
-Utilities::connect_to_id_store();
+//Is there a need to connect to id store at this point? Commented for now.
+//Utilities::connect_to_id_store();
 
 ?>
 

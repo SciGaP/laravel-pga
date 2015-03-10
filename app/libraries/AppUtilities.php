@@ -225,6 +225,6 @@ class AppUtilities{
 
 	public static function getAllModules(){
 		$airavataclient = Session::get("airavataClient");
-		return $airavataclient->getAllAppModules();
+		return $airavataclient->getAllAppModules( Session::get("gateway_id"));
 	}
 }

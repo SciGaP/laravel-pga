@@ -24,17 +24,20 @@
                         {{ Session::forget("message") }}
                     @endif
 
-                    <h1 class="text-center">Users</h1>
+                    <h1 class="text-center">Roles</h1>
 
                     <table class="table table-striped table-condensed">
                         <tr>
-                            <th>Username</th>
                             <th>Role</th>
+                            <th>Actions</th>
                         </tr>
-                        @foreach( $users as $user)
+                        @foreach( $roles as $role)
                         <tr>
-                            <td>{{ $user }}</td>
-                            <td><button class="button btn btn-default" type="button">Check Role</button></td>
+                            <td>{{ $role }}</td>
+                            <td>
+                                <span class="glyphicon glyphicon-pencil"></span>
+                                <span class="glyphicon glyphicon-remove"></span>
+                            </td>
                         </tr>
                         @endforeach
                     </table>

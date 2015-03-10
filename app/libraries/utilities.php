@@ -53,6 +53,7 @@ private static $experimentDataPathAbsolute;
 function __construct(){
 	$this->sshUser = "root";
 	$this->hostName = $_SERVER['SERVER_NAME'];
+
     self::$experimentDataPathAbsolute = base_path() . Constant::EXPERIMENT_DATA_ROOT;
 	self::$pathConstant = 'file://'.$this->sshUser.'@'.$this->hostName.':' . self::$experimentDataPathAbsolute;
 	self::$experimentPath = null;
@@ -135,10 +136,13 @@ public static function id_matches_db($username, $password)
     //checking user roles.
     //var_dump( $idStore->updateRoleListOfUser( $username, array( "new"=>array("admin"), "deleted"=>array() ) ) );
     //var_dump($idStore->getRoleListOfUser( $username) ); exit;
+    //var_dump( $idStore->authenticate($username, $password)); exit;
     if($idStore->authenticate($username, $password))
     {
         //checking if user is an Admin and saving in Session.
-        if( in_array( Constant::ADMIN_ROLE, (array)$idStore->getRoleListOfUser( $username)))
+       $app_config = Utilities::read_config();
+
+        if( in_array( $app_config["admin-role"], (array)$idStore->getRoleListOfUser( $username)))
         {
             Session::put("admin", true);
         }
@@ -193,8 +197,9 @@ public static function verify_login()
 public static function connect_to_id_store()
 {
     global $idStore;
+    $app_config = Utilities::read_config();
 
-    switch (Constant::USER_STORE)
+    switch ($app_config["user-store"])
     {
         case 'WSO2':
             $idStore = new WSISUtilities(); // WS02 Identity Server
@@ -227,14 +232,16 @@ public static function get_airavata_client()
 {
     try
     {
-        $transport = new TSocket(Constant::AIRAVATA_SERVER, Constant::AIRAVATA_PORT);
-        $transport->setRecvTimeout(Constant::AIRAVATA_TIMEOUT);
-        $transport->setSendTimeout(Constant::AIRAVATA_TIMEOUT);
+        $app_config = Utilities::read_config();
+        $transport = new TSocket( $app_config["airavata-server"], $app_config["airavata-port"]);
+        $transport->setRecvTimeout( $app_config["airavata-timeout"]);
+        $transport->setSendTimeout( $app_config["airavata-timeout"]);
 
         $protocol = new TBinaryProtocol($transport);
         $transport->open();
 
         $client = new AiravataClient($protocol);
+
         if( is_object( $client))
             return $client;
         else
@@ -325,14 +332,15 @@ public static function launch_experiment($expId)
  * @param $username
  * @return null
  */
-public static function get_all_user_projects($username)
+public static function get_all_user_projects($gatewayId, $username)
 {
     $airavataclient = Session::get("airavataClient");
     $userProjects = null;
 
     try
     {
-        $userProjects = $airavataclient->getAllUserProjects($username);
+        $userProjects = $airavataclient->getAllUserProjects($gatewayId, $username);
+        //var_dump( $userProjects); exit;
     }
     catch (InvalidRequestException $ire)
     {
@@ -351,7 +359,7 @@ public static function get_all_user_projects($username)
         if ($ase->airavataErrorType == 2) // 2 = INTERNAL_ERROR
         {
             Utilities::print_warning_message('<p>You must create a project before you can create an experiment.
-                Click <a href="project/create">here</a> to create a project.</p>');
+                Click <a href="' . URL::to('/') . '/project/create">here</a> to create a project.</p>');
         }
         else
         {
@@ -376,7 +384,7 @@ public static function get_all_applications()
 
     try
     {
-        $applications = $airavataclient->getAllApplicationInterfaceNames();
+        $applications = $airavataclient->getAllApplicationInterfaceNames( Session::get("gateway_id"));
     }
     catch (InvalidRequestException $ire)
     {
@@ -392,10 +400,19 @@ public static function get_all_applications()
     }
     catch (AiravataSystemException $ase)
     {
+        Utilities::print_warning_message('<p>You must create an application module, interface and deployment space before you can create an experiment.
+                Click <a href="' . URL::to('/') . '/app/module">here</a> to create an application.</p>');
+        /*
         Utilities::print_error_message('<p>There was a problem getting all applications.
             Please try again later or submit a bug report using the link in the Help menu.</p>' .
             '<p>Airavata System Exception: ' . $ase->getMessage() . '</p>');
+            */
     }
+
+    if( count( $applications) == 0)
+        Utilities::print_warning_message('<p>You must create an application module, interface and deployment space before you can create an experiment.
+                Click <a href="' . URL::to('/') . '/app/module">here</a> to create an application.</p>');
+        
 
     return $applications;
 }
@@ -1192,7 +1209,7 @@ public static function cancel_experiment($expId)
 public static function create_project_select($projectId = null, $editable = true)
 {
     $editable? $disabled = '' : $disabled = 'disabled';
-    $userProjects = Utilities::get_all_user_projects( Session::get('username') );
+    $userProjects = Utilities::get_all_user_projects( Session::get("gateway_id"), Session::get('username') );
 
     if (sizeof($userProjects) > 0)
     {
@@ -1230,11 +1247,14 @@ public static function create_application_select($id = null, $editable = true)
 
     echo '<select class="form-control" name="application" id="application" required ' . $disabled . '>';
 
-    foreach ($applicationIds as $applicationId => $applicationName)
+    if( count( $applicationIds))
     {
-        $selected = ($applicationId == $id) ? 'selected' : '';
-
-        echo '<option value="' . $applicationId . '" ' . $selected . '>' . $applicationName . '</option>';
+        foreach ( (array) $applicationIds as $applicationId => $applicationName)
+        {
+            $selected = ($applicationId == $id) ? 'selected' : '';
+    
+            echo '<option value="' . $applicationId . '" ' . $selected . '>' . $applicationName . '</option>';
+        }
     }
 
     echo '</select>';
@@ -1497,7 +1517,7 @@ public static function create_nav_bar()
                 <ul class="dropdown-menu" role="menu">';
 
         if( Session::has("admin"))
-            echo '<li><a href="' . URL::to("/") . '/admin/dashboard"><span class="glyphicon glyphicon-user"></span> Dashboard</a></li>';
+            echo '<li><a href="' . URL::to("/") . '/admin/console"><span class="glyphicon glyphicon-user"></span> Dashboard</a></li>';
         else
             echo '<li><a href="' . URL::to("/") . '/user/profile"><span class="glyphicon glyphicon-user"></span> Profile</a></li>';
 
@@ -2094,6 +2114,40 @@ public static function apply_changes_to_experiment($experiment, $input)
         //var_dump($experiment);
         return $experiment;
     }
+}
+
+public static function read_config( $fileName = null){
+    $wsis_config = null;
+
+    if( $fileName == null)
+        $fileName = "app_config.ini";
+    try {
+        if (file_exists( app_path() . "/config/" . $fileName ) ) {
+
+            try
+            {
+                $wsis_config = parse_ini_file( app_path() . "/config/" . $fileName );
+            }
+
+            catch( \Exception $e)
+            {
+                print_r( $e); exit;
+            }
+        } 
+        else 
+        {
+            throw new Exception("Error: Cannot open file!");
+        }
+
+        if (!$wsis_config) 
+        {
+            throw new Exception('Error: Unable to read the file!');
+        }
+    }catch (Exception $e) {
+        throw new Exception('Unable to instantiate the client. Try editing the file.', 0, NULL);
+    }
+    return $wsis_config;
+
 }
 }
 

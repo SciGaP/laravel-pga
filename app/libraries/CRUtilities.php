@@ -396,18 +396,27 @@ public static function create_or_update_gateway_profile( $inputs, $update = fals
 public static function getAllGatewayProfilesData(){
     $airavataclient = Session::get("airavataClient");
 
+    $gateways = $airavataclient->getAllGateways();
     $gatewayProfiles = $airavataclient->getAllGatewayComputeResources();
     //$gatewayProfileIds = array("GatewayTest3_57726e98-313f-4e7c-87a5-18e69928afb5", "GatewayTest4_4fd9fb28-4ced-4149-bdbd-1f276077dad8");
-    foreach( (array)$gatewayProfiles as $index => $gp)
+    foreach( $gateways as $key => $gw)
     {
-        foreach( (array)$gp->computeResourcePreferences as $i => $crp)
+        foreach( (array)$gatewayProfiles as $index => $gp)
         {
-            $gatewayProfiles[$index]->computeResourcePreferences[$i]->crDetails = $airavataclient->getComputeResource( $crp->computeResourceId);
+
+            if( $gw->gatewayId == $gp->gatewayID)
+            {
+                foreach( (array)$gp->computeResourcePreferences as $i => $crp)
+                {
+                    $gatewayProfiles[$index]->computeResourcePreferences[$i]->crDetails = $airavataclient->getComputeResource( $crp->computeResourceId);
+                }
+                $gateways[$key]->profile = $gatewayProfiles[$index];
+            }
         }
     }
     //var_dump( $gatewayProfiles[0]->computeResourcePreferences[0]->crDetails); exit;
     
-    return $gatewayProfiles;
+    return $gateways;
 }
 
 public static function add_or_update_CRP( $inputs){

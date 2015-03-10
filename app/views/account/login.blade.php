@@ -35,6 +35,10 @@
             </div>
             <input name="Submit" type="submit" class="btn btn-primary btn-block" value="Sign in">
         </form>
+
+            <small>
+                <small> (Forgot Password? Click <a href="{{URL::to('/') }}/forgot-password">here</a>)</small>
+            </small>
     </div>
 
 @stop

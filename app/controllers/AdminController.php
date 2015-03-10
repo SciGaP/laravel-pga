@@ -23,20 +23,23 @@ class AdminController extends BaseController {
 		Session::put("nav-active", "user-console");
 	}
 
-	public function dashboard(){
+	public function console(){
 		return View::make("admin/dashboard");
 	}
 
-	public function adminView(){
+	public function dashboard(){
 		$idStore = $this->idStore;
-		$ti = $idStore->getTenantId();
-		print_r( $ti); exit;
+		//$ti = $idStore->createTenant( Input::all() );
+		//print_r( $ti); exit;
 		$roles = $idStore->getRoleNames();
 		foreach ($roles as $key => $role) {
 			//$gatewayAdmins = $idStore->getUserListOfRole
 		}
-		$gatewayProfiles = CRUtilities::getAllGatewayProfilesData();
-   		return View::make("admin/manage-admin", array( "roles" => $roles, "gatewayProfiles" => $gatewayProfiles));
+		$gateways = CRUtilities::getAllGatewayProfilesData();
+		//var_dump( $gatewayProfiles[0]); exit;
+   		//return View::make("admin/manage-admin", array( "roles" => $roles, "gatewayProfiles" => $gatewayProfiles));
+		
+		return View::make("admin/manage-admin1", array( "gateways" => $gateways));
 	}
 
 	public function addAdminSubmit(){
@@ -68,8 +71,9 @@ class AdminController extends BaseController {
 		{
 			//first add if this role does not exist
 			$gatewayName = str_replace(" ", "_", Input::get("gateway_name"));
-			$role = Constant::GATEWAY_ROLE_PREPEND . $gatewayName . Constant::GATEWAY_ROLE_ADMIN_APPEND;
-			var_dump( $role); //exit;
+			$app_config = Utilities::read_config();
+			$role = $app_config["gateway-role-prepend"] . $gatewayName . $app_config["gateway-role-admin-append"];
+			//var_dump( $role); //exit;
 			//$role = "gateway_default_b8a153f1-6291_admin";
 			if( ! $idStore->isExistingRole( $role) )
 			{
@@ -86,5 +90,12 @@ class AdminController extends BaseController {
 		{
 			echo ("username doesn't exist only."); exit;
 		}
+	}
+
+	public function rolesView(){
+		$idStore = $this->idStore;
+		$roles = $idStore->getRoleNames();
+
+		return View::make("admin/manage-roles", array("roles" => $roles));
 	}
 }

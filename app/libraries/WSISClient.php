@@ -116,6 +116,7 @@ class WSISClient {
         try {
             return $this->userStoreManager->authenticate($username, $password);
         } catch (Exception $ex) {
+            var_dump( $ex); exit;
             throw new Exception("Unable to authenticate user", 0, $ex);
         }
     }
@@ -243,6 +244,21 @@ class WSISClient {
         } catch (Exception $ex) {
             var_dump( $ex->debug_message); 
             throw new Exception("Unable to get the tenant Id.", 0, $ex);
+        }
+    }
+
+    /**
+    * Function create a new Tenant
+    *
+    * @param Tenant $parameters
+    * @return void
+    */
+    public function create_tenant( $inputs){
+        try {
+            return $this->userStoreManager->createTenant( $inputs);
+        } catch (Exception $ex) {
+            var_dump( $ex); 
+            throw new Exception("Unable to create Tenant.", 0, $ex);
         }
     }
 }

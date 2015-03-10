@@ -81,7 +81,7 @@
                 <button name="launch" type="submit" class="btn btn-success" id="expLaunch" value="Save and launch">Save and launch</button>
             </div>
             
-            <a href="' . URL::to('/') . '/experiment/create" class="btn btn-default" role="button">Start over</a>
+            <a href="{{URL::to('/')}}/experiment/create" class="btn btn-default" role="button">Start over</a>
         </div>
         
     </form>

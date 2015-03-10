@@ -174,8 +174,7 @@
                         grids, academic and commercial clouds. Airavata mainly supports long running applications and
                         workflows on distributed computational resources.
                     </p>
-                    <p><a href="http://airavata.apache.org/"
-                          target="_blank">Learn more <span class="glyphicon glyphicon-new-window"></span></a></p>
+                    <p><a href="http://airavata.apache.org/" target="_blank">Learn more <span class="glyphicon glyphicon-new-window"></span></a></p>
                 </div>
             </div>
         </div>

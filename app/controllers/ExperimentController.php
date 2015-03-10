@@ -14,6 +14,7 @@ class ExperimentController extends BaseController {
 
 	public function createView()
 	{
+		//var_dump( Session::all()); exit;
 		Session::forget( 'exp_create_continue');
 		return View::make('experiment/create');
 	}
@@ -23,13 +24,15 @@ class ExperimentController extends BaseController {
 		if( isset( $_POST['continue'] ))
 		{
 			Session::put( 'exp_create_continue', true);
+
+			$app_config = Utilities::read_config();
 			return View::make( "experiment/create-complete", array( 
 								"disabled" => ' disabled',
 						        "experimentName" => $_POST['experiment-name'],
 						        "experimentDescription" => $_POST['experiment-description'] . ' ',
 						        "project" => $_POST['project'],
 						        "application" => $_POST['application'],
-						        "allowedFileSize" => Constant::SERVER_ALLOWED_FILE_SIZE,
+						        "allowedFileSize" => $app_config["server-allowed-file-size"],
 						        // ugly hack until app catalog is in place. 
 						        //App catalog is in place. But, I'm not sure what this does so not removing it.
 						        "echo" => ($_POST['application'] == 'Echo')? ' selected' : '',

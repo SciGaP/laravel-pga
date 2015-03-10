@@ -77,18 +77,28 @@ class AccountController extends BaseController {
             $password = $_POST['password'];
             try {
                 if ( Utilities::id_matches_db($username, $password)) {
+                	
                     Utilities::store_id_in_session($username);
                     Utilities::print_success_message('Login successful! You will be redirected to your home page shortly.');
+                	$app_config = Utilities::read_config();
+                	Session::put("gateway_id", $app_config["gateway-id"]);
+                	//TODO::If this option is not safe, have to find a better method to send credentials to identity server on every connection.
+                	Session::put("password", $_POST["password"]);
+                	
                 	return Redirect::to( "home");
 
                 } else {
                 	return Redirect::to("login")->with("invalid-credentials", true); 
                 }
             } catch (Exception $ex) {
-                	return Redirect::to("login")->with("invalid-credentials", true); 
+                return Redirect::to("login")->with("invalid-credentials", true); 
             }
         }
 
+	}
+
+	public function forgotPassword(){
+		return View::make("account/forgot-password");
 	}
 
 	public function logout(){

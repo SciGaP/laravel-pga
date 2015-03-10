@@ -34,7 +34,7 @@
                 </div>
             </a>
 
-            <a href="{{URL::to('/')}}/manage/admins">
+            <a href="{{URL::to('/')}}/admin/dashboard">
                 <div class=" col-md-offset-1 col-md-3 well">
                     <div class="col-md-12">
                         <span class="glyphicon glyphicon-eye-open"></span>

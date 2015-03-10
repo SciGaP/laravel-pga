@@ -11,9 +11,6 @@ require_once 'WSISClient.php';
  */
 
 class WSISUtilities implements IdUtilities{
-
-    const WSIS_CONFIG_PATH = "wsis_config.ini";
-
     /**
      * wso2 IS client
      * 
@@ -28,52 +25,40 @@ class WSISUtilities implements IdUtilities{
      */
     public function connect() { 
    
-        $wsis_config = null;
-
-        try {
-            if (file_exists( app_path() . "/libraries/wsis_config.ini" ) ) {
-
-                try
-                {
-                    $wsis_config = parse_ini_file( app_path() . "/libraries/wsis_config.ini" );
-                }
-
-                catch( \Exception $e)
-                {
-                    print_r( $e); exit;
-                }
-            } 
-            else 
-            {
-                throw new Exception("Error: Cannot open wsis_config.xml file!");
-            }
-
-            if (!$wsis_config) 
-            {
-                throw new Exception('Error: Unable to read wsis_config.xml!');
-            }
-            
-            if(substr($wsis_config['service-url'], -1) !== "/"){
-                $wsis_config['service-url'] = $wsis_config['service-url'] . "/";
-            }
-            
-            if(!substr($wsis_config['cafile-path'], 0) !== "/"){
-                $wsis_config['cafile-path'] = "/" . $wsis_config['cafile-path'];
-            }
-            $wsis_config['cafile-path'] = app_path() . $wsis_config['cafile-path'];            
-            
-            $this->wsis_client = new WSISClient(
-                    $wsis_config['admin-username'],
-                    $wsis_config['admin-password'],
-                    $wsis_config['server'],
-                    $wsis_config['service-url'],
-                    $wsis_config['cafile-path'],
-                    $wsis_config['verify-peer'],
-                    $wsis_config['allow-self-signed']
-            );            
-        } catch (Exception $e) {
-            throw new Exception('Unable to instantiate Identity Server client. Try editing the cafile-path within wsis_config.ini.', 0, NULL);
+        $wsis_config = Utilities::read_config();    
+        if(substr($wsis_config['service-url'], -1) !== "/"){
+            $wsis_config['service-url'] = $wsis_config['service-url'] . "/";
         }
+        
+        if(!substr($wsis_config['cafile-path'], 0) !== "/"){
+            $wsis_config['cafile-path'] = "/" . $wsis_config['cafile-path'];
+        }
+        $wsis_config['cafile-path'] = app_path() . $wsis_config['cafile-path'];            
+        
+        /*
+        if( Session::has("username"))
+        {
+            $username = Session::get("username");
+            $password = Session::get("password");
+        }
+        else
+        {
+            $username = $_POST["username"];
+            $password = $_POST["password"];
+        }
+        */
+        $username = $wsis_config['admin-username'];
+        $password = $wsis_config['admin-password'];
+        
+        $this->wsis_client = new WSISClient(
+                $username,
+                $password,
+                $wsis_config['server'],
+                $wsis_config['service-url'],
+                $wsis_config['cafile-path'],
+                $wsis_config['verify-peer'],
+                $wsis_config['allow-self-signed']
+        );    
     }
 
     /**
@@ -102,6 +87,7 @@ class WSISUtilities implements IdUtilities{
         try{
             return $this->wsis_client->authenticate($username, $password);
         } catch (Exception $ex) {
+            var_dump( $ex); exit;
             throw new Exception("Unable to authenticate user", 0, NULL);
         }        
     }
@@ -338,6 +324,20 @@ class WSISUtilities implements IdUtilities{
         } catch (Exception $ex) {
             var_dump( $ex->debug_message); 
             throw new Exception("Unable to get the Tenant Id.", 0, $ex);
+        }
+    }
+    /**
+    * Function create a new Tenant
+    *
+    * @param Tenant $parameters
+    * @return void
+    */
+    public function createTenant( $inputs){
+        try {
+            return $this->wsis_client->create_tenant( $inputs);
+        } catch (Exception $ex) {
+            var_dump( $ex); 
+            //throw new Exception("Unable to create Tenant.", 0, $ex);
         }
     }
 }

@@ -2,6 +2,13 @@
 
 class Constant extends Eloquent{
 
+
+	const EXPERIMENT_DATA_ROOT = '/../experimentData/';
+
+	/* 
+
+	------------ now rest all are handled at config/app-config.ini -------------------
+
 	const AIRAVATA_SERVER = 'gw111.iu.xsede.org';
 	//const AIRAVATA_SERVER = 'gw127.iu.xsede.org';
 	//const AIRAVATA_SERVER = 'gw56.iu.xsede.org'; //Mirror
@@ -34,6 +41,8 @@ class Constant extends Eloquent{
 	const EMAIL = 'admin@gw120.iu.xsede.org';	
 
 	const SERVER_ALLOWED_FILE_SIZE = 64; // in MB
+
+	*/ 
 }
 
 ?>

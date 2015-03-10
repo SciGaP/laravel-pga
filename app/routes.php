@@ -26,6 +26,7 @@ Route::post("login", "AccountController@loginSubmit");
 
 Route::get("logout", "AccountController@logout");
 
+Route::get("forgot-password", "AccountController@forgotPassword");
 /*
  * The following routes will not work without logging in.
  *
@@ -139,9 +140,14 @@ Route::post("gp/update-crp", "GatewayprofileController@modifyCRP");
 
 //Management Dashboard
 
+Route::get("admin/console", "AdminController@console");
+
+Route::get("admin/dashboard/gateway", "AdminController@dashboard");
 Route::get("admin/dashboard", "AdminController@dashboard");
 
-Route::get("manage/admins", "AdminController@adminView");
+Route::get("admin/dashboard/users", "AdminController@usersView");
+
+Route::get("admin/dashboard/roles", "AdminController@rolesView");
 
 Route::get("manage/users", "AdminController@usersView");
 
