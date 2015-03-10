@@ -1784,7 +1784,7 @@ public static function create_experiment()
     {
         if($experiment)
         {
-            $expId = $airavataclient->createExperiment($experiment);
+            $expId = $airavataclient->createExperiment( Session::get("gateway_id"), $experiment);
         }
 
         if ($expId)

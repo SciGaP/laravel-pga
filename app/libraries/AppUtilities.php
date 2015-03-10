@@ -33,7 +33,7 @@ class AppUtilities{
 		if( $update)
 			return $airavataclient->updateApplicationModule( $inputs["appModuleId"], $appModule);
 		else
-			return $airavataclient->registerApplicationModule( $appModule);
+			return $airavataclient->registerApplicationModule( Session::get("gateway_id"), $appModule);
 	}
 
 	public static function deleteAppModule( $appModuleId){
@@ -131,7 +131,7 @@ class AppUtilities{
 
 		$airavataclient = Session::get("airavataClient");
 
-		$appDeployments = $airavataclient->getAllApplicationDeployments();
+		$appDeployments = $airavataclient->getAllApplicationDeployments( Session::get("gateway_id"));
 		//var_dump( $appDeployments); exit;
 		$computeResources = $airavataclient->getAllComputeResourceNames();
 		$modules = AppUtilities::getAllModules();
@@ -209,7 +209,7 @@ class AppUtilities{
 		if( $update)
 			$airavataclient->updateApplicationDeployment( $inputs["app-deployment-id"], $appDeployment);
 		else
-			$appDeploymentId = $airavataclient->registerApplicationDeployment( $appDeployment);
+			$appDeploymentId = $airavataclient->registerApplicationDeployment( Session::get("gateway_id"), $appDeployment);
 
 		return;
 
