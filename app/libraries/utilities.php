@@ -1431,12 +1431,14 @@ public static function create_nav_bar()
 	            array('label' => 'Interface', 'url' => URL::to('/') . '/app/interface', "nav-active" => "app-catalog"),
 	            array('label' => 'Deployment', 'url' => URL::to('/') . '/app/deployment', "nav-active" => "app-catalog")
 	        );
+            /*
             $menus['Gateway Profile'] = array
             (
 
                 array('label' => 'Register', 'url' => URL::to('/') . '/gp/create', "nav-active" => "gateway-profile"),
                 array('label' => 'Browse', 'url' => URL::to('/') . '/gp/browse', "nav-active" => "gateway-profile")
             );
+            */
                
 	    }
         
@@ -2004,16 +2006,16 @@ public static function get_expsearch_results( $inputs)
         switch ( $inputs["search-key"])
         {
             case 'experiment-name':
-                $experiments = $airavataclient->searchExperimentsByName(Session::get('username'), $inputs["search-value"]);
+                $experiments = $airavataclient->searchExperimentsByName(Session::get('gateway_id'), Session::get('username'), $inputs["search-value"]);
                 break;
             case 'experiment-description':
-                $experiments = $airavataclient->searchExperimentsByDesc(Session::get('username'), $inputs["search-value"]);
+                $experiments = $airavataclient->searchExperimentsByDesc(Session::get('gateway_id'), Session::get('username'), $inputs["search-value"]);
                 break;
             case 'application':
-                $experiments = $airavataclient->searchExperimentsByApplication(Session::get('username'), $inputs["search-value"]);
+                $experiments = $airavataclient->searchExperimentsByApplication(Session::get('gateway_id'), Session::get('username'), $inputs["search-value"]);
                 break;
             case 'creation-time':
-                $experiments = $airavataclient->searchExperimentsByCreationTime(Session::get('username'), strtotime( $inputs["from-date"])*1000, strtotime( $inputs["to-date"])*1000 );
+                $experiments = $airavataclient->searchExperimentsByCreationTime(Session::get('gateway_id'), Session::get('username'), strtotime( $inputs["from-date"])*1000, strtotime( $inputs["to-date"])*1000 );
                 break;
             case '':
         }
