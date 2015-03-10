@@ -49,7 +49,7 @@ class AppUtilities{
 
 		$dataType = new DataType();
 		$modules = AppUtilities::getAllModules();
-		$appInterfaces = $airavataclient->getAllApplicationInterfaces();
+		$appInterfaces = $airavataclient->getAllApplicationInterfaces( Session::get("gateway_id"));
 
 
 		$InputDataObjectType = new InputDataObjectType();

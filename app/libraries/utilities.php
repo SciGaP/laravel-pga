@@ -1211,10 +1211,9 @@ public static function create_project_select($projectId = null, $editable = true
     $editable? $disabled = '' : $disabled = 'disabled';
     $userProjects = Utilities::get_all_user_projects( Session::get("gateway_id"), Session::get('username') );
 
+    echo '<select class="form-control" name="project" id="project" required ' . $disabled . '>';
     if (sizeof($userProjects) > 0)
     {
-        echo '<select class="form-control" name="project" id="project" required ' . $disabled . '>';
-
         foreach ($userProjects as $project)
         {
             if ($project->projectID == $projectId)
@@ -1228,8 +1227,12 @@ public static function create_project_select($projectId = null, $editable = true
 
             echo '<option value="' . $project->projectID . '" ' . $selected . '>' . $project->name . '</option>';
         }
-
-        echo '</select>';
+    }
+    echo '</select>';
+    if( sizeof($userProjects) == 0 )
+    {
+        Utilities::print_warning_message('<p>You must create a project before you can create an experiment.
+                Click <a href="' . URL::to('/') . '/project/create">here</a> to create a project.</p>');
     }
 }
 
@@ -1270,7 +1273,7 @@ public static function create_application_select($id = null, $editable = true)
 public static function create_compute_resources_select($applicationId, $resourceHostId)
 {
     $computeResources = Utilities::get_available_app_interface_compute_resources($applicationId);
-
+    
     if( count( $computeResources) > 0)
     {
     	echo '<select class="form-control" name="compute-resource" id="compute-resource">';
@@ -1667,7 +1670,7 @@ public static function create_project()
 
     try
     {
-        $projectId = $airavataclient->createProject($project);
+        $projectId = $airavataclient->createProject( Session::get("gateway_id"), $project);
 
         if ($projectId)
         {

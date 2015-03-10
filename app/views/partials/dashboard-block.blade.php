@@ -1,6 +1,6 @@
 <div class="collapse navbar-collapse navbar-ex1-collapse">
                 <ul class="nav navbar-nav side-nav">
-                    <li@if( Session::get("manage") == "gateway")  class="active" @endif>
+                    <li @if( Session::has("manage"))  class="active" @endif>
                         <a href="{{ URL::to('/')}}/admin/dashboard/gateway"><i class="fa fa-fw fa-dashboard"></i> Gateways</a>
                     </li>
                     <li>
