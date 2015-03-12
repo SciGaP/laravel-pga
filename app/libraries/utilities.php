@@ -1826,7 +1826,9 @@ public static function create_experiment()
 
 public static function list_output_files($experiment, $expStatus)
 {
-    if($expStatus == ExperimentState::COMPLETED )
+    $expStatusVal = array_search($expStatus, ExperimentState::$__names);
+
+    if( $expStatusVal == ExperimentState::COMPLETED )
     {
         $utility = new Utilities();
         $experimentOutputs = $experiment->experimentOutputs;
