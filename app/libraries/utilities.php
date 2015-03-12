@@ -1834,9 +1834,6 @@ public static function list_output_files($experiment, $expStatus)
         $experimentOutputs = $experiment->experimentOutputs;
         foreach ((array)$experimentOutputs as $output)
         {
-            var_dump( Utilities::$experimentDataPathAbsolute);
-            var_dump( Constant::EXPERIMENT_DATA_ROOT);
-            var_dump( $output->value); exit;
             if ($output->type == DataType::URI || $output->type == DataType::STDOUT || $output->type == DataType::STDERR )
             {
                 //echo '<p>' . $output->key .  ': <a href="' . $output->value . '">' . $output->value . '</a></p>';
