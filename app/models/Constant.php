@@ -3,7 +3,7 @@
 class Constant extends Eloquent{
 
 
-	const EXPERIMENT_DATA_ROOT = '/../experimentData/';
+	const EXPERIMENT_DATA_ROOT = '/experimentData/';
 
 	/* 
 
