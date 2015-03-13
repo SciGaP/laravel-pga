@@ -142,12 +142,15 @@ Route::post("gp/update-crp", "GatewayprofileController@modifyCRP");
 
 Route::get("admin/console", "AdminController@console");
 
-Route::get("admin/dashboard/gateway", "AdminController@dashboard");
 Route::get("admin/dashboard", "AdminController@dashboard");
+
+Route::get("admin/dashboard/gateway", "AdminController@dashboard");
 
 Route::get("admin/dashboard/users", "AdminController@usersView");
 
 Route::get("admin/dashboard/roles", "AdminController@rolesView");
+
+Route::get("admin/dashboard/credential-store", "AdminController@credentialStoreView");
 
 Route::get("manage/users", "AdminController@usersView");
 
@@ -170,6 +173,12 @@ Route::get("airavata/down", function(){
 Route::get("testjob", function(){
 	//print_r( Session::all());
 });
+
+Route::get("mockups/credential-store", function(){
+	return View::make("admin/manage-credentials", array("tokens" => array()) );
+});
+		
+
 
 
 /*

@@ -24,54 +24,80 @@
                         {{ Session::forget("message") }}
                     @endif
 
-                    <h1 class="text-center">Roles</h1>
+                    <h1 class="text-center">SSH Keys</h1>
 
-                    <table class="table table-striped table-condensed">
+                    <table class="table table-bordered table-condensed">
                         <tr>
-                            <th>
-                                Role</th>
-                            <th>Actions</th>
+                            <th class="text-center">
+                                Token</th>
+                            <th class="text-center">Public Key</th>
                         </tr>
-                        @foreach( $roles as $role)
+                        @foreach( $tokens as $token)
                         <tr>
-                            <td class="role-name">{{ $role }}</td>
+                            <td class="role-name">{{ $token }}</td>
                             <td>
-                                <span class="glyphicon glyphicon-pencil edit-role-name"></span>&nbsp;&nbsp;
-                                <a href="{{URL::to('/')}}/admin/dashboard/users?role={{$role}}">
-                                    <span class="glyphicon glyphicon-user role-users"></span>&nbsp;&nbsp;
-                                </a>
-                                <span class="glyphicon glyphicon-trash delete-role"></span>&nbsp;&nbsp;
+                                {{ $public-key }}
                             </td>
                         </tr>
                         @endforeach
+                        <tr>
+                            <td>Some token</td>
+                            <td>$ cat ~/.ssh/id_rsa.pub
+ssh-rsa AAAAB3NzaC1yc2EAAAABIwAAAQEAklOUpkDHrfHY17SbrmTIpNLTGK9Tjom/BWDSU
+GPl+nafzlHDTYW7hdI4yZ5ew18JH4JW9jbhUFrviQzM7xlELEVf4h9lFX5QVkbPppSwg0cda3
+Pbv7kOdJ/MTyBlWXFCR+HAo3FXRitBqxiX1nKhXpHAZsMciLq8V6RjsNAQwdsdMFvSlVK/7XA
+t3FaoJoAsncM1Q9x5+3V0Ww68/eIFmb1zuUFljQJKprrX88XypNDvjYNby6vw/Pb0rwert/En
+mZ+AW4OZPnTPI89ZPmVMLuayrD2cE86Z/il8b+gw3r3+1nKatmIkjn2so1d01QraTlMqVSsbx
+NrRFi9wrf+M7Q== schacon@mylaptop.local</td>
+                        </tr>
                     </table>
-                    <div class="col-md-12">
-                        <button type="button" class="btn btn-default toggle-add-role"><span class="glyphicon glyphicon-plus"></span>Add a new Role</button>
-                    </div>
-                    <div class="add-role col-md-6">
-                        <form role="form" action="{{URL::to('/')}}/admin/addrole" method="POST" class="add-role-form">
-                            <div class="form-group">
-                                <label>Enter Role Name</label>
-                                <input type="text" name="role" class="form-control"/>
-                            </div>
-                            <div class="form-group">
-                                <input type="submit" class="form-control btn btn-primary" value="Add" />
-                            </div>
-                        </form>
+                    <table class="table">
+                        <tr class="text-center table-condensed">
+                            <td><button class="btn btn-default">Generate a new token</button></td>
+                        </tr>
+                    </table>
+
+                    <div class="row">
+                        <h1 class="text-center">My Proxy Credentials</h1>
+
+                        <div class="col-md-offset-3 col-md-6">
+                            <table class="table table-striped table-condensed">
+                                <tr>
+                                    <td>My Proxy Server</td>
+                                    <td><input type="text" class="form-control" placeholder="" value=""/></td>
+                                </tr>
+                                <tr>
+                                    <td>Username</td>
+                                    <td><input type="text" class="form-control" placeholder="" value=""/></td>
+                                </tr>
+                                <tr>
+                                    <td>Passphrase</td>
+                                    <td><input type="text" class="form-control" placeholder="" value=""/></td>
+                                </tr>
+                            </table>
+                            <table class="table">
+                                <tr class="text-center table-condensed">
+                                    <td><button class="btn btn-default">Submit</button></td>
+                                </tr>
+                            </table>
+                        </div>
                     </div>
 
-                    <div class="edit-role hide">
-                        <form class="edit-role-form">
-                            <div class="form-group col-md-4">
-                                <input type="text" name="new-role-name" class="new-role-name form-control"/>
-                                <input type="hidden" name="original-role-name" class="original-role-name" value=""/>
-                            </div>
-                            <div class="form-group col-md-4">
-                                <input type="submit" class="form-control btn btn-primary" value="Edit" />
-                            </div>
-                        </form>
-                    </div>
+                    <h1 class="text-center">Amazon Credentials</h1>
 
+                    <table class="table table-striped table-condensed">
+                        <tr class="text-center">
+                            <td>Under Development</td>
+                        </tr>
+                    </table>
+
+                    <h1 class="text-center">OAuth MyProxy</h1>
+
+                    <table class="table table-striped table-condensed">
+                        <tr class="text-center">
+                            <td>Under Development</td>
+                        </tr>
+                    </table>
                 </div>
             </div>
         </div>

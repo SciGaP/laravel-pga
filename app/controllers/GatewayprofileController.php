@@ -42,7 +42,7 @@ class GatewayprofileController extends BaseController {
 	{
 		if( CRUtilities::add_or_update_CRP( Input::all()) )
 		{
-			return Redirect::to("gp/browse")->with("message","Compute Resource Preference for the desired Gateway has been set.");
+			return Redirect::to("admin/dashboard/gateway")->with("message","Compute Resource Preference for the desired Gateway has been set.");
 		}
 	}
 

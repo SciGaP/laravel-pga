@@ -211,6 +211,7 @@ class WSISUtilities implements IdUtilities{
         try{
             return $this->wsis_client->add_role( $roleName);
         } catch (Exception $ex) {
+            var_dump( $ex); exit;
             throw new Exception("Unable to add role.", 0, $ex);
         }        
     }
