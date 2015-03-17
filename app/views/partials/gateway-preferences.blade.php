@@ -11,6 +11,12 @@
 		</div>
 	</div><br/>
 	<div class="form-group">
+		<label class="control-label col-md-3">Login Username</label>
+		<div class="col-md-9">
+			<input type="text" name="loginUserName" class="form-control" value="@if( isset( $preferences) ){{$preferences->loginUserName}}@endif" />
+		</div>
+	</div>
+	<div class="form-group">
 		<label class="control-label col-md-3">Preferred Job Submission Protocol</label>
 		<div class="col-md-9">
 			<select name="preferredJobSubmissionProtocol" class="form-control">
@@ -48,6 +54,7 @@
 			<input type="text" name="scratchLocation" class="form-control" value="@if( isset( $preferences) ){{$preferences->scratchLocation}}@endif" />
 		</div>
 	</div>
+
 	<div class="form-group">
 		<label class="control-label col-md-3">Allocation Project Number</label>
 		<div class="col-md-9">

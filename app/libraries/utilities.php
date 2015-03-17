@@ -750,6 +750,7 @@ public static function assemble_experiment()
     $scheduling = new ComputationalResourceScheduling();
     $scheduling->totalCPUCount = $_POST['cpu-count'];
     $scheduling->nodeCount = $_POST['node-count'];
+    $scheduling->queueName = $_POST['queue-name'];
     //$scheduling->numberOfThreads = $_POST['threads'];
     $scheduling->queueName = 'normal';
     $scheduling->wallTimeLimit = $_POST['wall-time'];
@@ -2089,6 +2090,7 @@ public static function apply_changes_to_experiment($experiment, $input)
 
     $schedulingUpdated->resourceHostId = $input['compute-resource'];
     $schedulingUpdated->nodeCount = $input['node-count'];
+    $schedulingUpdated->queueName = $_POST['queue-name'];
     $schedulingUpdated->totalCPUCount = $input['cpu-count'];
     //$schedulingUpdated->numberOfThreads = $input['threads'];
     $schedulingUpdated->wallTimeLimit = $input['wall-time'];

@@ -41,8 +41,13 @@
                     {{ Utilities::create_inputs($application, true) }}
                 </div>
                 <div class="form-group">
-                    <label for="compute-resource">Compute Resource</label>';
+                    <label for="compute-resource">Compute Resource</label>
                     {{ Utilities::create_compute_resources_select($application, null) }}
+                </div>
+
+                <div class="form-group">
+                    <label for="node-count">Queue Name</label>
+                    <input type="text" class="form-control" name="queue-name" id="node-count" value="normal">
                 </div>
                 <div class="form-group">
                     <label for="node-count">Node Count</label>
