@@ -752,7 +752,7 @@ public static function assemble_experiment()
     $scheduling->nodeCount = $_POST['node-count'];
     $scheduling->queueName = $_POST['queue-name'];
     //$scheduling->numberOfThreads = $_POST['threads'];
-    $scheduling->queueName = 'normal';
+    //$scheduling->queueName = 'normal';
     $scheduling->wallTimeLimit = $_POST['wall-time'];
     //$scheduling->totalPhysicalMemory = $_POST['memory'];
     $scheduling->resourceHostId = $_POST['compute-resource'];
