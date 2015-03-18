@@ -64,6 +64,11 @@
             <?php Utilities::create_compute_resources_select($experiment->applicationId, $expVal['scheduling']->resourceHostId); ?>
         </div>
 
+        <div class="form-group">
+                    <label for="node-count">Queue Name</label>
+                    <input type="text" class="form-control" name="queue-name" id="queue-name" value="<?php echo $expVal['scheduling']->queueName ?>" <?php if(!$expVal['editable']) echo 'disabled' ?>>
+                </div>
+
     <div class="form-group">
         <label for="node-count">Node Count</label>
         <input type="number"
@@ -84,18 +89,7 @@
                value="<?php echo $expVal['scheduling']->totalCPUCount ?>"
             <?php if(!$expVal['editable']) echo 'disabled' ?>>
     </div>
-    <!--
-    <div class="form-group">
-        <label for="threads">Number of Threads</label>
-        <input type="number"
-               class="form-control"
-               name="threads"
-               id="threads"
-               min="0"
-               value="<?php //echo $expVal['scheduling']->numberOfThreads; ?>"
-            <?php //if(!$expVal['editable']) echo 'disabled'; ?>>
-    </div>
-    -->
+
     <div class="form-group">
         <label for="wall-time">Wall Time Limit</label>
         <div class="input-group">
@@ -109,21 +103,7 @@
             <span class="input-group-addon">minutes</span>
         </div>
     </div>
-    <!--
-    <div class="form-group">
-        <label for="memory">Total Physical Memory</label>
-        <div class="input-group">
-            <input type="number"
-                   class="form-control"
-                   name="memory"
-                   id="memory"
-                   min="0"
-                   value="<?php //echo $expVal['scheduling']->totalPhysicalMemory; ?>"
-                <?php //if(!$expVal['editable']) echo 'disabled'; ?>>
-            <span class="input-group-addon">kB</span>
-        </div>
-    </div>
-    -->
+
     </div>
     </div>
 

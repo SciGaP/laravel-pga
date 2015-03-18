@@ -47,7 +47,7 @@
 
                 <div class="form-group">
                     <label for="node-count">Queue Name</label>
-                    <input type="text" class="form-control" name="queue-name" id="node-count" value="normal">
+                    <input type="text" class="form-control" name="queue-name" id="queue-name" value="normal">
                 </div>
                 <div class="form-group">
                     <label for="node-count">Node Count</label>

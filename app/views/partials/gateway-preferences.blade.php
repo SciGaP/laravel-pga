@@ -21,7 +21,7 @@
 		<div class="col-md-9">
 			<select name="preferredJobSubmissionProtocol" class="form-control">
 			@foreach( (array)$computeResource->jobSubmissionInterfaces as $index => $jsi)
-				<option value="{{ $jsi->jobSubmissionInterfaceId}}" @if( isset( $preferences) )  @if( $preferences->preferredJobSubmissionProtocol == $jsi->jobSubmissionProtocol) selected @endif @endif>{{ $crData["jobSubmissionProtocols"][$jsi->jobSubmissionProtocol] }}</option>
+				<option value="{{$jsi->jobSubmissionProtocol}}" @if( isset( $preferences) )  @if( $preferences->preferredJobSubmissionProtocol == $jsi->jobSubmissionProtocol) selected @endif @endif>{{ $crData["jobSubmissionProtocols"][$jsi->jobSubmissionProtocol] }}</option>
 			@endforeach
 			</select>
 
@@ -33,7 +33,7 @@
 		<div class="col-md-9">
 			<select name="preferredDataMovementProtocol" class="form-control">
 			@foreach( (array)$computeResource->dataMovementInterfaces as $index => $dmi)
-				<option value="{{ $dmi->dataMovementInterfaceId}}"  @if( isset( $preferences) )  @if( $preferences->preferredDataMovementProtocol == $dmi->dataMovementProtocol) selected @endif @endif>{{ $crData["dataMovementProtocols"][$dmi->dataMovementProtocol] }}</option>
+				<option value="{{ $dmi->dataMovementProtocol}}"  @if( isset( $preferences) )  @if( $preferences->preferredDataMovementProtocol == $dmi->dataMovementProtocol) selected @endif @endif>{{ $crData["dataMovementProtocols"][$dmi->dataMovementProtocol] }}</option>
 			@endforeach
 			</select>
 		</div>
