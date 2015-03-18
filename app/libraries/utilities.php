@@ -751,10 +751,7 @@ public static function assemble_experiment()
     $scheduling->totalCPUCount = $_POST['cpu-count'];
     $scheduling->nodeCount = $_POST['node-count'];
     $scheduling->queueName = $_POST['queue-name'];
-    //$scheduling->numberOfThreads = $_POST['threads'];
-    //$scheduling->queueName = 'normal';
     $scheduling->wallTimeLimit = $_POST['wall-time'];
-    //$scheduling->totalPhysicalMemory = $_POST['memory'];
     $scheduling->resourceHostId = $_POST['compute-resource'];
 
     $userConfigData = new UserConfigurationData();
@@ -762,7 +759,6 @@ public static function assemble_experiment()
 
     $applicationInputs = Utilities::get_application_inputs($_POST['application']);
     $experimentInputs = Utilities::process_inputs($applicationInputs, $experimentInputs);
-    //var_dump($experimentInputs);
 
     if( Utilities::$experimentPath != null){
         $advHandling = new AdvancedOutputDataHandling();

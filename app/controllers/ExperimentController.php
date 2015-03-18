@@ -14,32 +14,34 @@ class ExperimentController extends BaseController {
 
 	public function createView()
 	{
-		//var_dump( Session::all()); exit;
 		Session::forget( 'exp_create_continue');
 		return View::make('experiment/create');
 	}
 
 	public function createSubmit()
 	{
+		$inputs = Input::all();
+
 		if( isset( $_POST['continue'] ))
 		{
 			Session::put( 'exp_create_continue', true);
 
 			$app_config = Utilities::read_config();
-			return View::make( "experiment/create-complete", array( 
+			$experimentInputs = array( 
 								"disabled" => ' disabled',
 						        "experimentName" => $_POST['experiment-name'],
 						        "experimentDescription" => $_POST['experiment-description'] . ' ',
 						        "project" => $_POST['project'],
 						        "application" => $_POST['application'],
 						        "allowedFileSize" => $app_config["server-allowed-file-size"],
-						        // ugly hack until app catalog is in place. 
-						        //App catalog is in place. But, I'm not sure what this does so not removing it.
 						        "echo" => ($_POST['application'] == 'Echo')? ' selected' : '',
-						        "wrf" => ($_POST['application'] == 'WRF')? ' selected' : ''
-
-					        )
-						);
+						        "wrf" => ($_POST['application'] == 'WRF')? ' selected' : '',
+						        "queueName" => $app_config["queue-name"],
+						        "nodeCount" => $app_config["node-count"],
+						        "cpuCount" => $app_config["total-cpu-count"],
+						        "wallTimeLimit" => $app_config["wall-time-limit"]
+					        );
+			return View::make( "experiment/create-complete", array( "expInputs" => $experimentInputs) );
 		}
 
 		else if (isset($_POST['save']) || isset($_POST['launch']))
@@ -93,7 +95,6 @@ class ExperimentController extends BaseController {
 
 	public function expChange()
 	{
-		//var_dump( Input::all() ); exit;
 		$experiment = Utilities::get_experiment( Input::get('expId') );
 		$project = Utilities::get_project($experiment->projectID);
 
@@ -131,20 +132,24 @@ class ExperimentController extends BaseController {
 
 	public function editView()
 	{
+		$app_config = Utilities::read_config();
 		$experiment = Utilities::get_experiment($_GET['expId']);
 		$project = Utilities::get_project($experiment->projectID);
 
 		$expVal = Utilities::get_experiment_values( $experiment, $project);
 
-
-		return View::make("experiment/edit", array(
-
-							'experiment' => $experiment,
-							'project' => $project,
-							'expVal' => $expVal
-							
-							)
-						);
+		$experimentInputs = array(	
+								"disabled" => ' ',
+						        "experimentName" => $experiment->name,
+						        "experimentDescription" => $experiment->description,
+						        "application" => $experiment->applicationId,
+						      	"allowedFileSize" => $app_config["server-allowed-file-size"],
+								'experiment' => $experiment,
+								'project' => $project,
+								'expVal' => $expVal,
+								'cloning' => true
+								);
+		return View::make("experiment/edit", array("expInputs" => $experimentInputs) );
 	}
 
 	public function editSubmit()
