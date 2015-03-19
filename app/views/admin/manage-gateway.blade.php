@@ -61,11 +61,10 @@
                                                 <button class="btn btn-default add-cr" data-gpid="{{$gp->gatewayId}}"><span class="glyphicon glyphicon-plus"></span> Add a Compute Resource</button>
                                             </div>
                                             <div class="col-md-10">
-                                                @if( count( $gp->profile->computeResourcePreferences) )
+                                                @if( isset( $gp->profile->computeResourcePreferences) )
                                                     <div class="col-md-12">
                                                         <h3>Existing Compute Resources :</h3>
                                                     </div>
-                                                @endif
                                                 <div class="accordion-inner">
                                                     <div class="panel-group" id="accordion-{{$indexGP}}">
                                                     @foreach( (array)$gp->profile->computeResourcePreferences as $indexCRP => $crp )
@@ -97,6 +96,7 @@
                                                     @endforeach
                                                     </div>
                                                 </div>
+                                                @endif
                                                 <!-- 
                                                 Adding a user as admin will shift to roles. Removing from here. 
                                                 <h4><span class="glyphicon glyphicon-plus"></span> Add a user as Admin to this Gateway</h4>
