@@ -160,6 +160,8 @@ Route::post("admin/addgatewayadmin", "AdminController@addGatewayAdminSubmit");
 
 Route::post("admin/addrole", "AdminController@addRole");
 
+Route::post("admin/checkroles", "AdminController@getRoles");
+
 Route::post("admin/deleterole", "AdminController@deleteRole");
 
 //Airavata Server Check

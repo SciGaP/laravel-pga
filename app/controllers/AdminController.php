@@ -98,6 +98,13 @@ class AdminController extends BaseController {
 		return Redirect::to("admin/dashboard/roles")->with( "message", "Role has been added.");
 	}
 
+
+	public function getRoles(){
+		$idStore = $this->idStore;
+
+		return json_encode( (array)$idStore->getRoleListOfUser( Input::get("username") ) );
+	}
+
 	public function deleteRole(){
 		$idStore = $this->idStore;
 

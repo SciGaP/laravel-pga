@@ -284,7 +284,8 @@ public static function launch_experiment($expId)
         Utilities::print_success_message('Experiment launched using ' . $tokenString . ' allocation!');
         */
 
-        $hardCodedToken = 'bdc612fe-401e-4684-88e9-317f99409c45';
+        $app_config = Utilities::read_config();
+        $hardCodedToken = $app_config['credential-store-token'];
         $airavataclient->launchExperiment($expId, $hardCodedToken);
 
         /*
@@ -752,6 +753,7 @@ public static function assemble_experiment()
     $scheduling->nodeCount = $_POST['node-count'];
     $scheduling->queueName = $_POST['queue-name'];
     $scheduling->wallTimeLimit = $_POST['wall-time'];
+    $scheduling->totalPhysicalMemory = $_POST['total-physical-memory'];
     $scheduling->resourceHostId = $_POST['compute-resource'];
 
     $userConfigData = new UserConfigurationData();

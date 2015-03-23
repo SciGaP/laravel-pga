@@ -76,6 +76,15 @@
                 <span class="input-group-addon">minutes</span>
             </div>
         </div>
+        <div class="form-group">
+            <label for="wall-time">Total Physical Memory</label>
+            <div class="input-group">
+                <input type="number" class="form-control" name="total-physical-memory" id="wall-time" min="0"
+                value="@if(isset($expInputs['expVal']) ){{ $expInputs['expVal']['scheduling']->totalPhysicalMemory }}@endif"
+                @if(isset($expInputs['expVal'])) @if(!$expInputs['expVal']['editable']){{disabled}} @endif @endif>
+                <span class="input-group-addon">MB</span>
+            </div>
+        </div>
     </div>
 </div>
 <h3>Notifications</h3>
